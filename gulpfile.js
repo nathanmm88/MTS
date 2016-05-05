@@ -27,17 +27,17 @@ var sassDir = './sass/**/*.scss'
 
 // These files get concatenated in this order, into /dist/scripts/build.js
 var jsPaths = [
-  './vendors/bower_components/jquery-1.11.1/dist/jquery.min.js',
-  './vendors/bower_components/bootstrap/js/collapse.js',
-  './vendors/bower_components/bootstrap/js/modal.js',
-  //'./vendors/bower_components/jPushMenu/js/jPushMenu.js',
-  //'./vendors/bower_components/bootstrap-validator/dist/validator.min.js',
-  './vendors/bower_components/jquery-selectboxit/libs/jqueryUI/jquery-ui.js',
-  './vendors/bower_components/jquery-selectboxit/src/javascripts/jquery.selectBoxIt.js',
-  './vendors/bower_components/moment/moment.js',
-  './vendors/bower_components/bootstrap-daterangepicker/daterangepicker.js',
-  './vendors/bower_components/chosen/chosen.jquery.js',
-  './vendors/bower_components/blockUI/jquery.blockUI.js',
+  './vendor/bower_components/jquery-1.11.1/dist/jquery.min.js',
+  './vendor/bower_components/bootstrap/js/collapse.js',
+  './vendor/bower_components/bootstrap/js/modal.js',
+  //'./vendor/bower_components/jPushMenu/js/jPushMenu.js',
+  //'./vendor/bower_components/bootstrap-validator/dist/validator.min.js',
+  './vendor/bower_components/jquery-selectboxit/libs/jqueryUI/jquery-ui.js',
+  './vendor/bower_components/jquery-selectboxit/src/javascripts/jquery.selectBoxIt.js',
+  './vendor/bower_components/moment/moment.js',
+  './vendor/bower_components/bootstrap-daterangepicker/daterangepicker.js',
+  './vendor/bower_components/chosen/chosen.jquery.js',
+  './vendor/bower_components/blockUI/jquery.blockUI.js',
   './webroot/assets/scripts/app.js',
 ];
 
