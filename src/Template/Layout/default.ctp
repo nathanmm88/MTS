@@ -24,7 +24,8 @@
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?php //echo $this->Html->css('base.css') ?>
+    <?= $this->Html->css('/dist/css/app.css') ?>
+    <?= $this->Html->script('/dist/scripts/build.js') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
