@@ -75,6 +75,8 @@ use Cake\Utility\Security;
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
+    //tmp until we get the WS up and running
+    Configure::load('Domains/' . explode('.', $_SERVER['HTTP_HOST'])[0], 'default');
 } catch (\Exception $e) {
     exit($e->getMessage() . "\n");
 }
