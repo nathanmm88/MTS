@@ -27,6 +27,16 @@ use Cake\View\Exception\MissingTemplateException;
  */
 class OrderController extends AppController
 {
+    /**
+     * Before filter
+     * 
+     * @param \Cake\Event\Event $event
+     */
+    public function beforeFilter(\Cake\Event\Event $event) {
+        parent::beforeFilter($event);
+        //we want to use the order layout
+        $this->viewBuilder()->layout('order');
+    }
 
     /**
      * Order index page
@@ -37,6 +47,7 @@ class OrderController extends AppController
      */
     public function index()
     {
-        die('in the order index');
+        //we want to use the minimal layout
+        $this->viewBuilder()->layout('minimal');
     }
 }

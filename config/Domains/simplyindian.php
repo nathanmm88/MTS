@@ -2,15 +2,15 @@
 
 return [
     'takeaway' => [
+        //takeaway name
+        'name' => 'Simply Indian',
         //If the domain has a website or not
         'website' => 0, // 0 off / 1 on
-        //The ordering system status
-        'status' => 0, // 0 off / 1 on
         //Contact details
         'contact_details' => [
             'address_line_one' => '41 Bryntaf',
             'address_line_two' => 'Aberfan',
-            'address_line_three' => '',
+            'address_line_three' => 'Merthyr Tydfil',
             'address_line_four' => '',
             'postcode' => 'CF484PN',
             'lat' => '51.6885373',
@@ -26,7 +26,21 @@ return [
             'fri' => '7pm - 1am',
             'sat' => '7pm - 1am',
             'sun' => '7pm - 1am'
-        ]
+        ],
+        'order_settings' => [
+            //The ordering system status
+            'status' => 1, // 0 off / 1 on
+            //are they taking collection orders
+            'collection' => 1, // 0 off / 1 on
+            //are they taking delivery orders
+            'delivery' => 1, // 0 off / 1 on
+            //how long collections orders are currently taking
+            'collection_time' => 15, // in minutes
+            //how long delivery orders are currently taking
+            'delivery_time' => 90, // in minutes
+        ],
+        //the takeaway logo URL
+        'logo' => '/tmp/logo.png'
     ]
 ];
 

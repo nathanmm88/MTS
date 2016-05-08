@@ -1,0 +1,34 @@
+@import "../vendor/bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+body{
+    background-color: #F9F9F9;
+    
+    .label-div{
+        font-weight: 700;
+    }
+}
+
+body.minimal{
+    .container{
+        max-width: 766px;
+        
+        .or-txt{
+            padding: 10px 0;
+        }
+    }
+}
+
+/**
+* Responsive styling
+*/
+
+//Anything up to col-md
+@media screen and (max-width: 767px) {
+    .footer-text{
+        text-align: center;
+    }
+}
+
+//Anything up to col-lg
+@media screen and (max-width: 992px) {
+    
+}
