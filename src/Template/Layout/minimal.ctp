@@ -34,15 +34,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <img alt="<?php echo $this->Takeaway->getName(); ?> logo" src="<?php echo $this->Takeaway->getLogo(); ?>" />
+                    <img alt="<?php echo $this->Takeaway->getName(); ?> logo" src="<?php echo $this->Takeaway->getLogo(); ?>" class="img-responsive img-responsive-center" />
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12 panel panel-body">
+                <div class="col-xs-12 content">
                     <?= $this->fetch('content') ?>
                 </div>
             </div>
-            <div class="row">
+            <div id="footer" class="row">
                 <div class="col-sm-6 footer-text">
                     &copy; <?php echo $this->Takeaway->getName(); ?> <?php echo date('Y') ?>
                 </div>

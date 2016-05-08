@@ -38,6 +38,9 @@ return [
             'collection_time' => 15, // in minutes
             //how long delivery orders are currently taking
             'delivery_time' => 90, // in minutes
+            'currency' => 'GBP', //the currency code to pass when formatting info
+            'minimum_delivery_amount' => 10.00, //minimum order amount - delivery
+            'minimum_collection_amount' => 0.00 //minimum order amount - collection
         ],
         //the takeaway logo URL
         'logo' => '/tmp/logo.png'

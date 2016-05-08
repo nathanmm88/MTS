@@ -8,6 +8,13 @@ use Cake\Core\Configure;
 class TakeawayHelper extends Helper
 {
     /**
+     * Load the helpers we want
+     * 
+     * @var array 
+     */
+    public $helpers = ['Number'];
+    
+    /**
      * Checks if the ordering system is online
      * 
      * @return boolean
@@ -163,6 +170,52 @@ class TakeawayHelper extends Helper
      */
     public function getLogo(){
         return Configure::read('takeaway.logo');
+    }
+    
+    /**
+     * Returns the minimum delivery amount
+     * 
+     * @return type
+     */
+    public function getMinimumDeliveryAmount($format = true){
+        $return = Configure::read('takeaway.order_settings.minimum_delivery_amount');
+        
+        if($format === true){
+            $return = $this->formatMoney($return);
+        }
+        
+        return $return;
+    }
+    
+    /**
+     * Returns the minimum dcollection amount
+     * 
+     * @return type
+     */
+    public function getMinimumCollectionAmount($format = true){
+        $return = Configure::read('takeaway.order_settings.minimum_collection_amount');
+        
+        if($format === true){
+            $return = $this->formatMoney($return);
+        }
+        
+        return $return;
+    }
+    
+    /**
+     * Formats the money
+     * 
+     * @param float $amount
+     * @param string $currency
+     * @return string
+     */
+    public function formatMoney($amount, $currency = null){
+        
+        if(is_null($currency)){
+            $currency = Configure::read('takeaway.order_settings.currency');
+        }
+        
+        return $this->Number->currency($amount, $currency);
     }
 }
 
