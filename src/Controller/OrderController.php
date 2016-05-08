@@ -49,5 +49,6 @@ class OrderController extends AppController
     {
         //we want to use the minimal layout
         $this->viewBuilder()->layout('minimal');
+        
     }
 }
