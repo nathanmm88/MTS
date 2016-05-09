@@ -51,4 +51,14 @@ class OrderController extends AppController
         $this->viewBuilder()->layout('minimal');
         
     }
+    
+    /**
+     * Menu page
+     * 
+     * This will display the menu to the customer to order from
+     */
+    public function menu(){
+        
+    }
+            
 }
