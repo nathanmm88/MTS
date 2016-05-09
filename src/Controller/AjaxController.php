@@ -17,6 +17,7 @@ namespace App\Controller;
 use Cake\Core\Configure;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+use Cake\I18n\Number;
 
 /**
  * Order controller
@@ -25,29 +26,53 @@ use Cake\View\Exception\MissingTemplateException;
  *
  * @link http://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
-class OrderController extends AppController
+class AjaxController extends AppController
 {
+    
     /**
-     * Before filter
-     * 
-     * @param \Cake\Event\Event $event
+     * Gets the delivery details for a given postcode
      */
-    public function beforeFilter(\Cake\Event\Event $event) {
-        parent::beforeFilter($event);
-        //we want to use the order layout
-        $this->viewBuilder()->layout('order');
-    }
-
-    /**
-     * Order index page
-     *
-     * @return void|\Cake\Network\Response
-     * @throws \Cake\Network\Exception\NotFoundException When the view file could not
-     *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
-     */
-    public function index()
-    {
-        //we want to use the minimal layout
-        $this->viewBuilder()->layout('minimal');
+    public function getDeliveryDetailsForPostcode(){
+        
+        $success = false;
+        $error = 'Please enter a valid UK postcode';
+        $details = array();
+        $canDeliver = false;
+        
+        $postcode = $this->request->data['postcode'];
+        
+        if($postcode != ''){
+            $geoLocation = $this->geolocatePostcode($postcode);
+            
+            if($geoLocation !== false){
+                $success = true;
+                $error = '';
+                
+                
+                $distance = $this->getDistanceBetweenLocations(Configure::read('takeaway.contact_details.lat'), Configure::read('takeaway.contact_details.long'), $geoLocation['latitude'], $geoLocation['longitude']);
+                
+                $deliveryCost = $this->getDeliveryCost($distance);
+                
+                $details = array(
+                    'postcode' => $geoLocation['postcode'],
+                    'cost' => $deliveryCost,
+                    'format_cost' => $deliveryCost == false ? false : Number::currency($deliveryCost, Configure::read('takeaway.order_settings.currency'))
+                );
+                
+                if($deliveryCost != false){
+                    $canDeliver = true;
+                }
+                
+            }
+        }
+        
+        $this->set('data', array(
+            'success' => $success,
+            'error' => $error,
+            'can_deliver' => $canDeliver,
+            'details' => $details
+        )); 
+        
+        $this->render('json');
     }
 }
