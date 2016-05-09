@@ -50,6 +50,9 @@ class OrderController extends AppController
         //we want to use the minimal layout
         $this->viewBuilder()->layout('minimal');
         
+        if($this->request->is('post')){
+            die(var_dump($this->request->data));
+        }
     }
     
     /**
