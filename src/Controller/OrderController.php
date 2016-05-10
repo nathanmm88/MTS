@@ -56,6 +56,7 @@ class OrderController extends AppController
     }
     
     /**
+<<<<<<< HEAD
      * Menu page
      * 
      * This will display the menu to the customer to order from
@@ -64,4 +65,11 @@ class OrderController extends AppController
         
     }
             
+=======
+     * The order confirm page
+     */
+    public function confirm(){
+        
+    }
+>>>>>>> 63ef1101b659fba2b8244c56905f0f05d52fe8f1
 }

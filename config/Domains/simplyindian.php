@@ -46,6 +46,10 @@ return [
                 1 => 1.00,
                 2 => 1.50,
                 3 => 2.00
+            ),
+            'delivery_payment_options' => array(
+                'cash',
+                'online'
             )
         ],
         //the takeaway logo URL
