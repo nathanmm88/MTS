@@ -54,4 +54,11 @@ class OrderController extends AppController
             die(var_dump($this->request->data));
         }
     }
+    
+    /**
+     * The order confirm page
+     */
+    public function confirm(){
+        
+    }
 }

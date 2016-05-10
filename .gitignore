@@ -1,6 +1,4 @@
 /vendor/*
-!/vendor/autoload.php
-!/vendor/cakephp-plugins.php
 /config/app.php
 /node_modules/*
 /tmp/*

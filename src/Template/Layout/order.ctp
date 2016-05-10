@@ -32,6 +32,13 @@
     <?= $this->fetch('script') ?>
 </head>
 <body class="order">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <img alt="<?php echo $this->Takeaway->getName(); ?> logo" src="<?php echo $this->Takeaway->getLogo(); ?>" class="img-responsive" />
+            </div>            
+        </div>
+    </div>
     <?= $this->fetch('content') ?>
 </body>
 </html>

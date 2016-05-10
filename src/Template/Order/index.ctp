@@ -28,7 +28,7 @@
                             'div' => false,
                             'id' => 'deliveryBtn',
                             'class' => 'btn btn-primary col-xs-12 hidden',
-                            'value' => 'delivery'
+                            'name' => ORDER_TYPE_DELIVERY
                         )); ?>
                         <div id='postcodeDeliveryDetails' class='hidden'>
                             <p>Delivery Cost <br/><i class='postcodeContainer'></i> - <i class='delivery-cost'></i> <a class='change-postcode' href='#'>Change</a></p>
@@ -49,7 +49,7 @@
                             'div' => false,
                             'id' => 'wantsCollection',
                             'class' => 'btn btn-primary col-xs-12',
-                            'name' => 'collection'
+                            'name' => ORDER_TYPE_COLLECTION
                         )); ?>
                         <p>Estimated waiting time <br/><i><?php echo $this->Takeaway->getCollectionWaitingTime(); ?></i></p>
                         <p>Minimum order amount <br/><i><?php echo $this->Takeaway->getMinimumCollectionAmount(); ?></i></p>

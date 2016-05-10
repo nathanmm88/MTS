@@ -13,6 +13,13 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+//define some constants for the application 
+define('ORDER_TYPE_DELIVERY', 'delivery');
+define('ORDER_TYPE_COLLECTION', 'collection');
+
+define('PAYMENT_TYPE_CASH', 'cash');
+define('PAYMENT_TYPE_ONLINE', 'online');
+
 // You can remove this if you are confident that your PHP version is sufficient.
 if (version_compare(PHP_VERSION, '5.5.9') < 0) {
     trigger_error('You PHP version must be equal or higher than 5.5.9 to use CakePHP.', E_USER_ERROR);
