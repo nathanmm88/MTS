@@ -59,6 +59,37 @@ body.minimal{
     }
 }
 
+body.order{
+    .container{
+        #menu{
+            padding:0 15px 0 15px;
+            border:1px solid #CFCFCF;
+            border-radius:4px;
+        }
+        
+        #sidebar{
+            border:1px solid #CFCFCF;
+            padding:0 15px 0 15px;
+             border-radius:4px;
+        }
+        
+        #view-basket-mobile{
+            background-color:red;
+            position:fixed;
+            bottom:0;
+            right:0;
+            left:0;
+            padding-top:10px;
+            text-align:center;
+            
+            a{    
+                font-size:2em;         
+                color:green;
+            }
+        }
+    }
+}
+
 /**
 * Responsive styling
 */

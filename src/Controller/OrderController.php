@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -12,6 +13,7 @@
  * @since     0.2.9
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Core\Configure;
@@ -25,8 +27,8 @@ use Cake\View\Exception\MissingTemplateException;
  *
  * @link http://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
-class OrderController extends AppController
-{
+class OrderController extends AppController {
+
     /**
      * Before filter
      * 
@@ -45,31 +47,60 @@ class OrderController extends AppController
      * @throws \Cake\Network\Exception\NotFoundException When the view file could not
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
-    public function index()
-    {
+    public function index() {
         //we want to use the minimal layout
         $this->viewBuilder()->layout('minimal');
-        
-        if($this->request->is('post')){
+
+        if ($this->request->is('post')) {
             die(var_dump($this->request->data));
         }
     }
-    
+
     /**
-<<<<<<< HEAD
      * Menu page
      * 
      * This will display the menu to the customer to order from
      */
-    public function menu(){
-        
+    public function menu() {
+        /**
+         * Temporarily set some example categories to be replaced with real data
+         */
+        $categories = array(
+            'Starters' => array(
+                'description' => 'Here is the list of starters',
+                'items' => array(
+                    'Prawn Crackers' => array(
+                        'price' => 4.5,
+                        'description' => '10 Prawn Crackers'
+                    ),
+                    'Garlic Bread' => array(
+                        'price' => 2.25,
+                        'description' => '2 Slices of Garlic Bread'
+                    ),
+                )
+            ),
+            'Kebabs' => array(
+                'description' => 'Here is the list of kebabs',
+                'items' => array(
+                    'Donner Kebab' => array(
+                        'price' => 6.9,
+                        'description' => 'Chicken Donner Kebab with Chips'
+                    ),
+                    'Shish Kebab' => array(
+                        'price' => 5.5,
+                        'description' => 'Chicken Shish Kebab with Chips'
+                    ),
+                )
+            ),
+        );
+        $this->set('categories', $categories);
     }
-            
-=======
+
+    /**
      * The order confirm page
      */
-    public function confirm(){
+    public function confirm() {
         
     }
->>>>>>> 63ef1101b659fba2b8244c56905f0f05d52fe8f1
+
 }

@@ -90,8 +90,8 @@ $(document).ready(function() {
             startBlocking();
             var data = {'postcode': postcode.val()};
             $.post("/ajax/getDeliveryDetailsForPostcode", data, function(response) {
-                
-                if(response.data.success == false){
+
+                if (response.data.success == false) {
                     addValidationError(postcode, response.data.error);
                 } else if (response.data.can_deliver == true) {
                     $('#lookupPostcode').addClass('hidden');
@@ -100,7 +100,7 @@ $(document).ready(function() {
                     $('#postcodeDeliveryDetails').removeClass('hidden');
                     $('#deliveryBtn').removeClass('hidden');
                     $('input[name="delivery_postcode"]').val(response.data.details.postcode);
-                } else if (response.data.can_deliver == false){
+                } else if (response.data.can_deliver == false) {
                     $('#lookupPostcode').addClass('hidden');
                     $('#unableToDeliver').removeClass('hidden');
                     $('#deliveryDetails').addClass('hidden');
@@ -111,11 +111,11 @@ $(document).ready(function() {
             });
         }
     });
-    
+
     /**
      * When the user wants to change the postcode they have already entered
      */
-    $('.change-postcode').on('click', function(e){
+    $('.change-postcode').on('click', function(e) {
         e.preventDefault();
         $('#unableToDeliver').addClass('hidden');
         $('#postcodeDeliveryDetails').addClass('hidden');
@@ -123,6 +123,23 @@ $(document).ready(function() {
         $('#lookupPostcode').removeClass('hidden');
         $('#deliveryDetails').removeClass('hidden');
         $('input[name="postcode"]').val('');
+    });
+
+    /**
+     * When the user adds an item to the basket
+     */
+    $('.add-item').on('click', function(e) {
+        e.preventDefault();
+        startBlocking();
+        var url = '/ajax/addItem';
+        $.post(url, {item: 1}, function(data) {
+            if (data.success === true) {
+                $('#sidebar-content').html(data.markup);
+            }
+
+        }, 'json').always(function() {
+            stopBlocking();
+        });
     });
 });
 
