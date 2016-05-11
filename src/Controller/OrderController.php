@@ -62,6 +62,8 @@ class OrderController extends AppController {
      * This will display the menu to the customer to order from
      */
     public function menu() {
+       // $this->Api->getToken();
+       // die('s');
         /**
          * Temporarily set some example categories to be replaced with real data
          */
