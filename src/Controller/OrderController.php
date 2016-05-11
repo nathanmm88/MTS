@@ -29,6 +29,20 @@ use App\Form\ConfirmationForm;
 class OrderController extends AppController
 {
     /**
+     * The steps we want to lock down for a diven controller
+     * 
+     * Default off
+     * 
+     * @var array 
+     */
+    public $steps = [
+        'order_index',
+        'order_selection',
+        'order_confirm',
+        'order_thanks'
+    ];
+    
+    /**
      * Before filter
      * 
      * @param \Cake\Event\Event $event
@@ -37,6 +51,8 @@ class OrderController extends AppController
         parent::beforeFilter($event);
         //we want to use the order layout
         $this->viewBuilder()->layout('order');
+        
+        $this->_checkStep();
     }
 
     /**
@@ -52,7 +68,20 @@ class OrderController extends AppController
         $this->viewBuilder()->layout('minimal');
         
         if($this->request->is('post')){
-            die(var_dump($this->request->data));
+            //TODO:: move to a form
+            if(array_key_exists(ORDER_TYPE_COLLECTION, $this->request->data)){
+                $this->request->session()->write('order.order_type', ORDER_TYPE_COLLECTION);
+            } else if (array_key_exists(ORDER_TYPE_DELIVERY, $this->request->data)){
+                $this->request->session()->write('order.order_type', ORDER_TYPE_DELIVERY);
+            } else {
+                throw new Exception('Unable to detect order type from the post');
+            }   
+            
+            //set the delivery postcode anyway
+            $this->request->session()->write('order.address.postcode', $this->request->data['delivery_postcode']);
+            
+            //redirect to the next step
+            $this->_redirectToStep('order_selection');
         }
     }
     

@@ -31,6 +31,22 @@ use Cake\Event\Event;
 class AppController extends Controller {
 
     /**
+     * The steps we want to lock down for a diven controller
+     * 
+     * Default off
+     * 
+     * @var null|array 
+     */
+    public $steps = null;
+    
+    /**
+     * The current step
+     * 
+     * @var string
+     */
+    public $current_step = '';
+    
+    /**
      * Initialization hook method.
      *
      * Use this method to add common initialization code like loading components.
@@ -45,6 +61,9 @@ class AppController extends Controller {
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->helpers[] = 'Takeaway';
+        
+        //get the current controller_action
+        $this->current_step = strtolower($this->request->controller . '_' . $this->request->action);
     }
 
     /**
@@ -59,6 +78,56 @@ class AppController extends Controller {
         ) {
             $this->set('_serialize', true);
         }
+    }
+    
+    /**
+     * Checks if the current controller has locked down steps
+     * 
+     */
+    public function _checkStep(){
+        //if null or not in the restricted steps ignore this
+        if(!is_null($this->steps) && in_array($this->current_step, $this->steps)){
+            
+            //get the current step
+            $currentSessionStep = $this->request->session()->read('current_step');
+            
+            //check we have a step
+            if(is_null($currentSessionStep)){
+                //get the default step
+                $defaultStep = reset($this->steps);
+                //redirect to the first step
+                if($defaultStep != $this->current_step){
+                    $this->_redirectToStep($defaultStep);
+                } else {
+                    //set the step name for next time round
+                    $this->request->session()->write('current_step', $this->current_step);
+                }
+                
+            } else if ($this->current_step != $currentSessionStep){ //if we have a step make sure its the correct one
+                //redirect to the step we should be on
+                $this->_redirectToStep($currentSessionStep);
+            }
+        }
+    }
+    
+    /**
+     * Redirects to a step
+     * 
+     * @param string $stepName controller_action
+     */
+    protected function _redirectToStep($stepName){
+        
+        //step name is controller_action
+        $parts = explode('_', $stepName);
+        
+        //set the new step name
+        $this->request->session()->write('current_step', $stepName);
+        
+        //now redirect to the new step
+        $this->redirect([
+            'controller' => $parts[0],
+            'action' => $parts[1]
+        ]);
     }
 
     /**
