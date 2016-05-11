@@ -38,7 +38,8 @@
                 <img alt="<?php echo $this->Takeaway->getName(); ?> logo" src="<?php echo $this->Takeaway->getLogo(); ?>" class="img-responsive" />
             </div>            
         </div>
+        <?= $this->fetch('content') ?>
     </div>
-    <?= $this->fetch('content') ?>
+    
 </body>
 </html>

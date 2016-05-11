@@ -17,6 +17,7 @@ namespace App\Controller;
 use Cake\Core\Configure;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+use App\Form\ConfirmationForm;
 
 /**
  * Order controller
@@ -59,6 +60,14 @@ class OrderController extends AppController
      * The order confirm page
      */
     public function confirm(){
-        
+        $confirmationForm = new ConfirmationForm($this->request);
+        if ($this->request->is('post')) {
+            if ($confirmationForm->execute($this->request->data)) {
+                die('success');
+            } else {
+                
+            }
+        }
+        $this->set('confirmation', $confirmationForm);
     }
 }
