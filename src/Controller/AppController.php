@@ -22,6 +22,7 @@ use Cake\Event\Event;
 use App\Entity\TakeawayEntity;
 use App\Entity\OrderEntity;
 use App\Entity\StepEntity;
+use App\Entity\SecurityEntity;
 
 /**
  * Application Controller
@@ -52,23 +53,49 @@ class AppController extends Controller {
     /**
      * The current step
      * 
-     * @var App\Entity\Takeaway
+     * @var App\Entity\TakeawayEntity
      */
     public $takeaway = null;
     
     /**
      * The order class
      * 
-     * @var App\Entity\Order
+     * @var App\Entity\OrderEntity
      */
     public $order = null;
     
     /**
      * The step class
      * 
-     * @var App\Entity\Step
+     * @var App\Entity\StepEntity
      */
     public $step = null;
+    
+    /**
+     * The security class
+     * 
+     * @var App\Entity\SecurityEntity
+     */
+    public $security = null;
+    
+    /**
+     * The entities we want to load
+     * 
+     * @var array
+     */
+    public $entities = array(
+        'Takeaway',
+        'Order',
+        'Security',
+        'Step'
+    );
+    
+    /**
+     * The API component
+     * 
+     * @var App\Controller\Component\APIComponent
+     */
+    public $api = null;
     
     /**
      * Initialization hook method.
@@ -82,22 +109,51 @@ class AppController extends Controller {
     public function initialize() {
         parent::initialize();
 
+        $this->helpers[] = 'Takeaway';
+        $this->helpers[] = 'Entity';
+        
+        //load the entities
+        $this->_addEntities();
+        
         //$this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Api');
-        $this->helpers[] = 'Takeaway';
-        $this->helpers[] = 'Entity';
+        
         
         //get the current controller_action
         $this->current_step = strtolower($this->request->controller . '_' . $this->request->action);
         
+        
+        
+        //handle the token before we do anything
+        $this->_handleToken();
+    }
+    
+    /**
+     * Checks if we have a token and if not sets one
+     * 
+     */
+    protected function _handleToken(){
+        //now check that we have a token and if not go and get one
+        if($this->security->hasAPIToken()){
+            //$this->api->setToken();
+        }
+    }
+    
+    /**
+     * Load the entities and set in the view ready for use in the helper
+     */
+    protected function _addEntities(){
         //load the session classes
-        $this->takeaway = new TakeawayEntity($this->request);
-        $this->order = new OrderEntity($this->request);
-        $this->step = new StepEntity($this->request);
+        $entities = array();
+        foreach($this->entities as $entityName){
+            $entityClassName = 'App\Entity\\' . $entityName . 'Entity';
+            $this->{strtolower($entityName)} = new $entityClassName($this->request);
+            $entities[$entityName] = $this->{strtolower($entityName)};
+        }
         
-        $this->set('entities', ['takeaway' => $this->takeaway, 'order' => $this->order, 'step' => $this->step]);
-        
+        //set them for the helper
+        $this->set('entities', $entities);
     }
 
     /**

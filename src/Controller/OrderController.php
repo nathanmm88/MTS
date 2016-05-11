@@ -65,7 +65,7 @@ class OrderController extends AppController {
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
     public function index() {
-        pr($_SESSION, 1);
+        $this->Api->getToken();
         //we want to use the minimal layout
         $this->viewBuilder()->layout('minimal');
 
