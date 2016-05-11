@@ -27,12 +27,12 @@ if (php_sapi_name() === 'cli-server') {
 
 require dirname(__DIR__) . '/config/bootstrap.php';
 
-use Cake\Network\Request;
+use App\Network\TakeawayRequest;
 use Cake\Network\Response;
 use Cake\Routing\DispatcherFactory;
 
 $dispatcher = DispatcherFactory::create();
 $dispatcher->dispatch(
-    Request::createFromGlobals(),
+    TakeawayRequest::createFromGlobals(),
     new Response()
 );
