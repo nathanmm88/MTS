@@ -39,7 +39,7 @@ class OrderController extends AppController {
      */
     public $steps = [
         'order_index',
-        'order_selection',
+        'order_menu',
         'order_confirm',
         'order_thanks'
     ];
@@ -65,6 +65,7 @@ class OrderController extends AppController {
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
     public function index() {
+        pr($_SESSION, 1);
         //we want to use the minimal layout
         $this->viewBuilder()->layout('minimal');
 
@@ -82,7 +83,7 @@ class OrderController extends AppController {
             $this->request->session()->write('order.address.postcode', $this->request->data['delivery_postcode']);
             
             //redirect to the next step
-            $this->_redirectToStep('order_selection');
+            $this->_redirectToStep('order_menu');
     }
     }
 
@@ -92,8 +93,8 @@ class OrderController extends AppController {
      * This will display the menu to the customer to order from
      */
     public function menu() {
-       // $this->Api->getToken();
-       // die('s');
+        //$this->Api->getToken();
+        //die('s');
         /**
          * Temporarily set some example categories to be replaced with real data
          */

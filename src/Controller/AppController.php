@@ -19,6 +19,9 @@ namespace App\Controller;
 use Cake\Core\Configure;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use App\Entity\TakeawayEntity;
+use App\Entity\OrderEntity;
+use App\Entity\StepEntity;
 
 /**
  * Application Controller
@@ -40,11 +43,32 @@ class AppController extends Controller {
     public $steps = null;
     
     /**
-     * The current step
+     * The takeaway
      * 
      * @var string
      */
     public $current_step = '';
+    
+    /**
+     * The current step
+     * 
+     * @var App\Entity\Takeaway
+     */
+    public $takeaway = null;
+    
+    /**
+     * The order class
+     * 
+     * @var App\Entity\Order
+     */
+    public $order = null;
+    
+    /**
+     * The step class
+     * 
+     * @var App\Entity\Step
+     */
+    public $step = null;
     
     /**
      * Initialization hook method.
@@ -62,9 +86,18 @@ class AppController extends Controller {
         $this->loadComponent('Flash');
         $this->loadComponent('Api');
         $this->helpers[] = 'Takeaway';
+        $this->helpers[] = 'Entity';
         
         //get the current controller_action
         $this->current_step = strtolower($this->request->controller . '_' . $this->request->action);
+        
+        //load the session classes
+        $this->takeaway = new TakeawayEntity($this->request);
+        $this->order = new OrderEntity($this->request);
+        $this->step = new StepEntity($this->request);
+        
+        $this->set('entities', ['takeaway' => $this->takeaway, 'order' => $this->order, 'step' => $this->step]);
+        
     }
 
     /**
@@ -90,7 +123,7 @@ class AppController extends Controller {
         if(!is_null($this->steps) && in_array($this->current_step, $this->steps)){
             
             //get the current step
-            $currentSessionStep = $this->request->session()->read('current_step');
+            $currentSessionStep = $this->step->getCurrentStep();
             
             //check we have a step
             if(is_null($currentSessionStep)){
@@ -101,7 +134,7 @@ class AppController extends Controller {
                     $this->_redirectToStep($defaultStep);
                 } else {
                     //set the step name for next time round
-                    $this->request->session()->write('current_step', $this->current_step);
+                    $this->step->setCurrentStep($this->current_step);
                 }
                 
             } else if ($this->current_step != $currentSessionStep){ //if we have a step make sure its the correct one
@@ -122,7 +155,7 @@ class AppController extends Controller {
         $parts = explode('_', $stepName);
         
         //set the new step name
-        $this->request->session()->write('current_step', $stepName);
+        $this->step->setCurrentStep($stepName);
         
         //now redirect to the new step
         $this->redirect([
