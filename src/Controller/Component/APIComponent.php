@@ -38,7 +38,7 @@ class APIComponent extends AbstractComponent {
      */
     public function setSettings(){
         $response = $this->_makeRequest(
-                '/api/Takeaway/GetSettings/1', 
+                '/api/Takeaway/GetSettings?takeawayID=1&domain=&subDomain=', 
                 'takeawayID=1'
             );
         pr($response);
