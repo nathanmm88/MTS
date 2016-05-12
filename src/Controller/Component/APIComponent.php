@@ -4,6 +4,8 @@ namespace App\Controller\Component;
 
 use App\Controller\Component\AbstractComponent;
 use Cake\Network\Http\Client;
+use Cake\Core\Configure;
+
 
 class APIComponent extends AbstractComponent {
 
@@ -13,10 +15,10 @@ class APIComponent extends AbstractComponent {
      */
     public function setToken() {
 
-        if(!$this->security->hasAPIToken() || 1 == 1){
+        if(!$this->security->hasAPIToken()){
             $response = $this->_makeRequest(
                 'Token', 
-                'grant_type=password&username=admin@mytakeawaysite.com&password=3ts,9#fY<5[Xi?`-><]qL',
+                'grant_type='.Configure::read('api.grant_type').'&username='.Configure::read('api.user').'&password='.Configure::read('api.password'),
                 false
             );
 
@@ -39,9 +41,10 @@ class APIComponent extends AbstractComponent {
     public function setSettings(){
         $response = $this->_makeRequest(
                 '/api/Takeaway/GetSettings?takeawayID=1&domain=&subDomain=', 
-                'takeawayID=1'
+                'takeawayID=1&domain=&subDomain='
+                
             );
-        pr($response);
+        pr($response,1);
         die('settings');
     }
 
@@ -63,11 +66,11 @@ class APIComponent extends AbstractComponent {
 
         $http = new Client();
         $response = $http->post(
-            'http://webapi.mytakeawaysite.com/' . $action, 
+            Configure::read('api.url') . $action, 
             $messageBody, 
             ['headers' => $headers]
         );
-        
+   
         $responseArray = json_decode($response->body(), true);
         
         if(array_key_exists('error', $responseArray)){

@@ -84,6 +84,19 @@ try {
     Configure::load('app', 'default', false);
     //tmp until we get the WS up and running
     Configure::load('Domains/' . explode('.', $_SERVER['HTTP_HOST'])[0], 'default');
+    
+    /**
+     * Load environment specific configs
+     */
+    switch (getenv('ENVIRONMENT')){
+        case 'development':            
+            Configure::load('config_dev', 'default');
+            break;
+        default:            
+            Configure::load('config_prod.prod');
+            break;
+    }
+    
 } catch (\Exception $e) {
     exit($e->getMessage() . "\n");
 }
