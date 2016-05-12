@@ -5,6 +5,9 @@ namespace App\Controller\Component;
 use App\Controller\Component\AbstractComponent;
 use Cake\Network\Http\Client;
 use Cake\Core\Configure;
+use App\Lib\DotNotation;
+
+use App\Entity\Takeaway\TakeawayAddressEntity;
 
 
 class APIComponent extends AbstractComponent {
@@ -44,8 +47,33 @@ class APIComponent extends AbstractComponent {
                 'takeawayID=1&domain=&subDomain='
                 
             );
-        pr($response,1);
-        die('settings');
+        pr($response);
+        
+        //load in the dot notation class so we can access the values easily
+        $responseDotNotation = new DotNotation($response);
+        
+        //set the takeaway details
+        $this->takeaway->setName($responseDotNotation->get('Takeaway.Name'));
+        
+        //set the address
+        $address = TakeawayAddressEntity::fromArray([
+            'address_line_one' => $responseDotNotation->get('Takeaway.Address1'),
+            'address_line_two' => $responseDotNotation->get('Takeaway.Address2'),
+            'address_line_three' => $responseDotNotation->get('Takeaway.Town'),
+            'address_line_four' => $responseDotNotation->get('Takeaway.County'),
+            'postcode' => $responseDotNotation->get('Takeaway.PostCode'),
+            'latitude' => $responseDotNotation->get('Takeaway.Latitude'),
+            'longitude' => $responseDotNotation->get('Takeaway.Longitude')
+        ], $this->request);
+        
+        $this->takeaway->setAddress($address);
+        
+pr($_SESSION);
+        
+        die(var_dump($this->takeaway->getAddress()));
+        
+        $this->takeaway->setArray();
+        
     }
 
     /**

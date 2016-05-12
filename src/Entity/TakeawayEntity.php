@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\AbstractSession;
+use App\Entity\Takeaway\TakeawayAddressEntity;
 
 class TakeawayEntity extends AbstractEntity
 {
@@ -16,6 +17,39 @@ class TakeawayEntity extends AbstractEntity
     public $prefix = 'takeaway';
     
     /**
+     * Takeaway address
+     * 
+     * @var \App\Entity\Takeaway\TakeawayAddress 
+     */
+    public $address = null;
+    
+    /**
+     * Getters
+     */
+    
+    /**
+     * Returns the takeaway name
+     * 
+     * @return string
+     */
+    public function getName(){
+        return $this->_get('name');
+    }
+    
+    /**
+     * Returns the takeaway address
+     * 
+     * @return \App\Entity\Takeaway\TakeawayAddressEntity
+     */
+    public function getAddress(){
+        return TakeawayAddressEntity::fromArray($this->_get('address'), $this->request);
+    }
+    
+    /**
+     * Setters
+     */
+    
+    /**
      * Sets the takeaway name
      * 
      * @param string $name
@@ -26,11 +60,14 @@ class TakeawayEntity extends AbstractEntity
     }
     
     /**
-     * Returns the takeaway name
+     * Sets the takeaway address
      * 
-     * @return string
+     * @param \App\Entity\Takeaway\TakeawayAddressEntity $takeawayAddress
+     * @return \App\Entity\TakeawayEntity
      */
-    public function getName(){
-        return $this->_get('name');
+    public function setAddress(Takeaway\TakeawayAddressEntity $takeawayAddress){
+        $this->_set('address', $takeawayAddress->toArray());
+        return $this;
     }
+    
 }
