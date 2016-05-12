@@ -123,22 +123,10 @@ class AppController extends Controller {
         //get the current controller_action
         $this->current_step = strtolower($this->request->controller . '_' . $this->request->action);
         
-        
-        
-        //handle the token before we do anything
-        $this->_handleToken();
+        $this->Api->setSettings();
     }
     
-    /**
-     * Checks if we have a token and if not sets one
-     * 
-     */
-    protected function _handleToken(){
-        //now check that we have a token and if not go and get one
-        if($this->security->hasAPIToken()){
-            //$this->api->setToken();
-        }
-    }
+    
     
     /**
      * Load the entities and set in the view ready for use in the helper
