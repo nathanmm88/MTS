@@ -8,6 +8,7 @@ use Cake\Core\Configure;
 use App\Lib\DotNotation;
 
 use App\Entity\Takeaway\TakeawayAddressEntity;
+use App\Entity\Takeaway\CurrencyEntity;
 
 
 class APIComponent extends AbstractComponent {
@@ -53,7 +54,18 @@ class APIComponent extends AbstractComponent {
         $responseDotNotation = new DotNotation($response);
         
         //set the takeaway details
-        $this->takeaway->setName($responseDotNotation->get('Takeaway.Name'));
+        $this->takeaway->setId($responseDotNotation->get('Takeaway.TakeawayID'))
+                ->setName($responseDotNotation->get('Takeaway.Name'))
+                ->setTelephone($responseDotNotation->get('Takeaway.PhoneNumber'))
+                ->setEmail($responseDotNotation->get('Takeaway.EmailAddress'));
+        
+        //set the currency
+        $currency = CurrencyEntity::fromArray([
+            'id' => $responseDotNotation->get('Takeaway.CurrencyID'),
+            'code' => $responseDotNotation->get('Takeaway.CurrencyCode', 'GBP'),
+        ], $this->request);
+        
+        $this->takeaway->setCurrency($currency);
         
         //set the address
         $address = TakeawayAddressEntity::fromArray([
