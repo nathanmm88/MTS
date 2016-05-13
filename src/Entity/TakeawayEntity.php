@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\AbstractSession;
 use App\Entity\Takeaway\TakeawayAddressEntity;
+use App\Entity\Takeaway\CurrencyEntity;
 
 class TakeawayEntity extends AbstractEntity
 {
@@ -17,15 +18,52 @@ class TakeawayEntity extends AbstractEntity
     public $prefix = 'takeaway';
     
     /**
+     * Takeaway ID
+     * 
+     * @var int
+     */
+    protected $id = null;
+    
+    /**
      * Takeaway address
      * 
      * @var \App\Entity\Takeaway\TakeawayAddress 
      */
-    public $address = null;
+    protected $address = null;
+    
+    /**
+     * Takeaway telephone
+     * 
+     * @var string
+     */
+    protected $telephone = null;
+    
+    /**
+     * Takeaway email
+     * 
+     * @var string
+     */
+    protected $email = null;
+    
+    /**
+     * Takeaway currency
+     * 
+     * @var App\Entity\Takeaway\CurrencyEntity
+     */
+    protected $currency = null;
     
     /**
      * Getters
      */
+    
+    /**
+     * Returns the takeaway ID
+     * 
+     * @return string
+     */
+    public function getId(){
+        return $this->_get('id');
+    }
     
     /**
      * Returns the takeaway name
@@ -34,6 +72,42 @@ class TakeawayEntity extends AbstractEntity
      */
     public function getName(){
         return $this->_get('name');
+    }
+    
+    /**
+     * Returns the takeaway telephone number
+     * 
+     * @return string
+     */
+    public function getTelephone(){
+        return $this->_get('telephone');
+    }
+    
+    /**
+     * Checks if the takeaway has a telephone number
+     * 
+     * @return boolean
+     */
+    public function hasTelephone(){
+        return is_null($this->getTelephone()) ? false : true;
+    }
+    
+    /**
+     * Returns the takeaway email address
+     * 
+     * @return string
+     */
+    public function getEmail(){
+        return $this->_get('email');
+    }
+    
+    /**
+     * Checks if the takeaway has an email address
+     * 
+     * @return boolean
+     */
+    public function hasEmail(){
+        return is_null($this->getEmail()) ? false : true;
     }
     
     /**
@@ -46,8 +120,28 @@ class TakeawayEntity extends AbstractEntity
     }
     
     /**
+     * Returns the tcurrency
+     * 
+     * @return \App\Entity\Takeaway\CurrencyEntity
+     */
+    public function getCurrency(){
+        return CurrencyEntity::fromArray($this->_get('currency'), $this->request);
+    }
+    
+    /**
      * Setters
      */
+    
+    /**
+     * Sets the takeaway ID
+     * 
+     * @param int $id
+     * @return App\Entity\TakeawayEntity
+     */
+    public function setId($id){
+        $this->_set('id', $id);
+        return $this;
+    }
     
     /**
      * Sets the takeaway name
@@ -56,7 +150,30 @@ class TakeawayEntity extends AbstractEntity
      * @return App\Entity\TakeawayEntity
      */
     public function setName($name){
-        return $this->_set('name', $name);
+        $this->_set('name', $name);
+        return $this;
+    }
+    
+    /**
+     * Sets the takeaway name
+     * 
+     * @param string $telephone
+     * @return string
+     */
+    public function setTelephone($telephone){
+        $this->_set('telephone', $telephone);
+        return $this;
+    }
+    
+    /**
+     * Sets the takeaway email address
+     * 
+     * @param string $email
+     * @return string
+     */
+    public function setEmail($email){
+        $this->_set('email', $email);
+        return $this;
     }
     
     /**
@@ -67,6 +184,17 @@ class TakeawayEntity extends AbstractEntity
      */
     public function setAddress(Takeaway\TakeawayAddressEntity $takeawayAddress){
         $this->_set('address', $takeawayAddress->toArray());
+        return $this;
+    }
+    
+    /**
+     * Sets the currency
+     * 
+     * @param \App\Entity\Takeaway\CurrencyEntity $currency
+     * @return \App\Entity\TakeawayEntity
+     */
+    public function setCurrency(CurrencyEntity $currency){
+        $this->_set('currency', $currency->toArray());
         return $this;
     }
     
