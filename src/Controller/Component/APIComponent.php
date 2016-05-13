@@ -47,7 +47,7 @@ class APIComponent extends AbstractComponent {
                 'takeawayID=1&domain=&subDomain='
                 
             );
-        pr($response);
+      //  pr($response);
         
         //load in the dot notation class so we can access the values easily
         $responseDotNotation = new DotNotation($response);
@@ -68,11 +68,11 @@ class APIComponent extends AbstractComponent {
         
         $this->takeaway->setAddress($address);
         
-pr($_SESSION);
+//pr($_SESSION);
         
-        die(var_dump($this->takeaway->getAddress()));
+  //      die(var_dump($this->takeaway->getAddress()));
         
-        $this->takeaway->setArray();
+     //   $this->takeaway->setArray();
         
     }
 
