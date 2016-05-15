@@ -9,7 +9,6 @@ use App\Lib\DotNotation;
 
 use App\Entity\Takeaway\TakeawayAddressEntity;
 use App\Entity\Takeaway\CurrencyEntity;
-use App\Entity\Takeaway\SettingsEntity;
 
 
 class APIComponent extends AbstractComponent {
@@ -45,11 +44,11 @@ class APIComponent extends AbstractComponent {
      */
     public function setSettings(){
         $response = $this->_makeRequest(
-                '/api/Takeaway/GetSettings', 
+                '/api/Takeaway/GetSettings?takeawayID=1&domain=&subDomain=', 
                 'takeawayID=1&domain=&subDomain='
                 
             );
-        pr($response);
+      //  pr($response);
         
         //load in the dot notation class so we can access the values easily
         $responseDotNotation = new DotNotation($response);
@@ -62,7 +61,7 @@ class APIComponent extends AbstractComponent {
         
         //set the currency
         $currency = CurrencyEntity::fromArray([
-            'id' => $responseDotNotation->get('Takeaway.CurrencyID', 1),
+            'id' => $responseDotNotation->get('Takeaway.CurrencyID'),
             'code' => $responseDotNotation->get('Takeaway.CurrencyCode', 'GBP'),
         ], $this->request);
         
@@ -78,10 +77,10 @@ class APIComponent extends AbstractComponent {
             'latitude' => $responseDotNotation->get('Takeaway.Latitude'),
             'longitude' => $responseDotNotation->get('Takeaway.Longitude')
         ], $this->request);
-
+        
         $this->takeaway->setAddress($address);
         
-        //set the settings
+       //set the settings
         $settings = SettingsEntity::fromArray([
             'delivery_min_order' => $responseDotNotation->get('DeliveryMinOrder', 0),
             'collection_min_order' => $responseDotNotation->get('CollectionMinOrder', 0),
@@ -92,12 +91,6 @@ class APIComponent extends AbstractComponent {
         ], $this->request);
         
         $this->takeaway->setSettings($settings);
-        
-pr($_SESSION);
-        
-        die(var_dump($this->takeaway->getAddress()));
-        
-        $this->takeaway->setArray();
         
     }
 

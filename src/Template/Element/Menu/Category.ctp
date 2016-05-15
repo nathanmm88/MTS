@@ -29,8 +29,8 @@
                         <td>
                             <strong><?php echo $this->Takeaway->formatMoney($item['price']); ?></strong>
                         </td>
-                        <td class="add-item">
-                            <a class="btn btn-default" href="#" role="button">Add</a>
+                        <td >
+                            <a class="btn btn-default add-item" href="#" role="button" data-item-id="<?php echo $item['item_id']; ?>">Add</a>
                         </td>
                     </tr>                    
                     <?php } ?>

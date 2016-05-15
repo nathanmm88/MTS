@@ -20,6 +20,9 @@ use Cake\Core\Configure;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use App\Form\ConfirmationForm;
+use App\Form\OrderForm;
+use App\Entity\Order\ItemEntity;
+
 
 /**
  * Order controller
@@ -38,10 +41,10 @@ class OrderController extends AppController {
      * @var array 
      */
     public $steps = [
-        'order_index',
-        'order_menu',
-        'order_confirm',
-        'order_thanks'
+//        'order_index',
+//        'order_menu',
+//        'order_confirm',
+//        'order_thanks'
     ];
     
     /**
@@ -91,9 +94,7 @@ class OrderController extends AppController {
      * 
      * This will display the menu to the customer to order from
      */
-    public function menu() {
-        //$this->Api->getToken();
-        //die('s');
+    public function menu() {   
         /**
          * Temporarily set some example categories to be replaced with real data
          */
@@ -103,11 +104,13 @@ class OrderController extends AppController {
                 'items' => array(
                     'Prawn Crackers' => array(
                         'price' => 4.5,
-                        'description' => '10 Prawn Crackers'
+                        'description' => '10 Prawn Crackers',
+                        'item_id' => 1
                     ),
                     'Garlic Bread' => array(
                         'price' => 2.25,
-                        'description' => '2 Slices of Garlic Bread'
+                        'description' => '2 Slices of Garlic Bread',
+                        'item_id' => 2
                     ),
                 )
             ),
@@ -116,16 +119,25 @@ class OrderController extends AppController {
                 'items' => array(
                     'Donner Kebab' => array(
                         'price' => 6.9,
-                        'description' => 'Chicken Donner Kebab with Chips'
+                        'description' => 'Chicken Donner Kebab with Chips',
+                        'item_id' => 3
                     ),
                     'Shish Kebab' => array(
                         'price' => 5.5,
-                        'description' => 'Chicken Shish Kebab with Chips'
+                        'description' => 'Chicken Shish Kebab with Chips',
+                        'item_id' => 4
                     ),
                 )
             ),
         );
         $this->set('categories', $categories);
+       
+        if ($this->request->is('post')) {
+            
+            $this->_redirectToStep('order_confirm');
+        }
+        $orderForm = new OrderForm($this->request);
+        $this->set('order', $orderForm);
     }
 
     /**

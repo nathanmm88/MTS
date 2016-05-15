@@ -20,6 +20,7 @@ use Cake\Core\Configure;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\I18n\Number;
+use App\Entity\Order\ItemEntity;
 
 /**
  * Order controller
@@ -87,9 +88,11 @@ class AjaxController extends AppController {
      * This function adds an item to the basket
      */
     public function addItem() {
-        /**
-         * Add the item
-         */
+        //get the item id from the post data
+        $item_id = $this->request->data['item'];
+        
+        //add this item to the order
+        $this->order->addItem(ItemEntity::fromArray(array('item_id' => $item_id)), $this->request);
         
         $success = true;
         $this->set('data', array(

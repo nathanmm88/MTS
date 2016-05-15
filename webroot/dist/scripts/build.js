@@ -11429,7 +11429,8 @@ $(document).ready(function() {
         e.preventDefault();
         startBlocking();
         var url = '/ajax/addItem';
-        $.post(url, {item: 1}, function(data) {
+        
+        $.post(url, {item:  $(this).data('item-id')}, function(data) {
             if (data.success === true) {
                 $('#sidebar-content').html(data.markup);
             }
