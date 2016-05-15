@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\AbstractSession;
 use App\Entity\Takeaway\TakeawayAddressEntity;
 use App\Entity\Takeaway\CurrencyEntity;
+use App\Entity\Takeaway\SettingsEntity;
 
 class TakeawayEntity extends AbstractEntity
 {
@@ -129,6 +130,15 @@ class TakeawayEntity extends AbstractEntity
     }
     
     /**
+     * Returns the settings
+     * 
+     * @return \App\Entity\Takeaway\SettingsEntity
+     */
+    public function getSettings(){
+        return SettingsEntity::fromArray($this->_get('settings'), $this->request);
+    }
+    
+    /**
      * Setters
      */
     
@@ -195,6 +205,17 @@ class TakeawayEntity extends AbstractEntity
      */
     public function setCurrency(CurrencyEntity $currency){
         $this->_set('currency', $currency->toArray());
+        return $this;
+    }
+    
+    /**
+     * Sets the takeaway settings
+     * 
+     * @param \App\Entity\Takeaway\SettingsEntity $settings
+     * @return \App\Entity\TakeawayEntity
+     */
+    public function setSettings(SettingsEntity $settings){
+        $this->_set('settings', $settings->toArray());
         return $this;
     }
     

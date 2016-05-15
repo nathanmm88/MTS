@@ -9,6 +9,7 @@ use App\Lib\DotNotation;
 
 use App\Entity\Takeaway\TakeawayAddressEntity;
 use App\Entity\Takeaway\CurrencyEntity;
+use App\Entity\Takeaway\SettingsEntity;
 
 
 class APIComponent extends AbstractComponent {
@@ -44,7 +45,7 @@ class APIComponent extends AbstractComponent {
      */
     public function setSettings(){
         $response = $this->_makeRequest(
-                '/api/Takeaway/GetSettings?takeawayID=1&domain=&subDomain=', 
+                '/api/Takeaway/GetSettings', 
                 'takeawayID=1&domain=&subDomain='
                 
             );
@@ -61,7 +62,7 @@ class APIComponent extends AbstractComponent {
         
         //set the currency
         $currency = CurrencyEntity::fromArray([
-            'id' => $responseDotNotation->get('Takeaway.CurrencyID'),
+            'id' => $responseDotNotation->get('Takeaway.CurrencyID', 1),
             'code' => $responseDotNotation->get('Takeaway.CurrencyCode', 'GBP'),
         ], $this->request);
         
@@ -77,8 +78,20 @@ class APIComponent extends AbstractComponent {
             'latitude' => $responseDotNotation->get('Takeaway.Latitude'),
             'longitude' => $responseDotNotation->get('Takeaway.Longitude')
         ], $this->request);
-        
+
         $this->takeaway->setAddress($address);
+        
+        //set the settings
+        $settings = SettingsEntity::fromArray([
+            'delivery_min_order' => $responseDotNotation->get('DeliveryMinOrder', 0),
+            'collection_min_order' => $responseDotNotation->get('CollectionMinOrder', 0),
+            'current_delivery_time' => $responseDotNotation->get('CurrentDeliveryTime', 0),
+            'current_collection_time' => $responseDotNotation->get('CurrentCollectionTime', 0),
+            'accept_delivery_orders' => $responseDotNotation->get('AcceptDeliveryOrders', 0),
+            'accept_collection_orders' => $responseDotNotation->get('AcceptCollectionOrders', 0)
+        ], $this->request);
+        
+        $this->takeaway->setSettings($settings);
         
 pr($_SESSION);
         
