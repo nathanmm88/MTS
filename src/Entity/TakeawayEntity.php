@@ -54,6 +54,26 @@ class TakeawayEntity extends AbstractEntity
     protected $currency = null;
     
     /**
+     * Takeaway opeining hours
+     * 
+     * @var App\Entity\Takeaway\CurrencyEntity
+     */
+    protected $opening_hours = [];
+    
+    /**
+     * Takeaway delivery charges
+     * 
+     * @var App\Entity\Takeaway\CurrencyEntity
+     */
+    protected $delivery_charges = [];
+    
+    /**
+     * Constants
+     */
+    const ORDER_TYPE_DELIVERY = 'delivery',
+            ORDER_TYPE_COLLECTION = 'collection';
+    
+    /**
      * Getters
      */
     
@@ -139,6 +159,41 @@ class TakeawayEntity extends AbstractEntity
     }
     
     /**
+     * Returns the opeing hours
+     * 
+     * @return array
+     */
+    public function getOpeningHours(){
+        return $this->_get('opening_hours');
+    }
+    
+    /**
+     * Returns the delivery charges
+     * 
+     * @return array
+     */
+    public function getDeliveryCharges(){
+        return $this->_get('delivery_charges');
+    }
+    
+    /**
+     * Returns the delivery cost
+     * 
+     * @param int $miles
+     * @return int|false
+     */
+    public function getDeliveryCost($miles){
+        $return = false;
+        $deliveryCharges = $this->getDeliveryCharges();
+        foreach ($deliveryCharges as $deliveryCharge){
+            if($deliveryCharge['MilesTo'] != '' && $miles < $deliveryCharge['MilesTo']){
+                return $deliveryCharge['Cost'];
+            }
+        }
+        return $return;
+    }
+    
+    /**
      * Setters
      */
     
@@ -219,4 +274,26 @@ class TakeawayEntity extends AbstractEntity
         return $this;
     }
     
+    /**
+     * Sets the opeing hours
+     * 
+     * @param array $openingHours
+     * @return \App\Entity\TakeawayEntity
+     */
+    public function setOpeningHours($openingHours){
+        $this->_set('opening_hours', $openingHours);
+        return $this;
+    }
+    
+    /**
+     * Sets the delivery charges
+     * 
+     * @param array $deliveryCharges
+     * @return \App\Entity\TakeawayEntity
+     */
+    public function setDeliveryCharges($deliveryCharges){
+        $this->_set('delivery_charges', $deliveryCharges);
+        return $this;
+    }
+
 }

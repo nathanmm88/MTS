@@ -65,6 +65,26 @@ class SettingsEntity extends AbstractEntity
     protected $payment_methods = [];
     
     /**
+     * If the takeaway has a website
+     * 
+     * @var array
+     */
+    protected $has_website = 0;
+    
+    /**
+     * If the takeaway has a website
+     * 
+     * @var array
+     */
+    protected $active = 0;
+    
+    /**
+     * Constants
+     */
+    const PAYMENT_METHOD_CASH = 'cash',
+            PAYMENT_METHOD_PAYPAL = 'paypal';
+    
+    /**
      * Getters
      */
     
@@ -129,6 +149,42 @@ class SettingsEntity extends AbstractEntity
      */
     public function getPaymentMethods() {
         return $this->payment_methods;
+    }
+    
+    /**
+     * Returns if the takeaway has a website
+     * 
+     * @return int
+     */
+    public function getHasWebsite() {
+        return $this->has_website;
+    }
+    
+    /**
+     * Returns if the takeaway has a website
+     * 
+     * @return boolean
+     */
+    public function hasWebsite(){
+        return (bool) $this->getHasWebsite();
+    }
+
+    /**
+     * Returns if the takeaway is active
+     * 
+     * @return int
+     */
+    public function getActive() {
+        return $this->active;
+    }
+    
+    /**
+     * Returns if the takeaway is active
+     * 
+     * @return boolean
+     */
+    public function isActive(){
+        return (bool) $this->getActive();
     }
 
     /**
@@ -208,6 +264,28 @@ class SettingsEntity extends AbstractEntity
      */
     public function setPaymentMethods($payment_methods) {
         $this->payment_methods = $payment_methods;
+        return $this;
+    }
+
+    /**
+     * Sets if the takeaway has a website
+     * 
+     * @param int $has_website
+     * @return \App\Entity\Takeaway\SettingsEntity
+     */
+    public function setHasWebsite($has_website) {
+        $this->has_website = $has_website;
+        return $this;
+    }
+
+    /**
+     * Sets the takeaways active status
+     * 
+     * @param int $active
+     * @return \App\Entity\Takeaway\SettingsEntity
+     */
+    public function setActive($active) {
+        $this->active = $active;
         return $this;
     }
 

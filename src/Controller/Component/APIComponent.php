@@ -9,6 +9,7 @@ use App\Lib\DotNotation;
 
 use App\Entity\Takeaway\TakeawayAddressEntity;
 use App\Entity\Takeaway\CurrencyEntity;
+use App\Entity\Takeaway\SettingsEntity;
 
 
 class APIComponent extends AbstractComponent {
@@ -48,7 +49,7 @@ class APIComponent extends AbstractComponent {
                 'takeawayID=1&domain=&subDomain='
                 
             );
-      //  pr($response);
+        pr($response);
         
         //load in the dot notation class so we can access the values easily
         $responseDotNotation = new DotNotation($response);
@@ -57,7 +58,9 @@ class APIComponent extends AbstractComponent {
         $this->takeaway->setId($responseDotNotation->get('Takeaway.TakeawayID'))
                 ->setName($responseDotNotation->get('Takeaway.Name'))
                 ->setTelephone($responseDotNotation->get('Takeaway.PhoneNumber'))
-                ->setEmail($responseDotNotation->get('Takeaway.EmailAddress'));
+                ->setEmail($responseDotNotation->get('Takeaway.EmailAddress'))
+                ->setOpeningHours($responseDotNotation->get('OpeningHours', []))
+                ->setDeliveryCharges($responseDotNotation->get('DeliveryCharges', []));
         
         //set the currency
         $currency = CurrencyEntity::fromArray([
@@ -79,15 +82,26 @@ class APIComponent extends AbstractComponent {
         ], $this->request);
         
         $this->takeaway->setAddress($address);
-        
+
        //set the settings
         $settings = SettingsEntity::fromArray([
-            'delivery_min_order' => $responseDotNotation->get('DeliveryMinOrder', 0),
-            'collection_min_order' => $responseDotNotation->get('CollectionMinOrder', 0),
-            'current_delivery_time' => $responseDotNotation->get('CurrentDeliveryTime', 0),
-            'current_collection_time' => $responseDotNotation->get('CurrentCollectionTime', 0),
-            'accept_delivery_orders' => $responseDotNotation->get('AcceptDeliveryOrders', 0),
-            'accept_collection_orders' => $responseDotNotation->get('AcceptCollectionOrders', 0)
+            'delivery_min_order' => $responseDotNotation->get('TakeawaySettings.DeliveryMinOrder', 0),
+            'collection_min_order' => $responseDotNotation->get('TakeawaySettings.CollectionMinOrder', 0),
+            'current_delivery_time' => $responseDotNotation->get('TakeawaySettings.CurrentDeliveryTime', 0),
+            'current_collection_time' => $responseDotNotation->get('TakeawaySettings.CurrentCollectionTime', 0),
+            'accept_delivery_orders' => $responseDotNotation->get('TakeawaySettings.AcceptDeliveryOrders', 0),
+            'accept_collection_orders' => $responseDotNotation->get('TakeawaySettings.AcceptCollectionOrders', 0),
+            'active' => $responseDotNotation->get('TakeawaySettings.TakeawayActive', 0),
+            'has_website' => $responseDotNotation->get('TakeawaySettings.UseWebSite', 0),
+            'payment_methods' => $responseDotNotation->get('TakeawaySettings.UseWebSite', [
+                \App\Entity\TakeawayEntity::ORDER_TYPE_DELIVERY => [
+                    SettingsEntity::PAYMENT_METHOD_PAYPAL,
+                ],
+                \App\Entity\TakeawayEntity::ORDER_TYPE_COLLECTION => [
+                    SettingsEntity::PAYMENT_METHOD_CASH,
+                    SettingsEntity::PAYMENT_METHOD_PAYPAL,
+                ]
+            ]),
         ], $this->request);
         
         $this->takeaway->setSettings($settings);
