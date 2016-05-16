@@ -44,12 +44,16 @@ class APIComponent extends AbstractComponent {
      * Makes the get setting API call
      */
     public function setSettings(){
+        
+        //build the request message and make the request
         $response = $this->_makeRequest(
-                '/api/Takeaway/GetSettings?takeawayID=1&domain=&subDomain=', 
-                'takeawayID=1&domain=&subDomain='
-                
+                '/api/Takeaway/GetSettings', 
+                $this->_createRequestMessage([
+                    'takeawayID' => $this->takeaway->getId(),
+                    'domain' => $this->request->host(),
+                    'subDomain' => '',
+                ])
             );
-        pr($response);
         
         //load in the dot notation class so we can access the values easily
         $responseDotNotation = new DotNotation($response);
@@ -138,6 +142,16 @@ class APIComponent extends AbstractComponent {
         }
         
         return $responseArray;
+    }
+    
+    /**
+     * Returns the request message body
+     * 
+     * @param array $data
+     * @return type
+     */
+    protected function _createRequestMessage($data){
+        return http_build_query($data);
     }
 
 }
