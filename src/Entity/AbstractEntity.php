@@ -86,5 +86,19 @@ abstract class AbstractEntity {
         }
         return $obj;
     }
+    
+    /**
+     * Appends the given entity to it's sub-prefix in the session
+     */
+    public function _saveArray() {     
+        //get the current values in the sub prefix
+        $values = $this->_get($this->sub_prefix);
+        
+        //append this entity to the current values
+        $values[] = $this->toArray();
+        
+        //set this back to the session
+        $this->_set($this->sub_prefix,$values);       
+    }
 
 }

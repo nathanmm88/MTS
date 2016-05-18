@@ -23,6 +23,7 @@ use App\Entity\TakeawayEntity;
 use App\Entity\OrderEntity;
 use App\Entity\StepEntity;
 use App\Entity\SecurityEntity;
+use App\Entity\MenuEntity;
 
 /**
  * Application Controller
@@ -87,7 +88,8 @@ class AppController extends Controller {
         'Takeaway',
         'Order',
         'Security',
-        'Step'
+        'Step',
+        'Menu'
     );
     
     /**
