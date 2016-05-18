@@ -113,8 +113,10 @@ class APIComponent extends AbstractComponent {
     }
 
     public function getMenu() {
-        unset($_SESSION['simplyindian_mytakeawaysite_localhost']['menu']); //NEED TO TIDY THIS LINE UP to clear down menu everytime we fetch?  
+        //first thing - clear down the menu
+        $this->menu->_clear();                
 
+        //make the request
         $response = $this->_makeRequest(
                 '/api/Takeaway/GetMenu?takeawayID=1&domain=&subDomain=', 'takeawayID=1&domain=&subDomain='
         );
@@ -193,7 +195,7 @@ class APIComponent extends AbstractComponent {
                     }
                 }
             }
-        }       
+        }           
     }
 
     /**

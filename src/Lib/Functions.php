@@ -38,5 +38,5 @@ class Functions {
         }
         return implode('_', $ret);
     }
-    
+       
 }

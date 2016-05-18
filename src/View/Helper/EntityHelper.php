@@ -20,6 +20,7 @@ class EntityHelper extends Helper {
         if(array_key_exists($entityName, $entities)){
             return $entities[$entityName];
         } else {
+            
             throw new Exception('Unable to find entity with name:' . $entityName);
         }
     }

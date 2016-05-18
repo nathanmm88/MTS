@@ -1,14 +1,14 @@
 <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="heading<?php echo $name; ?>">
+    <div class="panel-heading" role="tab" id="heading<?php echo $section['id']; ?>">
         <h4 class="panel-title">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $name; ?>" aria-expanded="true" aria-controls="collapse<?php echo $name; ?>">
-                <?php echo $name; ?>
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $section['id']; ?>" aria-expanded="true" aria-controls="collapse<?php echo $section['id']; ?>">
+                <?php echo $section['name']; ?>
             </a>
         </h4>
     </div>
-    <div id="collapse<?php echo $name; ?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php echo $name; ?>">
+    <div id="collapse<?php echo $section['id']; ?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php echo $section['id']; ?>">
         <div class="panel-body">
-            <p><?php echo $category['description']; ?></p>
+            <p><?php echo $section['description']; ?></p>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -18,10 +18,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($category['items'] as $name => $item) { ?>
+                    <?php foreach ($this->Menu->getSectionItems($section['id']) as $item) { ?>
                     <tr>
                         <td>
-                            <h5><?php echo $name; ?></h5>
+                            <h5><?php echo $item['name']; ?></h5>
                             <p>
                                 <?php echo $item['description']; ?>
                             </p>
@@ -30,7 +30,7 @@
                             <strong><?php echo $this->Takeaway->formatMoney($item['price']); ?></strong>
                         </td>
                         <td >
-                            <a class="btn btn-default add-item" href="#" role="button" data-item-id="<?php echo $item['item_id']; ?>">Add</a>
+                            <a class="btn btn-default add-item" href="#" role="button" data-item-id="<?php echo $item['id']; ?>">Add</a>
                         </td>
                     </tr>                    
                     <?php } ?>

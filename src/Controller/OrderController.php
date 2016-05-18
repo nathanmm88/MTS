@@ -23,7 +23,6 @@ use App\Form\ConfirmationForm;
 use App\Form\OrderForm;
 use App\Entity\Order\ItemEntity;
 
-
 /**
  * Order controller
  *
@@ -46,7 +45,7 @@ class OrderController extends AppController {
 //        'order_confirm',
 //        'order_thanks'
     ];
-    
+
     /**
      * Before filter
      * 
@@ -56,7 +55,7 @@ class OrderController extends AppController {
         parent::beforeFilter($event);
         //we want to use the order layout
         $this->viewBuilder()->layout('order');
-        
+
         $this->_checkStep();
     }
 
@@ -73,20 +72,20 @@ class OrderController extends AppController {
 
         if ($this->request->is('post')) {
             //TODO:: move to a form
-            if(array_key_exists(ORDER_TYPE_COLLECTION, $this->request->data)){
+            if (array_key_exists(ORDER_TYPE_COLLECTION, $this->request->data)) {
                 $this->request->session()->write('order.order_type', ORDER_TYPE_COLLECTION);
-            } else if (array_key_exists(ORDER_TYPE_DELIVERY, $this->request->data)){
+            } else if (array_key_exists(ORDER_TYPE_DELIVERY, $this->request->data)) {
                 $this->request->session()->write('order.order_type', ORDER_TYPE_DELIVERY);
             } else {
                 throw new Exception('Unable to detect order type from the post');
-        }
-            
+            }
+
             //set the delivery postcode anyway
             $this->request->session()->write('order.address.postcode', $this->request->data['delivery_postcode']);
-            
+
             //redirect to the next step
             $this->_redirectToStep('order_menu');
-    }
+        }
     }
 
     /**
@@ -94,47 +93,12 @@ class OrderController extends AppController {
      * 
      * This will display the menu to the customer to order from
      */
-    public function menu() {   
-        $this->Api->getMenu();
-        /**
-         * Temporarily set some example categories to be replaced with real data
-         */
-        $categories = array(
-            'Starters' => array(
-                'description' => 'Here is the list of starters',
-                'items' => array(
-                    'Prawn Crackers' => array(
-                        'price' => 4.5,
-                        'description' => '10 Prawn Crackers',
-                        'item_id' => 1
-                    ),
-                    'Garlic Bread' => array(
-                        'price' => 2.25,
-                        'description' => '2 Slices of Garlic Bread',
-                        'item_id' => 2
-                    ),
-                )
-            ),
-            'Kebabs' => array(
-                'description' => 'Here is the list of kebabs',
-                'items' => array(
-                    'Donner Kebab' => array(
-                        'price' => 6.9,
-                        'description' => 'Chicken Donner Kebab with Chips',
-                        'item_id' => 3
-                    ),
-                    'Shish Kebab' => array(
-                        'price' => 5.5,
-                        'description' => 'Chicken Shish Kebab with Chips',
-                        'item_id' => 4
-                    ),
-                )
-            ),
-        );
-        $this->set('categories', $categories);
-       
+    public function menu() {
+        //get the latest menu and save to the session
+        $this->Api->getMenu();     
+
         if ($this->request->is('post')) {
-            
+
             $this->_redirectToStep('order_confirm');
         }
         $orderForm = new OrderForm($this->request);
@@ -150,10 +114,10 @@ class OrderController extends AppController {
             if ($confirmationForm->execute($this->request->data)) {
                 die('success');
             } else {
-        
-    }
-
-}
+                
+            }
+        }
         $this->set('confirmation', $confirmationForm);
     }
+
 }

@@ -2,8 +2,9 @@
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <?php
-    foreach ($categories as $name => $category) {
-        echo $this->element('Menu/Category', array('category' => $category, 'name' => $name));
+       
+    foreach ($this->Menu->getSections() as $section) {
+        echo $this->element('Menu/Section', get_defined_vars());
     }
     ?>    
 </div>

@@ -89,7 +89,9 @@ class AppController extends Controller {
         'Order',
         'Security',
         'Step',
-        'Menu'
+        'Menu',
+        'Menu.MenuSection',
+        'Menu.MenuItem'
     );
     
     /**
@@ -113,6 +115,7 @@ class AppController extends Controller {
 
         $this->helpers[] = 'Takeaway';
         $this->helpers[] = 'Entity';
+        $this->helpers[] = 'Menu';
         
         //load the entities
         $this->_addEntities();
@@ -139,7 +142,14 @@ class AppController extends Controller {
         //load the session classes
         $entities = array();
         foreach($this->entities as $entityName){
-            $entityClassName = 'App\Entity\\' . $entityName . 'Entity';
+            //work out if this is a sub entity
+            if (strpos($entityName, '.')){
+                $entityParts = explode('.', $entityName);                
+                $entityClassName = 'App\Entity\\' . $entityParts[0] . '\\'.$entityParts[1].'Entity';                
+            } else {                
+                $entityClassName = 'App\Entity\\' . $entityName . 'Entity';
+            }
+            
             $this->{strtolower($entityName)} = new $entityClassName($this->request);
             $entities[$entityName] = $this->{strtolower($entityName)};
         }

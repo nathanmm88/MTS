@@ -74,40 +74,5 @@ class MenuEntity extends AbstractEntity
     public function setDescription($description){
         $this->_set('description', $description);
         return $this;
-    }
-    
-    /**
-     * Add a section to a menu
-     * 
-     * @param \App\Entity\Menu\MenuSectionEntity $menuSection
-     * @return \App\Entity\MenuEntity
-     */
-    public function addSection(Menu\MenuSectionEntity $menuSection){                
-        //get the current sections
-        $sections = $this->_get('sections');
-        
-        //if null default to an array
-        if (is_null($sections)){
-            $sections = [];
-        }    
-        
-        $sections[] = $menuSection->toArray();      
-        
-        //set the items back to the entity
-        $this->_set('sections', $sections); //in the session
-        //$this->sections = $sections; //in the entity - do we need this?
-        return $this;                     
-    }
-    
-    /**
-     * Gets the menu sections
-     * 
-     * @return array
-     */
-    public function getSections(){
-        $sections = $this->_get('sections');
-        return $sections;
-        
-    }
-  
-}
+    }           
+ }

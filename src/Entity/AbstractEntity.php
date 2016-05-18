@@ -100,5 +100,26 @@ abstract class AbstractEntity {
         //set this back to the session
         $this->_set($this->sub_prefix,$values);       
     }
+    
+    /**
+     * Clears down the session for this prefix
+     */
+    public function _clear(){
+        $this->request->session()->write($this->prefix, '');
+    }     
+    
+    /**
+     * Gets all data for a given prefix/sub-prefix
+     * 
+     * @return mixed
+     */
+    public function _getAll() {
+        if (!is_null($this->sub_prefix)){
+            return $this->request->session()->read($this->prefix . '.' . $this->sub_prefix);
+        } else {
+            return $this->request->session()->read($this->prefix);
+        }
+        
+    }
 
 }
