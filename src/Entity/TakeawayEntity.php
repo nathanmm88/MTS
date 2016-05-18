@@ -161,10 +161,25 @@ class TakeawayEntity extends AbstractEntity
     /**
      * Returns the opeing hours
      * 
+     * @param boolean $grouped determines if the details should be grouped or not
      * @return array
      */
-    public function getOpeningHours(){
-        return $this->_get('opening_hours');
+    public function getOpeningHours($grouped = false){
+        
+        $openingHours = $this->_get('opening_hours');
+        
+        if($grouped === true){
+            $returnOpeningHours = [];
+            foreach($openingHours as $detail){
+                if(!array_key_exists($detail['DayDesc'], $returnOpeningHours)){
+                    $returnOpeningHours[$detail['DayDesc']] = [];
+                }
+                $returnOpeningHours[$detail['DayDesc']][] = $detail;
+            }
+            $openingHours = $returnOpeningHours;
+        }
+        
+        return $openingHours;
     }
     
     /**
@@ -191,6 +206,15 @@ class TakeawayEntity extends AbstractEntity
             }
         }
         return $return;
+    }
+    
+    /**
+     * Returns the logo URL
+     * 
+     * @return string
+     */
+    public function getLogo(){
+        return $this->_get('logo');
     }
     
     /**
@@ -293,6 +317,17 @@ class TakeawayEntity extends AbstractEntity
      */
     public function setDeliveryCharges($deliveryCharges){
         $this->_set('delivery_charges', $deliveryCharges);
+        return $this;
+    }
+    
+    /**
+     * Sets the logo URL
+     * 
+     * @param array $logo
+     * @return \App\Entity\TakeawayEntity
+     */
+    public function setLogo($logo){
+        $this->_set('logo', $logo);
         return $this;
     }
 

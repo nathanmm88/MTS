@@ -88,6 +88,15 @@ class SettingsEntity extends AbstractEntity
      * Getters
      */
     
+    
+    /**
+     * Returns if the takeaway accepts delivery or collection orders
+     * 
+     * @return boolean
+     */
+    public function getAcceptDeliveryAndCollectionOrders(){
+        return ($this->getAcceptDeliveryOrders() && $this->getAcceptCollectionOrders()) ? true : false;
+    }
     /**
      * Returns if the takeaway accepts delivery orders
      * 
@@ -147,8 +156,8 @@ class SettingsEntity extends AbstractEntity
      * 
      * @return array
      */
-    public function getPaymentMethods() {
-        return $this->payment_methods;
+    public function getPaymentMethods($orderType = null) {
+        return !is_null($orderType) ? $this->payment_methods[$orderType] : $this->payment_methods;
     }
     
     /**

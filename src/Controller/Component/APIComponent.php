@@ -44,8 +44,15 @@ class APIComponent extends AbstractComponent {
      * Makes the get setting API call
      */
     public function setSettings() {
+        
+        //build the request message and make the request
         $response = $this->_makeRequest(
-                '/api/Takeaway/GetSettings?takeawayID=1&domain=&subDomain=', 'takeawayID=1&domain=&subDomain='
+                '/api/Takeaway/GetSettings', 
+                $this->_createRequestMessage([
+                    'takeawayID' => $this->takeaway->getId(),
+                    'domain' => $this->request->host(),
+                    'subDomain' => '',
+                ])
         );
 
         //load in the dot notation class so we can access the values easily
@@ -57,7 +64,8 @@ class APIComponent extends AbstractComponent {
                 ->setTelephone($responseDotNotation->get('Takeaway.PhoneNumber'))
                 ->setEmail($responseDotNotation->get('Takeaway.EmailAddress'))
                 ->setOpeningHours($responseDotNotation->get('OpeningHours', []))
-                ->setDeliveryCharges($responseDotNotation->get('DeliveryCharges', []));
+                ->setDeliveryCharges($responseDotNotation->get('DeliveryCharges', []))
+                ->setLogo($responseDotNotation->get('Logo', '/tmp/logo.png'));
 
         //set the currency
         $currency = CurrencyEntity::fromArray([
@@ -74,7 +82,7 @@ class APIComponent extends AbstractComponent {
                     'address_line_three' => $responseDotNotation->get('Takeaway.Town'),
                     'address_line_four' => $responseDotNotation->get('Takeaway.County'),
                     'postcode' => $responseDotNotation->get('Takeaway.PostCode'),
-                    'latitude' => $responseDotNotation->get('Takeaway.Latitude'),
+            'latitude' => $responseDotNotation->get('Takeaway.Latitide'),
                     'longitude' => $responseDotNotation->get('Takeaway.Longitude')
                         ], $this->request);
 
@@ -86,11 +94,11 @@ class APIComponent extends AbstractComponent {
                     'collection_min_order' => $responseDotNotation->get('TakeawaySettings.CollectionMinOrder', 0),
                     'current_delivery_time' => $responseDotNotation->get('TakeawaySettings.CurrentDeliveryTime', 0),
                     'current_collection_time' => $responseDotNotation->get('TakeawaySettings.CurrentCollectionTime', 0),
-                    'accept_delivery_orders' => $responseDotNotation->get('TakeawaySettings.AcceptDeliveryOrders', 0),
+            'accept_delivery_orders' => 1, //$responseDotNotation->get('TakeawaySettings.AcceptDeliveryOrders', 0),
                     'accept_collection_orders' => $responseDotNotation->get('TakeawaySettings.AcceptCollectionOrders', 0),
                     'active' => $responseDotNotation->get('TakeawaySettings.TakeawayActive', 0),
                     'has_website' => $responseDotNotation->get('TakeawaySettings.UseWebSite', 0),
-                    'payment_methods' => $responseDotNotation->get('TakeawaySettings.UseWebSite', [
+            'payment_methods' => $responseDotNotation->get('TakeawaySettings.PaymentMethods', [
                         \App\Entity\TakeawayEntity::ORDER_TYPE_DELIVERY => [
                             SettingsEntity::PAYMENT_METHOD_PAYPAL,
                         ],
@@ -217,5 +225,15 @@ class APIComponent extends AbstractComponent {
 
         return $responseArray;
     }
+
+    /**
+     * Returns the request message body
+     * 
+     * @param array $data
+     * @return type
+     */
+    protected function _createRequestMessage($data){
+        return http_build_query($data);
+}
 
 }

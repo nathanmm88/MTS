@@ -12,43 +12,7 @@ class TakeawayHelper extends Helper {
      * 
      * @var array 
      */
-    public $helpers = ['Number'];
-
-    /**
-     * Checks if the ordering system is online
-     * 
-     * @return boolean
-     */
-    public function isOnline() {
-        return (bool) Configure::read('takeaway.order_settings.status');
-    }
-
-    /**
-     * Checks if the takeaway is accepting delivery orders
-     * 
-     * @return boolean
-     */
-    public function isDelivering() {
-        return (bool) Configure::read('takeaway.order_settings.delivery');
-    }
-
-    /**
-     * Checks if the takeaway is accepting collection orders
-     * 
-     * @return boolean
-     */
-    public function isCollection() {
-        return (bool) Configure::read('takeaway.order_settings.collection');
-    }
-
-    /**
-     * Checks if the takeaway is accepting collection and delivery orders
-     * 
-     * @return boolean
-     */
-    public function isDeliveryAndCollection() {
-        return ($this->isDelivering() && $this->isCollection());
-    }
+    public $helpers = ['Number', 'Entity'];
 
     /**
      * Returns the estimated waiting time
@@ -56,7 +20,7 @@ class TakeawayHelper extends Helper {
      * @return type
      */
     public function getDeliveryWaitingTime() {
-        $minutes = Configure::read('takeaway.order_settings.delivery_time');
+        $minutes = $this->Entity->get('Takeaway')->getSettings()->getCurrentDeliveryTime();
         return $this->_getWaitingTime($minutes);
     }
 
@@ -66,7 +30,7 @@ class TakeawayHelper extends Helper {
      * @return type
      */
     public function getCollectionWaitingTime() {
-        $minutes = Configure::read('takeaway.order_settings.collection_time');
+        $minutes = $this->Entity->get('Takeaway')->getSettings()->getCurrentCollectionTime();
         return $this->_getWaitingTime($minutes);
     }
 
@@ -103,21 +67,29 @@ class TakeawayHelper extends Helper {
      */
     public function getOpeningHours() {
 
-        $return = '<div class="row"><div class="col-xs-12">';
+        $openingHours = $this->Entity->get('Takeaway')->getOpeningHours(true);
+
+        $return = '';
 
         /**
          * Go through each day
          */
-        if (!is_null(Configure::read('takeaway.opening_hours'))) {
-            foreach (Configure::read('takeaway.opening_hours') as $day => $times) {
+        if (!is_null($openingHours)) {
+            $return = '<div class="row"><div class="col-xs-12">';
+            foreach ($openingHours as $day => $details) {
+                $times = '';
+                foreach($details as $detail){
+                    $times .= '<div>' . substr_replace($detail['StartTime'] ,"",-3) . ' - ' . substr_replace($detail['EndTime'] ,"",-3) . '</div>';
+                }
                 $return .= '<div class="row">';
                 $return .= '<div class="col-xs-4 col-sm-3 text-right label-div">' . ucwords($day) . ':</div>';
                 $return .= '<div class="col-xs-6 col-sm-9">' . $times . '</div>';
                 $return .= '</div>';
             }
+            $return .= '</div></div>';
         }
 
-        $return .= '</div></div>';
+        
 
         return $return;
     }
@@ -125,50 +97,35 @@ class TakeawayHelper extends Helper {
     /**
      * Returns the takeaways address formatted
      * 
+     * 
      * @param string $sep
      */
     public function getAddress($sep = ',') {
         $return = array();
 
-        if (!is_null(Configure::read('takeaway.contact_details.address_line_one')) && Configure::read('takeaway.contact_details.address_line_one') != '') {
-            $return[] = Configure::read('takeaway.contact_details.address_line_one');
+        $address = $this->Entity->get('Takeaway')->getAddress();
+        
+        if (!is_null($address->getAddressLineOne()) && $address->getAddressLineOne() != '') {
+            $return[] = $address->getAddressLineOne();
         }
 
-        if (!is_null(Configure::read('takeaway.contact_details.address_line_two')) && Configure::read('takeaway.contact_details.address_line_two') != '') {
-            $return[] = Configure::read('takeaway.contact_details.address_line_two');
+        if (!is_null($address->getAddressLineTwo()) && $address->getAddressLineTwo() != '') {
+            $return[] = $address->getAddressLineTwo();
         }
 
-        if (!is_null(Configure::read('takeaway.contact_details.address_line_three')) && Configure::read('takeaway.contact_details.address_line_three') != '') {
-            $return[] = Configure::read('takeaway.contact_details.address_line_three');
+        if (!is_null($address->getAddressLineThree()) && $address->getAddressLineThree() != '') {
+            $return[] = $address->getAddressLineThree();
         }
 
-        if (!is_null(Configure::read('takeaway.contact_details.address_line_four')) && Configure::read('takeaway.contact_details.address_line_four') != '') {
-            $return[] = Configure::read('takeaway.contact_details.address_line_four');
+        if (!is_null($address->getAddressLineFour()) && $address->getAddressLineFour() != '') {
+            $return[] = $address->getAddressLineFour();
         }
 
-        if (!is_null(Configure::read('takeaway.contact_details.postcode')) && Configure::read('takeaway.contact_details.postcode') != '') {
-            $return[] = Configure::read('takeaway.contact_details.postcode');
+        if (!is_null($address->getPostcode()) && $address->getPostcode() != '') {
+            $return[] = $address->getPostcode();
         }
 
         return implode($sep, $return);
-    }
-
-    /**
-     * Returns the takeaway name
-     * 
-     * @return string
-     */
-    public function getName() {
-        return Configure::read('takeaway.name');
-    }
-
-    /**
-     * Returns the takeaway logo URL
-     * 
-     * @return string
-     */
-    public function getLogo() {
-        return Configure::read('takeaway.logo');
     }
 
     /**
@@ -177,7 +134,7 @@ class TakeawayHelper extends Helper {
      * @return type
      */
     public function getMinimumDeliveryAmount($format = true) {
-        $return = Configure::read('takeaway.order_settings.minimum_delivery_amount');
+        $return = $this->Entity->get('Takeaway')->getSettings()->getDeliveryMinOrder();
 
         if ($format === true) {
             $return = $this->formatMoney($return);
@@ -192,7 +149,7 @@ class TakeawayHelper extends Helper {
      * @return type
      */
     public function getMinimumCollectionAmount($format = true) {
-        $return = Configure::read('takeaway.order_settings.minimum_collection_amount');
+        $return = $this->Entity->get('Takeaway')->getSettings()->getCollectionMinOrder();
 
         if ($format === true) {
             $return = $this->formatMoney($return);
@@ -211,7 +168,7 @@ class TakeawayHelper extends Helper {
     public function formatMoney($amount, $currency = null) {
 
         if (is_null($currency)) {
-            $currency = Configure::read('takeaway.order_settings.currency');
+            $currency = $this->Entity->get('Takeaway')->getCurrency()->getCode();
         }
 
         return $this->Number->currency($amount, $currency);
@@ -237,6 +194,14 @@ class TakeawayHelper extends Helper {
             ),
         );
         return $basket;
+    }
+    
+    public function getPaymentMethods($orderType){
+        $paymentMethods = $this->Entity->get('Takeaway')->getSettings()->getPaymentMethods($orderType);
+        foreach($paymentMethods as $key => $index){
+            $paymentMethods[$key] = ucwords($index);
+        }
+        return implode(' - ', $paymentMethods);
     }
 }
     

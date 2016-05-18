@@ -2,9 +2,9 @@
 <?php echo $this->Form->hidden('delivery_postcode'); ?>
 <div class="row">
     <div class="col-sm-12">
-        <?php if ($this->Takeaway->isOnline()) { ?>
+        <?php if ($this->Entity->get('Takeaway')->getSettings()->isActive()) { ?>
             <div class="row">
-                <?php if ($this->Takeaway->isDelivering()) { ?>
+                <?php if ($this->Entity->get('Takeaway')->getSettings()->getAcceptDeliveryOrders()) { ?>
                     <div class="col-sm-5 text-center">
                         <a id="wantsDelivery" class="btn btn-primary col-xs-12" href="#">Delivery</a>
                         <div id="lookupPostcode" class="row hidden">
@@ -36,14 +36,15 @@
                         <div id='deliveryDetails'>
                             <p>Estimated waiting time <br/><i><?php echo $this->Takeaway->getDeliveryWaitingTime(); ?></i></p>
                             <p>Minimum order amount <br/><i><?php echo $this->Takeaway->getMinimumDeliveryAmount(); ?></i></p>
+                            <p>Payment methods <br/><i><?php echo $this->Takeaway->getPaymentMethods(\App\Entity\TakeawayEntity::ORDER_TYPE_DELIVERY); ?></i></p>
                         </div>
                     </div>
                 <?php } ?>
-                <?php if ($this->Takeaway->isDeliveryAndCollection()) { ?>
+                <?php if ($this->Entity->get('Takeaway')->getSettings()->getAcceptDeliveryAndCollectionOrders()) { ?>
                     <div class="col-sm-2 text-center hidden-xs or-txt">Or</div>
                     <hr class="hidden-sm hidden-md hidden-lg"/>
                 <?php } ?>
-                <?php if ($this->Takeaway->isCollection()) { ?>
+                <?php if ($this->Entity->get('Takeaway')->getSettings()->getAcceptCollectionOrders()) { ?>
                     <div class="col-sm-5 text-center">
                         <?php echo $this->Form->button('Collection', array(
                             'div' => false,
@@ -53,6 +54,7 @@
                         )); ?>
                         <p>Estimated waiting time <br/><i><?php echo $this->Takeaway->getCollectionWaitingTime(); ?></i></p>
                         <p>Minimum order amount <br/><i><?php echo $this->Takeaway->getMinimumCollectionAmount(); ?></i></p>
+                        <p>Payment methods <br/><i><?php echo $this->Takeaway->getPaymentMethods(\App\Entity\TakeawayEntity::ORDER_TYPE_COLLECTION); ?></i></p>
                     </div>
                 <?php } ?>
             </div>
@@ -73,13 +75,13 @@
         <div class="row">
             <div class="col-xs-4 text-right contact-label label-div">Telephone:</div>
             <div class="col-xs-8">
-                <?php echo Cake\Core\Configure::read('takeaway.contact_details.telephone'); ?>
+                <?php echo $this->Entity->get('Takeaway')->getTelephone(); ?>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-4 text-right contact-label label-div">Email:</div>
             <div class="col-xs-8">
-                <?php echo Cake\Core\Configure::read('takeaway.contact_details.email'); ?>
+                <?php echo $this->Entity->get('Takeaway')->getEmail(); ?>
             </div>
         </div>
         <div class="row">

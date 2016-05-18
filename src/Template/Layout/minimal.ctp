@@ -34,7 +34,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <img alt="<?php echo $this->Takeaway->getName(); ?> logo" src="<?php echo $this->Takeaway->getLogo(); ?>" class="img-responsive img-responsive-center" />
+                    <img alt="<?php echo $this->Entity->get('Takeaway')->getName(); ?> logo" src="<?php echo $this->Entity->get('Takeaway')->getLogo(); ?>" class="img-responsive img-responsive-center" />
                 </div>
             </div>
             <div class="row">
@@ -44,7 +44,7 @@
             </div>
             <div id="footer" class="row">
                 <div class="col-sm-6 footer-text">
-                    &copy; <?php echo $this->Takeaway->getName(); ?> <?php echo date('Y') ?>
+                    &copy; <?php echo $this->Entity->get('Takeaway')->getName(); ?> <?php echo date('Y') ?>
                 </div>
                 <div class="col-sm-6 footer-text text-right">
                     Powered by: <a href="http://mytakeawaysite.com">MyTakeawaySite.com</a>

@@ -125,6 +125,8 @@ class AppController extends Controller {
         //get the current controller_action
         $this->current_step = strtolower($this->request->controller . '_' . $this->request->action);
         
+        //make sure we call the settings everytime once the app has initialised 
+        //but before we do anything
         $this->Api->setSettings();
     }
     

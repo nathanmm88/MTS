@@ -57,15 +57,14 @@ class AjaxController extends AppController {
                 $success = true;
                 $error = '';
 
+                $distance = $this->getDistanceBetweenLocations($this->takeaway->getAddress()->getLatitude(), $this->takeaway->getAddress()->getLongitude(), $geoLocation['latitude'], $geoLocation['longitude']);
 
-                $distance = $this->getDistanceBetweenLocations(Configure::read('takeaway.contact_details.lat'), Configure::read('takeaway.contact_details.long'), $geoLocation['latitude'], $geoLocation['longitude']);
-
-                $deliveryCost = $this->getDeliveryCost($distance);
+                $deliveryCost = $this->takeaway->getDeliveryCost($distance);
 
                 $details = array(
                     'postcode' => $geoLocation['postcode'],
                     'cost' => $deliveryCost,
-                    'format_cost' => $deliveryCost == false ? false : Number::currency($deliveryCost, Configure::read('takeaway.order_settings.currency'))
+                    'format_cost' => $deliveryCost == false ? false : Number::currency($deliveryCost, $this->takeaway->getCurrency()->getCode())
                 );
 
                 if ($deliveryCost != false) {
