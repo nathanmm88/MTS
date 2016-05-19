@@ -34,7 +34,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <img alt="<?php echo $this->Takeaway->getName(); ?> logo" src="<?php echo $this->Takeaway->getLogo(); ?>" class="img-responsive" />
+                    <img alt="<?php echo $this->Entity->get('Takeaway')->getName(); ?> logo" src="<?php echo $this->Entity->get('Takeaway')->getLogo(); ?>" class="img-responsive" />
                 </div>            
             </div>
             <div class="row">

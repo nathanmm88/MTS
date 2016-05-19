@@ -118,7 +118,12 @@ class APIComponent extends AbstractComponent {
 
         //make the request
         $response = $this->_makeRequest(
-                '/api/Takeaway/GetMenu?takeawayID=1&domain=&subDomain=', 'takeawayID=1&domain=&subDomain='
+                '/api/Takeaway/GetMenu',
+                $this->_createRequestMessage([
+                    'takeawayID' => $this->takeaway->getId(),
+                    'domain' => $this->request->host(),
+                    'subDomain' => '',
+                ])
         );
 
         //load in the dot notation class so we can access the values easily
