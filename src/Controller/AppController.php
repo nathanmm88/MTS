@@ -91,7 +91,8 @@ class AppController extends Controller {
         'Step',
         'Menu',
         'Menu.MenuSection',
-        'Menu.MenuItem'
+        'Menu.MenuItem',
+        'Menu.MenuItemVariation'
     );
     
     /**

@@ -13,6 +13,7 @@ use App\Entity\Menu\MenuSectionEntity;
 use App\Entity\Menu\MenuItemEntity;
 use App\Entity\Menu\CondimentTypeEntity;
 use App\Entity\Menu\CondimentEntity;
+use App\Entity\Menu\MenuItemVariationEntity;
 
 class APIComponent extends AbstractComponent {
 
@@ -44,11 +45,10 @@ class APIComponent extends AbstractComponent {
      * Makes the get setting API call
      */
     public function setSettings() {
-        
+
         //build the request message and make the request
         $response = $this->_makeRequest(
-                '/api/Takeaway/GetSettings', 
-                $this->_createRequestMessage([
+                '/api/Takeaway/GetSettings', $this->_createRequestMessage([
                     'takeawayID' => $this->takeaway->getId(),
                     'domain' => $this->request->host(),
                     'subDomain' => '',
@@ -82,7 +82,7 @@ class APIComponent extends AbstractComponent {
                     'address_line_three' => $responseDotNotation->get('Takeaway.Town'),
                     'address_line_four' => $responseDotNotation->get('Takeaway.County'),
                     'postcode' => $responseDotNotation->get('Takeaway.PostCode'),
-            'latitude' => $responseDotNotation->get('Takeaway.Latitide'),
+                    'latitude' => $responseDotNotation->get('Takeaway.Latitide'),
                     'longitude' => $responseDotNotation->get('Takeaway.Longitude')
                         ], $this->request);
 
@@ -94,11 +94,11 @@ class APIComponent extends AbstractComponent {
                     'collection_min_order' => $responseDotNotation->get('TakeawaySettings.CollectionMinOrder', 0),
                     'current_delivery_time' => $responseDotNotation->get('TakeawaySettings.CurrentDeliveryTime', 0),
                     'current_collection_time' => $responseDotNotation->get('TakeawaySettings.CurrentCollectionTime', 0),
-            'accept_delivery_orders' => 1, //$responseDotNotation->get('TakeawaySettings.AcceptDeliveryOrders', 0),
+                    'accept_delivery_orders' => 1, //$responseDotNotation->get('TakeawaySettings.AcceptDeliveryOrders', 0),
                     'accept_collection_orders' => $responseDotNotation->get('TakeawaySettings.AcceptCollectionOrders', 0),
                     'active' => $responseDotNotation->get('TakeawaySettings.TakeawayActive', 0),
                     'has_website' => $responseDotNotation->get('TakeawaySettings.UseWebSite', 0),
-            'payment_methods' => $responseDotNotation->get('TakeawaySettings.PaymentMethods', [
+                    'payment_methods' => $responseDotNotation->get('TakeawaySettings.PaymentMethods', [
                         \App\Entity\TakeawayEntity::ORDER_TYPE_DELIVERY => [
                             SettingsEntity::PAYMENT_METHOD_PAYPAL,
                         ],
@@ -114,7 +114,7 @@ class APIComponent extends AbstractComponent {
 
     public function getMenu() {
         //first thing - clear down the menu
-        $this->menu->_clear();                
+        $this->menu->_clear();
 
         //make the request
         $response = $this->_makeRequest(
@@ -161,11 +161,32 @@ class APIComponent extends AbstractComponent {
                             'gluten_free' => $item['MenuItem']['GlutenFree'],
                             'dairy_free' => $item['MenuItem']['DairyFree'],
                             'may_contain_bones' => $item['MenuItem']['MayContainBones'],
+                            'has_variations' => ((count($item['Variations']) > 0) ? true : false)
                                 ], $this->request);
 
                 //save this entity to the session
                 $menuItem->_saveArray();
 
+
+                foreach ($item['Variations'] as $variation) {
+                    $variationEntity = MenuItemVariationEntity::fromArray([
+                                'id' => $variation['MenuItem_VariationID'],
+                                'parent_id' => $variation['MenuItemID'],
+                                'name' => $variation['VariationName'],
+                                'description' => $variation['VariationDesc'],
+                                'price' => $variation['Price'],
+                                'active' => $variation['Active'],
+                                'deleted' => $variation['Deleted'],
+                                'position' => $variation['Position'],
+                                'heat' => $variation['Heat'],
+                                'vegetarian' => $variation['Vegetarian'],
+                                'gluten_free' => $variation['GlutenFree'],
+                                'dairy_free' => $variation['DairyFree'],
+                                'may_contain_bones' => $variation['MayContainBones'],
+                    ], $this->request);
+                    //save this entity to the session
+                    $variationEntity->_saveArray();
+                }
                 //loop through the condiment types
                 foreach ($item['CondimentTypes'] as $condimentType) {
                     //set the values
@@ -189,13 +210,13 @@ class APIComponent extends AbstractComponent {
                                     'deleted' => $condiment['Deleted'],
                                     'additional_cost' => $condiment['AdditionalCost'],
                                         ], $this->request);
-                        
+
                         //save this entity to the session
                         $condimentEntity->_saveArray();
                     }
                 }
             }
-        }           
+        }
     }
 
     /**
@@ -234,8 +255,8 @@ class APIComponent extends AbstractComponent {
      * @param array $data
      * @return type
      */
-    protected function _createRequestMessage($data){
+    protected function _createRequestMessage($data) {
         return http_build_query($data);
-}
+    }
 
 }
