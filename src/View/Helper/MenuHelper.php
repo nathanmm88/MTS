@@ -46,6 +46,31 @@ class MenuHelper extends Helper {
         //return the result
         return $sectionItems;        
     }
+    
+    /**
+     * Return all variations of a given item
+     * 
+     * @param type $item_id
+     * @return type
+     */
+    public function getItemVariations($item_id){
+        //initialise the result array
+        $itemVariations = [];
+        
+        //get all variations
+        $allVariations = $this->Entity->get('Menu.MenuItemVariation')->_getAll();
+        
+        //loop through and find the items for the given section
+        foreach ($allVariations as $variation) {
+            if ($variation['parent_id']==$item_id){
+                //add to the result array
+                $itemVariations[] = $variation;
+            }
+        }
+        
+        //return the result
+        return $itemVariations;
+    }
    
 }
     

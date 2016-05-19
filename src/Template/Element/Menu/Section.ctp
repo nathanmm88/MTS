@@ -18,22 +18,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($this->Menu->getSectionItems($section['id']) as $item) { ?>
-                    <tr>
-                        <td>
-                            <h5><?php echo $item['name']; ?></h5>
-                            <p>
-                                <?php echo $item['description']; ?>
-                            </p>
-                        </td>
-                        <td>
-                            <strong><?php echo $this->Takeaway->formatMoney($item['price']); ?></strong>
-                        </td>
-                        <td >
-                            <a class="btn btn-default add-item" href="#" role="button" data-item-id="<?php echo $item['id']; ?>">Add</a>
-                        </td>
-                    </tr>                    
-                    <?php } ?>
+                    <?php
+                    foreach ($this->Menu->getSectionItems($section['id']) as $item) {                        
+                                             
+                        echo $this->element('Menu/Row', array('item' => $item));
+
+                        if ($item['has_variations']){                            
+                            foreach ($this->Menu->getItemVariations($item['id']) as $variation) {
+                                echo $this->element('Menu/Row', array('item' => $variation));
+                            }
+                        }
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>

@@ -112,6 +112,13 @@ class MenuItemEntity extends AbstractEntity
      * @var boolean 
      */
     protected $may_contain_bones = null;
+    
+    /**
+     * Whether this item has variations
+     * 
+     * @var boolean
+     */
+    protected $has_variations = false;
           
     /**
      * Getters
@@ -260,6 +267,17 @@ class MenuItemEntity extends AbstractEntity
      */
     public function setDairyFree($dairy_free){
         $this->dairy_free = $dairy_free;
+        return $this;
+    }
+    
+    /**
+     * Set whether the item has variations
+     * 
+     * @param type $has_variations
+     * @return \App\Entity\Menu\MenuItemEntity
+     */
+    public function setHasVariations($has_variations){
+        $this->has_variations = $has_variations;
         return $this;
     }
     
