@@ -114,12 +114,11 @@ class APIComponent extends AbstractComponent {
 
     public function getMenu() {
         //first thing - clear down the menu
-        $this->menu->_clear();
+        $this->menu->clear();
 
         //make the request
         $response = $this->_makeRequest(
-                '/api/Takeaway/GetMenu',
-                $this->_createRequestMessage([
+                '/api/Takeaway/GetMenu', $this->_createRequestMessage([
                     'takeawayID' => $this->takeaway->getId(),
                     'domain' => $this->request->host(),
                     'subDomain' => '',
@@ -136,92 +135,113 @@ class APIComponent extends AbstractComponent {
 
         //loop through the sections 
         foreach ($responseDotNotation->get('MenuSections') as $key => $section) {
+            
+            //set in the dot notation
+            $sectionDotNotation = new DotNotation($section['MenuSection']);
+            
             //set the values to the entity
             $sectionEntity = MenuSectionEntity::fromArray([
-                        'id' => $section['MenuSection']['MenuSectionID'],
-                        'menu_id' => $section['MenuSection']['MenuID'],
-                        'name' => $section['MenuSection']['MenuSectionName'],
-                        'description' => $section['MenuSection']['MenuSectionDesc'],
-                        'active' => $section['MenuSection']['Active'],
-                        'position' => $section['MenuSection']['Position'],
+                        'id' => $sectionDotNotation->get('MenuSectionID'),
+                        'menu_id' => $sectionDotNotation->get('MenuID'),
+                        'name' => $sectionDotNotation->get('MenuSectionName'),
+                        'description' => $sectionDotNotation->get('MenuSectionDesc'),
+                        'active' => $sectionDotNotation->get('Active'),
+                        'position' => $sectionDotNotation->get('Position'),
                             ], $this->request);
 
             //save this entity to the session
-            $sectionEntity->_saveArray();
+            $this->menu->addSection($sectionEntity);
 
             //loop through each menu item
             foreach ($section['MenuItems'] as $item) {
+                
+                //set in the dot notation
+                $itemDotNotation = new DotNotation($item);
+
                 //set the values
                 $menuItem = MenuItemEntity::fromArray([
-                            'id' => $item['MenuItem']['MenuItemID'],
-                            'section_id' => $item['MenuItem']['MenuSectionID'],
-                            'name' => $item['MenuItem']['MenuItemName'],
-                            'description' => $item['MenuItem']['MenuItemDesc'],
-                            'price' => $item['MenuItem']['Price'],
-                            'active' => $item['MenuItem']['Active'],
-                            'deleted' => $item['MenuItem']['Deleted'],
-                            'position' => $item['MenuItem']['Position'],
-                            'heat' => $item['MenuItem']['Heat'],
-                            'vegetarian' => $item['MenuItem']['Vegetarian'],
-                            'gluten_free' => $item['MenuItem']['GlutenFree'],
-                            'dairy_free' => $item['MenuItem']['DairyFree'],
-                            'may_contain_bones' => $item['MenuItem']['MayContainBones'],
-                            'has_variations' => ((count($item['Variations']) > 0) ? true : false)
+                            'id' => $itemDotNotation->get('MenuItem.MenuItemID'),
+                            'section_id' => $itemDotNotation->get('MenuItem.MenuSectionID'),
+                            'name' => $itemDotNotation->get('MenuItem.MenuItemName'),
+                            'description' => $itemDotNotation->get('MenuItem.MenuItemDesc'),
+                            'price' => $itemDotNotation->get('MenuItem.Price'),
+                            'active' => $itemDotNotation->get('MenuItem.Active'),
+                            'deleted' => $itemDotNotation->get('MenuItem.Deleted'),
+                            'position' => $itemDotNotation->get('MenuItem.Position'),
+                            'heat' => $itemDotNotation->get('MenuItem.Heat'),
+                            'vegetarian' => $itemDotNotation->get('MenuItem.Vegetarian'),
+                            'gluten_free' => $itemDotNotation->get('MenuItem.GlutenFree'),
+                            'dairy_free' => $itemDotNotation->get('MenuItem.DairyFree'),
+                            'may_contain_bones' => $itemDotNotation->get('MenuItem.MayContainBones'),
+                            'has_variations' => ((count($itemDotNotation->get('Variations')) > 0) ? true : false)
                                 ], $this->request);
 
                 //save this entity to the session
-                $menuItem->_saveArray();
+                $this->menu->addItem($menuItem);
 
 
-                foreach ($item['Variations'] as $variation) {
+                foreach ($itemDotNotation->get('Variations') as $variation) {
+                    
+                    //set in the dot notation
+                    $variationDotNotation = new DotNotation($variation);
+                    
                     $variationEntity = MenuItemVariationEntity::fromArray([
-                                'id' => $variation['MenuItem_VariationID'],
-                                'parent_id' => $variation['MenuItemID'],
-                                'name' => $variation['VariationName'],
-                                'description' => $variation['VariationDesc'],
-                                'price' => $variation['Price'],
-                                'active' => $variation['Active'],
-                                'deleted' => $variation['Deleted'],
-                                'position' => $variation['Position'],
-                                'heat' => $variation['Heat'],
-                                'vegetarian' => $variation['Vegetarian'],
-                                'gluten_free' => $variation['GlutenFree'],
-                                'dairy_free' => $variation['DairyFree'],
-                                'may_contain_bones' => $variation['MayContainBones'],
-                    ], $this->request);
+                                'id' => $variationDotNotation->get('MenuItem_VariationID'),
+                                'parent_id' => $variationDotNotation->get('MenuItemID'),
+                                'parent_name' => $itemDotNotation->get('MenuItem.MenuItemName'),
+                                'name' => $variationDotNotation->get('VariationName'),
+                                'description' => $variationDotNotation->get('VariationDesc'),
+                                'price' => $variationDotNotation->get('Price'),
+                                'active' => $variationDotNotation->get('Active'),
+                                'deleted' => $variationDotNotation->get('Deleted'),
+                                'position' => $variationDotNotation->get('Position'),
+                                'heat' => $variationDotNotation->get('Heat'),
+                                'vegetarian' => $variationDotNotation->get('Vegetarian'),
+                                'gluten_free' => $variationDotNotation->get('GlutenFree'),
+                                'dairy_free' => $variationDotNotation->get('DairyFree'),
+                                'may_contain_bones' => $variationDotNotation->get('MayContainBones'),
+                                    ], $this->request);
+                    
                     //save this entity to the session
-                    $variationEntity->_saveArray();
+                    $this->menu->addVariation($variationEntity);
                 }
                 //loop through the condiment types
-                foreach ($item['CondimentTypes'] as $condimentType) {
+                foreach ($itemDotNotation->get('CondimentTypes') as $condimentType) {
+                    
+                    $condimentTypeDotNotation = new DotNotation($condimentType);
+                    
                     //set the values
                     $condimentTypeEntity = CondimentTypeEntity::fromArray([
-                                'id' => $condimentType['CondimentType']['CondimentTypeID'],
-                                'item_id' => $item['MenuItem']['MenuItemID'],
-                                'description' => $condimentType['CondimentType']['CondimentTypeDesc'],
+                                'id' => $condimentTypeDotNotation->get('CondimentType.CondimentTypeID'),
+                                'item_id' => $itemDotNotation->get('MenuItem.MenuItemID'),
+                                'description' => $condimentTypeDotNotation->get('CondimentType.CondimentTypeDesc'),
                                     ], $this->request);
 
                     //save this entity to the session
-                    $condimentTypeEntity->_saveArray();
+                    $this->menu->addCondimentType($condimentTypeEntity);
 
-                    foreach ($condimentType['Condiments'] as $condiment) {
+                    foreach ($condimentTypeDotNotation->get('Condiments') as $condiment) {
+                        
+                        $condimentDotNotation = new DotNotation($condiment);
+                        
                         //set the values to the entity
                         $condimentEntity = CondimentEntity::fromArray([
-                                    'id' => $condiment['CondimentID'],
-                                    'condiment_type_id' => $condiment['CondimentTypeID'],
-                                    'name' => $condiment['CondimentName'],
-                                    'description' => $condiment['CondimentDesc'],
-                                    'active' => $condiment['Active'],
-                                    'deleted' => $condiment['Deleted'],
-                                    'additional_cost' => $condiment['AdditionalCost'],
-                                        ], $this->request);
+                                    'id' => $condimentDotNotation->get('CondimentID'),
+                                    'condiment_type_id' => $condimentDotNotation->get('CondimentTypeID'),
+                                    'name' => $condimentDotNotation->get('CondimentName'),
+                                    'description' => $condimentDotNotation->get('CondimentDesc'),
+                                    'active' => $condimentDotNotation->get('Active'),
+                                    'deleted' => $condimentDotNotation->get('Deleted'),
+                                    'additional_cost' => $condimentDotNotation->get('AdditionalCost'),
+                                     ], $this->request);
 
                         //save this entity to the session
-                        $condimentEntity->_saveArray();
+                        $this->menu->addCondiment($condimentEntity);
                     }
                 }
             }
         }
+
     }
 
     /**

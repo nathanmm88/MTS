@@ -26,6 +26,16 @@ class ItemEntity extends AbstractEntity
      * Order Item ID (specific to this order)
      */
     protected $item_id = null;
+    
+    /**
+     * Order Section ID (specific to this order)
+     */
+    protected $section_id = null;
+    
+    /**
+     * Order variation ID (specific to this order)
+     */
+    protected $variation_id = null;
         
     /**
      * Any notes against the item
@@ -59,6 +69,24 @@ class ItemEntity extends AbstractEntity
     }
     
     /**
+     * Returns the section ID
+     * 
+     * @return int
+     */
+    public function getSectionId() {
+        return $this->section_id;
+    }
+    
+    /**
+     * Returns the variation ID
+     * 
+     * @return int
+     */
+    public function getVariationId() {
+        return $this->variation_id;
+    }
+    
+    /**
      * Returns the item notes
      * 
      * @return string
@@ -88,7 +116,29 @@ class ItemEntity extends AbstractEntity
      * @return \App\Entity\Order\ItemEntity
      */
     public function setItemId($item_id){
-        $this->item_id=$item_id;
+        $this->item_id = $item_id;
+        return $this;
+    }
+    
+    /**
+     * Sets the section ID
+     * 
+     * @param int $section_id
+     * @return \App\Entity\Order\ItemEntity
+     */
+    public function setSectionId($section_id){
+        $this->section_id = $section_id;
+        return $this;
+    }
+    
+    /**
+     * Sets the variation ID
+     * 
+     * @param int $variation_id
+     * @return \App\Entity\Order\ItemEntity
+     */
+    public function setVariationId($variation_id){
+        $this->variation_id = $variation_id;
         return $this;
     }
     

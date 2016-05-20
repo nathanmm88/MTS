@@ -21,6 +21,7 @@ use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\I18n\Number;
 use App\Entity\Order\ItemEntity;
+use App\Form\OrderForm;
 
 /**
  * Order controller
@@ -30,8 +31,6 @@ use App\Entity\Order\ItemEntity;
  * @link http://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 class AjaxController extends AppController {
-
-
 
     public function initialize() {
         parent::initialize();
@@ -87,13 +86,45 @@ class AjaxController extends AppController {
      * This function adds an item to the basket
      */
     public function addItem() {
+
+        //set the default response
+        $success = false;
+
         //get the item id from the post data
-        $item_id = $this->request->data['item'];
+        $itemId = $this->request->data['item'];
+        $variationId = $this->request->data['variation'];
+        $section = $this->request->data['section'];
+
+        if ($this->menu->itemExists($itemId, $variationId, $section)) {
+            //add this item to the order;
+            $this->order->addItem(ItemEntity::fromArray(array('item_id' => $itemId, 'section_id' => $section, 'variation_id' => $variationId)), $this->request);
+            $success = true;
+        }
+
+        $orderForm = new OrderForm($this->request);
+        $this->set('order', $orderForm);
         
-        //add this item to the order
-        $this->order->addItem(ItemEntity::fromArray(array('item_id' => $item_id)), $this->request);
-        
+        $this->set('data', array(
+            'success' => $success
+        ));
+    }
+    
+    /**
+     * This function removes an item to the basket
+     */
+    public function removeItem() {
+
+        //set the default response
         $success = true;
+
+        //get the item id from the post data
+        $orderItemId = $this->request->data['item'];
+
+        $this->order->removeItem($orderItemId);
+
+        $orderForm = new OrderForm($this->request);
+        $this->set('order', $orderForm);
+        
         $this->set('data', array(
             'success' => $success
         ));

@@ -1,14 +1,14 @@
 <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="heading<?php echo $section['id']; ?>">
+    <div class="panel-heading" role="tab" id="heading<?php echo $section->getId(); ?>">
         <h4 class="panel-title">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $section['id']; ?>" aria-expanded="true" aria-controls="collapse<?php echo $section['id']; ?>">
-                <?php echo $section['name']; ?>
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $section->getId(); ?>" aria-expanded="true" aria-controls="collapse<?php echo $section->getId(); ?>">
+                <?php echo $section->getName(); ?>
             </a>
         </h4>
     </div>
-    <div id="collapse<?php echo $section['id']; ?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php echo $section['id']; ?>">
+    <div id="collapse<?php echo $section->getId(); ?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php echo $section->getId(); ?>">
         <div class="panel-body">
-            <p><?php echo $section['description']; ?></p>
+            <p><?php echo $section->getDescription(); ?></p>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -19,13 +19,16 @@
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($this->Menu->getSectionItems($section['id']) as $item) {                        
-                                             
-                        echo $this->element('Menu/Row', array('item' => $item));
-
-                        if ($item['has_variations']){                            
-                            foreach ($this->Menu->getItemVariations($item['id']) as $variation) {
-                                echo $this->element('Menu/Row', array('item' => $variation));
+                    foreach ($this->Entity->get('Menu')->getItems($section->getId()) as $item) {                        
+                        
+                        
+                        
+                        if (!$item->hasVariations()){                            
+                            echo $this->element('Menu/Row', array('item' => $item, 'section' => $section));
+                        } else {
+                            echo $this->element('Menu/VariationTitle', array('item' => $item, 'section' => $section));
+                            foreach ($this->Entity->get('Menu')->getVariations($item->getId()) as $variation) {
+                                echo $this->element('Menu/Row', array('item' => $variation, 'section' => $section));
                             }
                         }
                     }

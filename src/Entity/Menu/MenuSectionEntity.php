@@ -16,13 +16,6 @@ class MenuSectionEntity extends AbstractEntity
     public $prefix = 'menu';
     
     /**
-     * The sub prefix for the entity
-     * 
-     * @var string 
-     */
-    public $sub_prefix = 'sections';
-    
-    /**
      * Unique menu section ID
      * 
      * @var integer
@@ -75,7 +68,62 @@ class MenuSectionEntity extends AbstractEntity
     public function getId() {
         return $this->id;        
     }
-              
+    
+    /**
+     * Returns the menu id
+     * 
+     * @return int
+     */
+    public function getMenuId() {
+        return $this->menu_id;
+    }
+
+    /**
+     * Returns the name
+     * 
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * Returns the description
+     * 
+     * @return description
+     */
+    public function getDescription() {
+        return $this->description;
+    }
+
+    /**
+     * Returns the active status
+     * 
+     * @return int
+     */
+    public function getActive() {
+        return $this->active;
+    }
+    
+    /**
+     * Returns if the menu section is active
+     * 
+     * @return boolean
+     */
+    public function isActive(){
+        return (bool) $this->getActive();
+    }
+
+    /**
+     * Gets the postiton
+     * 
+     * @return int
+     */
+    public function getPosition() {
+        return $this->position;
+    }
+
+                  
     /**
      * Setters
      */

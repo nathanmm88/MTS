@@ -3,7 +3,7 @@
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <?php
        
-    foreach ($this->Menu->getSections() as $section) {
+    foreach ($this->Entity->get('Menu')->getSections() as $section) {
         echo $this->element('Menu/Section', get_defined_vars());
     }
     ?>    

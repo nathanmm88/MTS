@@ -55,6 +55,38 @@ function stopBlocking() {
     $.unblockUI();
 }
 
+/**
+ * Events for when we refresh basket
+ * 
+ * @returns {undefined}
+ */
+function bindBasketEvents() {
+    
+    //remove any events we may have bound
+    $('.remove-item').unbind('click');
+
+    /**
+     * When the user clicks the remove item we want to remove it from the order
+     */
+    $('.remove-item').on('click', function(e) {
+        e.preventDefault();
+        startBlocking();
+        
+        var url = '/ajax/removeItem';
+
+        $.post(url, {item: $(this).data('order-item')}, function(data) {
+            if (data.success === true) {
+                $('#sidebar-content').html(data.markup);
+
+                bindBasketEvents();
+            }
+
+        }, 'json').always(function() {
+            stopBlocking();
+        });
+    });
+}
+
 $(document).ready(function() {
     /**
      * Showing contact details when a user clicks on the link
@@ -132,15 +164,20 @@ $(document).ready(function() {
         e.preventDefault();
         startBlocking();
         var url = '/ajax/addItem';
-        
-        $.post(url, {item:  $(this).data('item-id')}, function(data) {
+
+        $.post(url, {item: $(this).data('item-id'), section: $(this).data('section'), variation: $(this).data('variation-id')}, function(data) {
             if (data.success === true) {
                 $('#sidebar-content').html(data.markup);
+
+                bindBasketEvents();
             }
 
         }, 'json').always(function() {
             stopBlocking();
         });
     });
+    
+    //bind any events on load
+    bindBasketEvents();
 });
 

@@ -16,13 +16,6 @@ class MenuItemEntity extends AbstractEntity
     public $prefix = 'menu';
     
     /**
-     * The sub prefix for the entity
-     * 
-     * @var string 
-     */
-    public $sub_prefix = 'items';
-    
-    /**
      * Unique menu section ID
      * 
      * @var integer
@@ -131,8 +124,181 @@ class MenuItemEntity extends AbstractEntity
      */
     public function getId() {
         return $this->id;        
-    }          
+    }    
     
+    /**
+     * Returns the item name
+     * 
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * Returns the description
+     * 
+     * @return string
+     */
+    public function getDescription() {
+        return $this->description;
+    }
+
+    /**
+     * Returns if the item is active
+     * 
+     * @return int
+     */
+    public function getActive() {
+        return $this->active;
+    }
+    
+    /**
+     * Returns if the item is active
+     * 
+     * @return bool
+     */
+    public function isActive() {
+        return (bool) $this->getActive();
+    }
+
+    /**
+     * Returns the item position
+     * 
+     * @return int
+     */
+    public function getPosition() {
+        return $this->position;
+    }
+
+    /**
+     * Returns if the item is deleted
+     * 
+     * @return int
+     */
+    public function getDeleted() {
+        return $this->deleted;
+    }
+
+    /**
+     * Returns the heat for the item
+     * 
+     * @return int
+     */
+    public function getHeat() {
+        return $this->heat;
+    }
+
+    /**
+     * Returns if the item is vegetarian
+     * 
+     * @return int
+     */
+    public function getVegetarian() {
+        return $this->vegetarian;
+    }
+    
+    /**
+     * Returns if the item is vegetarian
+     * 
+     * @return bool
+     */
+    public function isVegetarian() {
+        return (bool) $this->getVegetarian();
+    }
+    
+    /**
+     * Returns the price
+     * 
+     * @return float
+     */
+    public function getPrice() {
+        return $this->price;
+    }
+    
+    
+        
+    /**
+     * Returns the section ID
+     * 
+     * @return int
+     */
+    public function getSectionId() {
+        return $this->section_id;
+    }
+
+    /**
+     * Returns the gluten free status
+     * 
+     * @return int
+     */
+    public function getGlutenFree() {
+        return $this->gluten_free;
+    }
+    
+    /**
+     * Returns the gluten free status
+     * 
+     * @return boolean
+     */
+    public function isGlutenFree() {
+        return (bool) $this->getGlutenFree();
+    }
+
+    /**
+     * Returns the dairy free status
+     * 
+     * @return int
+     */
+    public function getDairyFree() {
+        return $this->dairy_free;
+    }
+    
+    /**
+     * Returns the dairy free status
+     * 
+     * @return boolean
+     */
+    public function isDairyFree() {
+        return (bool) $this->getDairyFree();
+    }
+
+    /**
+     * Returns the may contain bones status
+     * 
+     * @return int
+     */
+    public function getMayContainBones() {
+        return $this->may_contain_bones;
+    }
+    
+    /**
+     * Returns the may contain bones status
+     * 
+     * @return bool
+     */
+    public function mayContainBones() {
+        return (int) $this->getMayContainBones();
+    }
+
+    /**
+     * Returns if the item has variations
+     * 
+     * @return int
+     */
+    public function getHasVariations() {
+        return $this->has_variations;
+    }
+    
+    /**
+     * Returns if the item has variations
+     * 
+     * @return bool
+     */
+    public function hasVariations() {
+        return (bool) $this->getHasVariations();
+    }
+        
     /**
      * Setters
      */
@@ -290,5 +456,15 @@ class MenuItemEntity extends AbstractEntity
     public function setMayContainBones($may_contain_bones){
         $this->may_contain_bones = $may_contain_bones;
         return $this;
-    }               
+    }   
+    
+    /**
+     * Returns the full name
+     * 
+     * @return string
+     */
+    public function getFullName($sep = '|'){
+        return $this->getName();
+    }
+    
 }

@@ -30,6 +30,15 @@ class OrderEntity extends AbstractEntity
      */
     public function getItems(){
         $items = $this->_get('items');
+        
+        if(!is_array($items)){
+            $items = [];
+        }
+        
+        foreach($items as $key => $item){
+            $items[$key] = ItemEntity::fromArray($item);
+        }
+        
         return $items;
         
     }
@@ -37,7 +46,8 @@ class OrderEntity extends AbstractEntity
     /**
      * Adds an item to the order
      * 
-     * @param integer $id
+     * @param ItemEntity $item
+     * @return \App\Entity\OrderEntity
      */
     public function addItem(ItemEntity $item){
         //get the current items
@@ -48,12 +58,7 @@ class OrderEntity extends AbstractEntity
             $items = [];
         }
     
-        //if this item already exists, update it else add it
-        if (array_key_exists($item->getId(), $items)){
-            $items[$item->getId()] = $item->toArray();
-        } else {
-            $items[] = $item->toArray();
-        }
+        $items[] = $item->toArray();
         
         //set the items back to the entity
         $this->_set('items', $items);
@@ -62,9 +67,22 @@ class OrderEntity extends AbstractEntity
     }
     
     /**
-     * Clear down the order
+     * Removes an order item from a specific index
+     * 
+     * @param int $index 
+     * @return \App\Entity\OrderEntity
      */
-    public function clear(){
-       $this->_set('items', array());
+    public function removeItem($index){
+        //get the current items
+        $items = $this->_get('items');
+        
+        if(is_array($items) && array_key_exists($index, $items)){
+            unset($items[$index]);
+        }
+        
+        //set the items back to the entity
+        $this->_set('items', $items);
+        
+        return $this;
     }
 }
