@@ -138,5 +138,25 @@ class AjaxController extends AppController {
             'success' => true
         ]);
     }
+    
+    /**
+     * Changes the order to a collection order
+     */
+    public function changeToCollection(){
+        
+        //sets the order to a collection order
+        if($this->takeaway->getSettings()->getAcceptCollectionOrders()){
+            $this->order->setType(\App\Entity\TakeawayEntity::ORDER_TYPE_COLLECTION);
+        }
+        
+        //get the order form for the sidebar
+        $orderForm = new OrderForm($this->request);
+        $this->set('order', $orderForm);
+        
+        //set the response
+        $this->set('data', [
+            'success' => true
+        ]);
+    }
 
 }

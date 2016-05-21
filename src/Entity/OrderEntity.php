@@ -230,4 +230,36 @@ class OrderEntity extends AbstractEntity
         return $return;
         
     }
+    
+    /**
+     * Returns the estimated delivery time, if format is false the date time 
+     * object is returned
+     * 
+     * @param string|false $format
+     * @return string|DateTime
+     */
+    public function getEstimatedTime($format = 'Y-m-d H:i:s'){
+        
+        //get the takeaway entity
+        $takeawayEntity = new TakeawayEntity($this->request);
+        
+        //the time we want to add to the current time
+        $delay = false;
+        
+        //check if we are on delivery
+        if($this->isDelivery()){
+            $delay = $takeawayEntity->getSettings()->getCurrentDeliveryTime();
+        } else {
+            $delay = $takeawayEntity->getSettings()->getCurrentCollectionTime();
+        }
+        
+        //if we have a delay then make the date time object
+        if($delay !== false){
+            $delay = $delay * 60; //convert from minutes to seconds
+            $dateTime = new \DateTime();
+            $delay = $dateTime->setTimestamp(time() + (int) $delay);
+        }
+
+        return $format === false ? $delay : $delay->format($format);
+    }
 }

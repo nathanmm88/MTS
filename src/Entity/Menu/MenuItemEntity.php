@@ -28,6 +28,13 @@ class MenuItemEntity extends AbstractEntity
     protected $section_id = null;
         
     /**
+     * Item reference
+     * 
+     * @var string 
+     */
+    protected $reference = null;
+    
+    /**
      * Item name
      * 
      * @var string 
@@ -124,7 +131,16 @@ class MenuItemEntity extends AbstractEntity
      */
     public function getId() {
         return $this->id;        
-    }    
+    } 
+    
+    /**
+     * Returns the items reference
+     * 
+     * @return type
+     */
+    public function getReference() {
+        return $this->reference;
+    }
     
     /**
      * Returns the item name
@@ -322,6 +338,17 @@ class MenuItemEntity extends AbstractEntity
      */
     public function setSectionId($section_id){
         $this->section_id = $section_id;
+        return $this;
+    }
+    
+    /**
+     * Sets the reference
+     * 
+     * @param string $reference
+     * @return \App\Entity\Menu\MenuItemEntity
+     */
+    public function setReference($reference) {
+        $this->reference = $reference;
         return $this;
     }
     

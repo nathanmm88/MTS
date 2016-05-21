@@ -21,7 +21,7 @@ $items = $this->Entity->get('Order')->getItems();
                             <strong class="pull-right"><?php echo $this->Takeaway->formatMoney($item->getPrice()); ?></strong>
                         </td>
                     </tr>
-                <?php } ?>  
+                <?php } ?>
                 <tr class="<?php echo $this->Entity->get('Order')->meetsMinimumOrderAmount($subTotal) ? '' : 'alert alert-warning'; ?>">
                     <td>Subtotal</td>
                     <td><strong class="pull-right"><?php echo $this->Takeaway->formatMoney($subTotal); ?></strong></td>
@@ -38,13 +38,24 @@ $items = $this->Entity->get('Order')->getItems();
                 </tr>
             </tbody>
         </table> 
-        <?php if(!$this->Entity->get('Order')->meetsMinimumOrderAmount($subTotal)) { ?>
+        <?php if (!$this->Entity->get('Order')->meetsMinimumOrderAmount($subTotal)) { ?>
             <?php if ($this->Entity->get('Order')->isDelivery()) { ?>
                 <p class="alert alert-warning">Your order hasn't yet met the minimum delivery amount of <?php echo $this->Takeaway->getMinimumDeliveryAmount() ?></p>
             <?php } else { ?>
                 <p class="alert alert-warning">Your order hasn't yet met the minimum collection amount of <?php echo $this->Takeaway->getMinimumCollectionAmount() ?></p>
             <?php } ?>
-        <?php } ?>  
+        <?php } ?> 
+        <?php if ($this->Entity->get('Order')->isDelivery()) { ?>
+            <p class="alert alert-info text-center">Delivering to <strong><?php echo $this->Entity->get('Order')->getAddress()->getPostcode(); ?></strong> at approximately <strong><?php echo $this->Entity->get('Order')->getEstimatedTime('g:ia'); ?></strong></p>
+            <?php if ($this->Entity->get('Takeaway')->getSettings()->getAcceptCollectionOrders()) { ?>
+                <p class="text-center"><a id="changeToCollection" href="#">Change to collection?</a></p>
+            <?php } ?>
+        <?php } else { ?>
+            <p class="alert alert-info text-center">Collection from <br/><?php echo $this->Takeaway->getAddress('<br/>') ?> <br/> at approximately <strong><?php echo $this->Entity->get('Order')->getEstimatedTime('g:ia'); ?></strong></p>
+            <?php if ($this->Entity->get('Takeaway')->getSettings()->getAcceptDeliveryOrders()) { ?>
+                <p class="text-center"><a id="changeToDelivery" href="<?php echo $this->Step->getStepLink('order_index') ?>">Change to delivery?</a></p>
+            <?php } ?>
+        <?php } ?>
     <?php } else { ?>
         <p class="alert alert-warning">Your order is empty, please use the menu to add items to your order.</p>
     <?php } ?>

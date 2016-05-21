@@ -41,10 +41,10 @@ class OrderController extends AppController {
      * @var array 
      */
     public $steps = [
-//        'order_index',
-//        'order_menu',
-//        'order_confirm',
-//        'order_thanks'
+        'order_index',
+        'order_menu',
+        'order_confirm',
+        'order_thanks'
     ];
 
     /**

@@ -49,6 +49,7 @@ class GetMenuCall extends AbstractCall {
                 $menuItem = MenuItemEntity::fromArray([
                             'id' => $itemDotNotation->get('MenuItem.MenuItemID'),
                             'section_id' => $itemDotNotation->get('MenuItem.MenuSectionID'),
+                            'reference' => $itemDotNotation->get('MenuItem.MenuItemReference', 'TBC'),
                             'name' => $itemDotNotation->get('MenuItem.MenuItemName'),
                             'description' => $itemDotNotation->get('MenuItem.MenuItemDesc'),
                             'price' => $itemDotNotation->get('MenuItem.Price'),
@@ -76,6 +77,7 @@ class GetMenuCall extends AbstractCall {
                                 'id' => $variationDotNotation->get('MenuItem_VariationID'),
                                 'parent_id' => $variationDotNotation->get('MenuItemID'),
                                 'parent_name' => $itemDotNotation->get('MenuItem.MenuItemName'),
+                                'reference' => $itemDotNotation->get('MenuItem.MenuItemReference', 'TBC'),
                                 'name' => $variationDotNotation->get('VariationName'),
                                 'description' => $variationDotNotation->get('VariationDesc'),
                                 'price' => $variationDotNotation->get('Price'),

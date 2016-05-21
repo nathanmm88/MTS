@@ -11360,7 +11360,7 @@ function stopBlocking() {
 function bindBasketEvents() {
     
     //remove any events we may have bound
-    $('.remove-item').unbind('click');
+    $('.remove-item, #changeToCollection').unbind('click');
 
     /**
      * When the user clicks the remove item we want to remove it from the order
@@ -11375,6 +11375,29 @@ function bindBasketEvents() {
             if (data.success === true) {
                 $('#sidebar-content').html(data.markup);
 
+                bindBasketEvents();
+            }
+
+        }, 'json').always(function() {
+            stopBlocking();
+        });
+    });
+    
+    /**
+     * When the user clicks to change to a collection order
+     * 
+     */
+    $('#changeToCollection').on('click', function(e){
+        e.preventDefault();
+        
+        //start blocking while we do this
+        startBlocking();
+        
+        var url = '/ajax/changeToCollection';
+
+        $.post(url, {}, function(data) {
+            if (data.success === true) {
+                $('#sidebar-content').html(data.markup);
                 bindBasketEvents();
             }
 

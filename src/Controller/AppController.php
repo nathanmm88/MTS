@@ -117,6 +117,7 @@ class AppController extends Controller {
         $this->helpers[] = 'Takeaway';
         $this->helpers[] = 'Entity';
         $this->helpers[] = 'Menu';
+        $this->helpers[] = 'Step';
         
         //load the entities
         $this->_addEntities();

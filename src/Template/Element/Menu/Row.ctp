@@ -1,6 +1,6 @@
 <tr>
     <td>
-        <h5><?php echo $item->getName(); ?></h5>
+        <h5><?php echo $item->getReference(); ?> <?php echo $item->getName(); ?></h5>
         <p>
             <?php echo $item->getDescription(); ?>
         </p>
