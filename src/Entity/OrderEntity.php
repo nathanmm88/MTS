@@ -6,6 +6,7 @@ use App\Entity\AbstractSession;
 use App\Entity\Order\ItemEntity;
 use App\Entity\Order\OrderAddressEntity;
 use App\Entity\MenuEntity;
+use App\Entity\TakeawayEntity;
 
 class OrderEntity extends AbstractEntity
 {
@@ -193,5 +194,40 @@ class OrderEntity extends AbstractEntity
         
         //return the total
         return $total;
+    }
+    
+    /**
+     * Checks if the supplied total or session total meets the minimum amount
+     * 
+     * @param float $subTotal
+     * @return boolean
+     */
+    public function meetsMinimumOrderAmount($subTotal = null){
+        
+        //default return value
+        $return = false;
+        
+        //get the subtotal if one wasnt supplied
+        if(is_null($subTotal)){
+            $subTotal = $this->getTotal(false);
+        }
+        
+        //get the takeaway entity
+        $takeawayEntity = new TakeawayEntity($this->request);
+        
+        //check against the delivery
+        if($this->isDelivery()){
+            if($subTotal >= $takeawayEntity->getSettings()->getDeliveryMinOrder()){
+                $return = true;
+            }
+        } else {
+            if($subTotal >= $takeawayEntity->getSettings()->getCollectionMinOrder()){
+                $return = true;
+            }
+        }
+        
+        //return the result
+        return $return;
+        
     }
 }
