@@ -22,6 +22,7 @@ use Cake\View\Exception\MissingTemplateException;
 use App\Form\ConfirmationForm;
 use App\Form\OrderForm;
 use App\Entity\Order\ItemEntity;
+use App\Entity\Order\OrderAddressEntity;
 
 /**
  * Order controller
@@ -73,15 +74,24 @@ class OrderController extends AppController {
         if ($this->request->is('post')) {
             //TODO:: move to a form
             if (array_key_exists(ORDER_TYPE_COLLECTION, $this->request->data)) {
-                $this->request->session()->write('order.order_type', ORDER_TYPE_COLLECTION);
+                $this->order->setType(ORDER_TYPE_COLLECTION);
             } else if (array_key_exists(ORDER_TYPE_DELIVERY, $this->request->data)) {
-                $this->request->session()->write('order.order_type', ORDER_TYPE_DELIVERY);
+                $this->order->setType(ORDER_TYPE_DELIVERY);
+                //get the lat long to store against the delivery
+                $geoLocation = $this->geolocatePostcode($this->request->data['delivery_postcode']);
+
+                //set the delivery postcode anyway
+                $this->order->setAddress(OrderAddressEntity::fromArray(
+                                [
+                                    'postcode' => $this->request->data['delivery_postcode'],
+                                    'latitude' => $geoLocation['latitude'], 
+                                    'longitude' => $geoLocation['longitude'],
+                                    'delivery_cost' => $this->takeaway->getDeliveryCost($this->getDistanceBetweenLocations($this->takeaway->getAddress()->getLatitude(), $this->takeaway->getAddress()->getLongitude(), $geoLocation['latitude'], $geoLocation['longitude']))
+                                ]
+                ));
             } else {
                 throw new Exception('Unable to detect order type from the post');
             }
-
-            //set the delivery postcode anyway
-            $this->request->session()->write('order.address.postcode', $this->request->data['delivery_postcode']);
 
             //redirect to the next step
             $this->_redirectToStep('order_menu');
@@ -95,7 +105,7 @@ class OrderController extends AppController {
      */
     public function menu() {
         //get the latest menu and save to the session
-        $this->Api->getMenu();     
+        $this->Api->getMenu();
 
         if ($this->request->is('post')) {
 

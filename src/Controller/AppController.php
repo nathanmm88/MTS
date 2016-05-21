@@ -232,7 +232,7 @@ class AppController extends Controller {
      * @return array
      */
     protected function geolocatePostcode($postcode) {
-        $url = "https://api.postcodes.io/postcodes/" . urlencode($postcode);
+        $url = "https://api.postcodes.io/postcodes/" . urlencode(str_replace(' ', '', $postcode));
         //die(var_dump($url));
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
