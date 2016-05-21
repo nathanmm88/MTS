@@ -129,5 +129,14 @@ class AjaxController extends AppController {
             'success' => $success
         ));
     }
+    
+    public function getCondiments(){
+        //$this->menu->getCondiments($);
+        $markup = '<h1>Condiments here!</h1>';
+        $this->set('data', [
+            'markup' => $markup,
+            'success' => true
+        ]);
+    }
 
 }

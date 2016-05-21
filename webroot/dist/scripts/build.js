@@ -11459,7 +11459,22 @@ $(document).ready(function() {
      */
     $('.add-item').on('click', function(e) {
         e.preventDefault();
+        
         startBlocking();
+        if ($(this).data('condiments')){
+            var url = '/ajax/getCondiments';
+            $.post(url, {condiment_type_id: $(this).data('condiments-id')}, function(data) {
+            if (data.success === true) {
+                $('#ItemOptions div.modal-content div.modal-body').html(data.markup);
+
+                bindBasketEvents();
+            }
+
+        }, 'json').always(function() {
+            stopBlocking();
+        });
+            $('#ItemOptions').modal('show');
+        }
         var url = '/ajax/addItem';
 
         $.post(url, {item: $(this).data('item-id'), section: $(this).data('section'), variation: $(this).data('variation-id')}, function(data) {
