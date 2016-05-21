@@ -22,5 +22,6 @@ return [
             "acct1.Signature" => "AFcWxV21C7fd0v3bYYYRCpSSRl31AX032M1MLcGxNpSW1q8LMA-yvD0h",
             "acct1.AppId" => "APP-80W284485P519543T"
         ]
-    ]
+    ],
+    'log_api_calls' => true    
 ];

@@ -9,6 +9,7 @@ use App\Entity\TakeawayEntity;
 use App\Entity\MenuEntity;
 use App\Entity\AbstractEntity;
 use App\Network\TakeawayRequest;
+use Cake\Log\Log;
 
 abstract class AbstractCall extends AbstractEntity {
 
@@ -19,7 +20,7 @@ abstract class AbstractCall extends AbstractEntity {
      */
     public function __construct() {
         parent::__construct();
-        
+
         $this->request = TakeawayRequest::createFromGlobals();
         $this->security = new SecurityEntity($this->request);
         $this->takeaway = new TakeawayEntity($this->request);
@@ -49,17 +50,20 @@ abstract class AbstractCall extends AbstractEntity {
         if ($needsToken) {
             //make sure we have the token
             $this->_setToken();
-            
+
             $headers['Authorization'] = $this->security->getAuthorisationToken();
         }
 
         $http = new Client();
         $response = $http->post(
                 Configure::read('api.url') . $action, $messageBody, ['headers' => $headers]
-        );
-
+        );   
+        $this->_log(['URL' => Configure::read('api.url') . $action, 'Request' => $messageBody]);
+      
         $responseArray = json_decode($response->body(), true);
-
+              
+        $this->_log(['Response' => $responseArray]);
+        
         if (array_key_exists('error', $responseArray)) {
             throw new Exception('Error returned in ' . $action . ' API call with the error ' . $responseArray['error']);
         }
@@ -76,7 +80,7 @@ abstract class AbstractCall extends AbstractEntity {
             $response = $this->makeRequest(
                     'Token', 'grant_type=' . Configure::read('api.grant_type') . '&username=' . Configure::read('api.user') . '&password=' . Configure::read('api.password'), false
             );
-
+            
             if (!array_key_exists('access_token', $response)) {
                 throw new Exception('No token returned!');
             }
@@ -87,6 +91,22 @@ abstract class AbstractCall extends AbstractEntity {
 
             $this->security->setAPIToken($response['access_token'])
                     ->setTokenType($response['token_type']);
+        }
+    }
+    
+    /**
+     * Take an array of values to log and do so if logging is turned on
+     * 
+     * @param type $logValues
+     */
+    protected function _log($logValues){
+         if (Configure::read('log_api_calls')) {
+             $output = '';
+             foreach ($logValues as $key => $value) {
+                 $output.= "\n".$key.': '.print_r($value, true);
+             }
+             $output.="\n";
+            Log::debug($output, ['scope' => ['api']]);
         }
     }
 
