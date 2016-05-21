@@ -19,16 +19,15 @@
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($this->Entity->get('Menu')->getItems($section->getId()) as $item) {                        
-                        
-                        
-                        
-                        if (!$item->hasVariations()){                            
-                            echo $this->element('Menu/Row', array('item' => $item, 'section' => $section));
-                        } else {
-                            echo $this->element('Menu/VariationTitle', array('item' => $item, 'section' => $section));
-                            foreach ($this->Entity->get('Menu')->getVariations($item->getId()) as $variation) {
-                                echo $this->element('Menu/Row', array('item' => $variation, 'section' => $section));
+                    foreach ($this->Entity->get('Menu')->getItems($section->getId()) as $item) {
+                        if ($item->isActive()) {
+                            if (!$item->hasVariations()) {
+                                echo $this->element('Menu/Row', array('item' => $item, 'section' => $section));
+                            } else {
+                                echo $this->element('Menu/VariationTitle', array('item' => $item, 'section' => $section));
+                                foreach ($this->Entity->get('Menu')->getVariations($item->getId()) as $variation) {
+                                    echo $this->element('Menu/Row', array('item' => $variation, 'section' => $section));
+                                }
                             }
                         }
                     }

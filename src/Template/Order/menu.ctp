@@ -4,7 +4,9 @@
     <?php
        
     foreach ($this->Entity->get('Menu')->getSections() as $section) {
-        echo $this->element('Menu/Section', get_defined_vars());
+        if ($section->isActive()){
+            echo $this->element('Menu/Section', get_defined_vars());
+        }
     }
     ?>    
 </div>
