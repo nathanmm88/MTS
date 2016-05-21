@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\AbstractSession;
-
 class SecurityEntity extends AbstractEntity
 {
     /**
@@ -21,7 +19,8 @@ class SecurityEntity extends AbstractEntity
      * @param string $token
      * @return App\Entity\TakeawayEntity
      */
-    public function setAPIToken($token){
+    public function setAPIToken($token){     
+        
         return $this->_set('api_token', $token);
     }
     
