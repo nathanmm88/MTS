@@ -24,17 +24,18 @@
                 </div>            
             </div>
             <div class="row">
-                <div class="col-md-9" >
+                <div class="<?php echo (!isset($noSidebar) || $noSidebar !== true) ? 'col-md-9' : 'col-xs-12'; ?>" >
                     <div id="menu">
                         <?= $this->fetch('content') ?>
                     </div>
                 </div>
-                
-                <div class="col-md-3 hidden-xs" >
-                    <div id="sidebar">
-                        <?= $this->element('sidebar') ?>
+                <?php if(!isset($noSidebar) || $noSidebar !== true){ ?>
+                    <div class="col-md-3 hidden-xs hidden-sm" >
+                        <div id="sidebar">
+                            <?= $this->element('sidebar') ?>
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
 

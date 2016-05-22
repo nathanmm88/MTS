@@ -1,5 +1,7 @@
 @import "../vendor/bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
 
+@import "../vendor/bower_components/font-awesome/scss/font-awesome";
+
 body{
     background-color: #F9F9F9;
     color: #4C4C4C;
@@ -17,7 +19,7 @@ body.minimal{
         .btn{
             padding: 10px 10px;
             font-size: 16px;
-            
+
             &.btn-primary{
                 margin-bottom: 15px;
             }
@@ -55,7 +57,7 @@ body.minimal{
         #contactDetails{
             display: none;
         }
-        
+
     }
 }
 
@@ -66,27 +68,36 @@ body.order{
             border:1px solid #CFCFCF;
             border-radius:4px;
         }
-        
+
         #sidebar{
             border:1px solid #CFCFCF;
-            padding:0 15px 0 15px;
-             border-radius:4px;
+            padding:0 15px 15px 15px;
+            border-radius:4px;
+
         }
-        
+
         #view-basket-mobile{
-            background-color:red;
+            background-color: #337ab7;
             position:fixed;
             bottom:0;
             right:0;
             left:0;
             padding-top:10px;
             text-align:center;
-            
+
             a{    
                 font-size:2em;         
-                color:green;
+                color: #FFF;
+                &:hover{
+                    text-decoration: none;
+                }
             }
+
         }
+    }
+    a.btn-warning{
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
 }
 
@@ -103,5 +114,9 @@ body.order{
 
 //Anything up to col-lg
 @media screen and (max-width: 992px) {
-
+    body.order{
+        .container{
+            margin-bottom: 65px;
+        }
+    }
 }

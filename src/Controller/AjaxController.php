@@ -105,6 +105,7 @@ class AjaxController extends AppController {
         $this->set('order', $orderForm);
         
         $this->set('data', array(
+            'order_total' => Number::currency($this->order->getTotal(), $this->takeaway->getCurrency()->getCode()),
             'success' => $success
         ));
     }
@@ -126,6 +127,7 @@ class AjaxController extends AppController {
         $this->set('order', $orderForm);
         
         $this->set('data', array(
+            'order_total' => Number::currency($this->order->getTotal(), $this->takeaway->getCurrency()->getCode()),
             'success' => $success
         ));
     }

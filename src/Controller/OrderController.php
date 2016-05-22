@@ -46,9 +46,9 @@ class OrderController extends AppController {
         'order_confirm',
         'order_thanks'
     ];
-    
+
     /**
-     *The default step that should be used if the user has no step yet
+     * The default step that should be used if the user has no step yet
      * 
      * @var string
      */
@@ -66,18 +66,18 @@ class OrderController extends AppController {
 
         $this->_checkStep();
     }
-    
+
     /**
      * The first step thats called - clears the session and redirects to the
      * order_index step
      */
-    public function start(){
+    public function start() {
         //clear the session
         $this->request->session()->clearDomain();
-        
+
         //set the last accessed time
         $this->step->setLastAccessed();
-        
+
         //redirect to the first step
         $this->_redirectToStep('order_index');
     }
@@ -106,7 +106,7 @@ class OrderController extends AppController {
                 $this->order->setAddress(OrderAddressEntity::fromArray(
                                 [
                                     'postcode' => $this->request->data['delivery_postcode'],
-                                    'latitude' => $geoLocation['latitude'], 
+                                    'latitude' => $geoLocation['latitude'],
                                     'longitude' => $geoLocation['longitude'],
                                     'delivery_cost' => $this->takeaway->getDeliveryCost($this->getDistanceBetweenLocations($this->takeaway->getAddress()->getLatitude(), $this->takeaway->getAddress()->getLongitude(), $geoLocation['latitude'], $geoLocation['longitude']))
                                 ]
@@ -126,7 +126,7 @@ class OrderController extends AppController {
      * This will display the menu to the customer to order from
      */
     public function menu() {
-        
+
         //get the latest menu and save to the session
         $this->Api->getMenu();
 
@@ -136,6 +136,22 @@ class OrderController extends AppController {
         }
         $orderForm = new OrderForm($this->request);
         $this->set('order', $orderForm);
+    }
+
+    /**
+     * The basket page
+     */
+    public function basket() {
+        
+        if ($this->request->is('post')) {
+
+            $this->_redirectToStep('order_confirm');
+        }
+        $orderForm = new OrderForm($this->request);
+        $this->set('order', $orderForm);
+        
+        //make sure we dont render the basket in the hidden sidebar
+        $this->set('noSidebar', true);
     }
 
     /**
