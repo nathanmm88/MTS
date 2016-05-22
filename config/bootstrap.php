@@ -70,6 +70,12 @@ use Cake\Network\Request;
 use Cake\Routing\DispatcherFactory;
 use Cake\Utility\Inflector;
 use Cake\Utility\Security;
+use App\Error\AppErrorHandler;
+
+
+//// Register handler in config/bootstrap.php
+//$errorHandler = new AppError();
+//$errorHandler->register();
 
 /**
  * Read configuration file and inject configuration into various
@@ -138,7 +144,7 @@ $isCli = PHP_SAPI === 'cli';
 if ($isCli) {
     (new ConsoleErrorHandler(Configure::read('Error')))->register();
 } else {
-    (new ErrorHandler(Configure::read('Error')))->register();
+    (new AppErrorHandler(Configure::read('Error')))->register();
 }
 
 // Include the CLI bootstrap overrides.

@@ -46,6 +46,13 @@ class OrderController extends AppController {
         'order_confirm',
         'order_thanks'
     ];
+    
+    /**
+     *The default step that should be used if the user has no step yet
+     * 
+     * @var string
+     */
+    public $default_step = 'order_start';
 
     /**
      * Before filter
@@ -58,6 +65,21 @@ class OrderController extends AppController {
         $this->viewBuilder()->layout('order');
 
         $this->_checkStep();
+    }
+    
+    /**
+     * The first step thats called - clears the session and redirects to the
+     * order_index step
+     */
+    public function start(){
+        //clear the session
+        $this->request->session()->clearDomain();
+        
+        //set the last accessed time
+        $this->step->setLastAccessed();
+        
+        //redirect to the first step
+        $this->_redirectToStep('order_index');
     }
 
     /**
@@ -104,6 +126,7 @@ class OrderController extends AppController {
      * This will display the menu to the customer to order from
      */
     public function menu() {
+        
         //get the latest menu and save to the session
         $this->Api->getMenu();
 

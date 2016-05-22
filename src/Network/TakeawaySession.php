@@ -23,7 +23,16 @@ class TakeawaySession extends Session
         /**
          * Set the session index
          */
-        $this->prefix = str_replace('.', '_', $_SERVER['HTTP_HOST']) . '.';
+        $this->prefix = $this->buildPrefix() . '.';
+    }
+    
+    /**
+     * Returns the prefix
+     * 
+     * @return string
+     */
+    public function buildPrefix(){
+        return str_replace('.', '_', $_SERVER['HTTP_HOST']);
     }
 
 
@@ -51,6 +60,15 @@ class TakeawaySession extends Session
      */
     public function read($name = null) {
         return parent::read($this->prefix . $name);
+    }
+    
+    /**
+     * Clears the domain part of the current session
+     * 
+     */
+    public function clearDomain(){
+        //sets the domain session to blank
+        $this->write($this->buildPrefix(), []);
     }
 }
 
