@@ -27,7 +27,7 @@ class AppErrorHandler extends ErrorHandler
         if ($exception instanceof SessionTimeoutException) {
             $this->_redirect('/error/sessionTimeout');
         } else { 
-            parent::_displayException($exception);
+            $this->_redirect('/error/service');
         }
     }
     

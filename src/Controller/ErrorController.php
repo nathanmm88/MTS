@@ -47,5 +47,12 @@ class ErrorController extends AppController {
     public function sessionTimeout(){
         
     }
+    
+    /**
+     * Handles the service error page
+     */
+    public function service(){
+        
+    }
 
 }
