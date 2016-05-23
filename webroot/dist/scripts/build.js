@@ -11358,7 +11358,7 @@ function stopBlocking() {
  * @returns {undefined}
  */
 function bindBasketEvents() {
-    
+
     //remove any events we may have bound
     $('.remove-item, #changeToCollection').unbind('click');
 
@@ -11368,7 +11368,7 @@ function bindBasketEvents() {
     $('.remove-item').on('click', function(e) {
         e.preventDefault();
         startBlocking();
-        
+
         var url = '/ajax/removeItem';
 
         $.post(url, {item: $(this).data('order-item')}, function(data) {
@@ -11382,17 +11382,17 @@ function bindBasketEvents() {
             stopBlocking();
         });
     });
-    
+
     /**
      * When the user clicks to change to a collection order
      * 
      */
-    $('#changeToCollection').on('click', function(e){
+    $('#changeToCollection').on('click', function(e) {
         e.preventDefault();
-        
+
         //start blocking while we do this
         startBlocking();
-        
+
         var url = '/ajax/changeToCollection';
 
         $.post(url, {}, function(data) {
@@ -11405,6 +11405,61 @@ function bindBasketEvents() {
             stopBlocking();
         });
     });
+
+    /**
+     * If the user selects a condiment
+     */
+    $('.condiment').on('click', function(e) {
+        e.preventDefault();
+        var description = $(this).html();
+        var type_id = $(this).parent().data('type');
+
+        //set the description in the header
+        $('#condiment-desc-' + type_id).html(description);
+
+        //clear the selection for this condiment type
+        $(this).parent().children('.condiment').removeClass('active');
+
+        //set this as the new condiment
+        $(this).addClass('active');
+
+        //get the parent - we want to collapse this
+        var parent = $(this).closest('div.panel-collapse');
+        parent.collapse('toggle');
+      //  parent.removeClass('locked');
+
+        //get all panels
+        var panels = $('#ItemOptions div.panel-collapse');
+
+        //get the next panel
+        var $next = panels.eq(panels.index(parent) + 1);
+       $next.removeClass('locked');
+        //show the next panel
+        $next.collapse('show');
+
+        $(this).closest('.condiment-desc').html('dbjksab');
+
+
+        $('#type-selection-' + type_id).val($(this).data('id'));
+    });
+
+    //when a section is opened
+    $('#ItemOptions div.panel-collapse').on('show.bs.collapse', function() {
+        //close all others
+        $('.panel-collapse').not($(this))
+                .collapse('hide');
+    });
+    
+    //when a section is opened
+    $('#ItemOptions div.panel-collapse').on('shown.bs.collapse', function() {
+        
+        if ($(this).hasClass('locked')){
+                
+                    $(this).collapse('hide');
+           
+                    
+        }
+    })
 }
 
 $(document).ready(function() {
@@ -11482,22 +11537,7 @@ $(document).ready(function() {
      */
     $('.add-item').on('click', function(e) {
         e.preventDefault();
-        
         startBlocking();
-        if ($(this).data('condiments')){
-            var url = '/ajax/getCondiments';
-            $.post(url, {condiment_type_id: $(this).data('condiments-id')}, function(data) {
-            if (data.success === true) {
-                $('#ItemOptions div.modal-content div.modal-body').html(data.markup);
-
-                bindBasketEvents();
-            }
-
-        }, 'json').always(function() {
-            stopBlocking();
-        });
-            $('#ItemOptions').modal('show');
-        }
         var url = '/ajax/addItem';
 
         $.post(url, {item: $(this).data('item-id'), section: $(this).data('section'), variation: $(this).data('variation-id')}, function(data) {
@@ -11511,7 +11551,31 @@ $(document).ready(function() {
             stopBlocking();
         });
     });
-    
+
+    $('.get-item-options').on('click', function(e) {
+        e.preventDefault();
+        $('#ItemOptions').modal('show');
+        startBlocking();
+
+        var url = '/ajax/getItemOptions';
+        $.post(url, {item: $(this).data('item-id'), variation: $(this).data('variation-id')}, function(data) {
+            if (data.success === true) {
+                $('#ItemOptions div.modal-content div.modal-body').html(data.markup);
+
+                bindBasketEvents();
+            }
+
+        }, 'json').always(function() {
+            stopBlocking();
+        });
+
+
+    });
+
+
+
+
+
     //bind any events on load
     bindBasketEvents();
 });

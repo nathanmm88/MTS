@@ -130,11 +130,18 @@ class AjaxController extends AppController {
         ));
     }
     
-    public function getCondiments(){
-        //$this->menu->getCondiments($);
-        $markup = '<h1>Condiments here!</h1>';
+    public function getItemOptions(){
+        $item_id = $this->request->data['item'];
+     
+        $condimentTypes = $this->menu->getAllCondimentsForItem($item_id);
+        $this->set('condimentTypes', $condimentTypes);
+//        $condiment_id = $this->request->data['condiment_id'];
+//        $condiments = $this->menu->getCondiments[$condiment_id];
+//        pr($condiments);
+//        $this->set('condiments', $condiments);
+//        $markup = '<h1>Condiments here!</h1>';
         $this->set('data', [
-            'markup' => $markup,
+           // 'markup' => $markup,
             'success' => true
         ]);
     }

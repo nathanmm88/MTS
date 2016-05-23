@@ -3,6 +3,7 @@
 $subTotal = $this->Entity->get('Order')->getTotal(false);
 $total = $this->Entity->get('Order')->getTotal();
 $items = $this->Entity->get('Order')->getItems();
+pr($items);
 ?>
 <?php echo $this->Form->create($order, array('novalidate' => true)); ?>
 <div id="sidebar-content">

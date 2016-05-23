@@ -81,6 +81,24 @@ class CondimentEntity extends AbstractEntity
     public function getId() {
         return $this->id;        
     }
+    
+    /**
+     * Returns the condimaent name
+     * 
+     * @return string
+     */
+    public function getName(){
+        return $this->name;
+    }
+    
+    /**
+     * Returns the item description
+     * 
+     * @return string
+     */
+    public function getDescription(){
+        return $this->description;
+    }
         
       
     /**
