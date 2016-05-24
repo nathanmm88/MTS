@@ -12,7 +12,8 @@
                                 <?php
                                 echo $this->Form->text('postcode', array(
                                     'class' => 'form-control',
-                                    'placeholder' => 'Postcode'
+                                    'placeholder' => 'Postcode',
+                                    'default' => $this->Entity->get('Order')->getAddress()->getPostcode()
                                 ))
                                 ?>
                             </div>

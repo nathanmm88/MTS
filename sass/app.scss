@@ -53,6 +53,7 @@ body.minimal{
         .or-txt{
             padding: 10px 0;
         }
+        
 
         #contactDetails{
             display: none;
@@ -68,7 +69,12 @@ body.order{
             border:1px solid #CFCFCF;
             border-radius:4px;
         }
-
+        input{
+            padding: 10px;
+            height: auto;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
         #sidebar{
             border:1px solid #CFCFCF;
             padding:0 15px 15px 15px;
@@ -93,6 +99,21 @@ body.order{
                 }
             }
 
+        }
+        label.control-label{
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        #confirmBtns{
+            margin-top: 20px;
+            margin-bottom: 20px;
+            button{
+                margin-top: 10px;
+            }
+        }
+        .error-message{
+            color: #ED1C76;
+            margin-top: 5px;
         }
     }
     a.btn-warning{

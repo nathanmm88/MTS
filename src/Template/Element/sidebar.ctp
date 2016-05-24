@@ -15,7 +15,7 @@ $items = $this->Entity->get('Order')->getItems();
                     <?php $item = $this->Entity->get('Menu')->getItem($orderItem->getItemId(), $orderItem->getVariationId()) ?>
                     <tr>
                         <td>
-                            <a class="remove-item" href="#" data-order-item="<?php echo $orderItemKey; ?>"><i class="icon_minus_alt">-</i></a> <?php echo $item->getFullName(); ?>
+                            <a class="remove-item" href="#" data-order-item="<?php echo $orderItemKey; ?>"><i class="fa fa-minus-circle"></i></a> <?php echo $item->getFullName(); ?>
                         </td>
                         <td>
                             <strong class="pull-right"><?php echo $this->Takeaway->formatMoney($item->getPrice()); ?></strong>
@@ -59,7 +59,9 @@ $items = $this->Entity->get('Order')->getItems();
     <?php } else { ?>
         <p class="alert alert-warning">Your order is empty, please use the menu to add items to your order.</p>
     <?php } ?>
-    <?php echo $this->Form->submit('Checkout', array('class' => 'btn btn-primary btn-lg btn-block')); ?> 
+        <?php if(!isset($noCheckoutBtn) || $noCheckoutBtn !== true){ ?>
+            <?php echo $this->Form->submit('Checkout', array('class' => 'btn btn-primary btn-lg btn-block')); ?>
+        <?php } ?>
     <?php if(isset($backBtn) && $backBtn === true){ ?>
         <a class="btn btn-warning btn-lg btn-block" href="<?php echo $this->Step->getStepLink('order_menu'); ?>">Back to menu</a>
     <?php } ?>

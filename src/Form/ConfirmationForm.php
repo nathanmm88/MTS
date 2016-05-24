@@ -4,6 +4,9 @@ namespace App\Form;
 
 use Cake\Validation\Validator;
 use App\Form\AbstractForm;
+use App\Entity\Order\OrderAddressEntity;
+use App\Lib\DotNotation;
+use App\Entity\OrderEntity;
 
 class ConfirmationForm extends AbstractForm {
 
@@ -60,8 +63,27 @@ class ConfirmationForm extends AbstractForm {
     }
 
     protected function _execute(array $data) {
+       // die(var_dump($data));
+        $dataDotNotation = new DotNotation($data);
+        
+        $orderEntity = new OrderEntity($this->request);
         
         //map the form data to the session
+        $orderAddressEntity = OrderAddressEntity::fromArray([
+            'address_line_one' => $dataDotNotation->get('address_line_one'),
+            'address_line_two' => $dataDotNotation->get('address_line_two'),
+            'address_line_three' => $dataDotNotation->get('address_line_three'),
+            'address_line_four' => $dataDotNotation->get('address_line_four'),
+            'postcode' => $dataDotNotation->get('postcode')
+        ]);
+        
+        $orderEntity->setAddress($orderAddressEntity)
+                ->setFirstName($dataDotNotation->get('first_name'))
+                ->setSurname($dataDotNotation->get('surname'))
+                ->setEmail($dataDotNotation->get('email'))
+                ->setTelephone($dataDotNotation->get('telephone'));
+        
+        die(pr($_SESSION));
         return true;
     }
 

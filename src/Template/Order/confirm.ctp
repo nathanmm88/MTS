@@ -1,49 +1,101 @@
 <?php echo $this->Form->create($confirmation, array('novalidate' => true)); ?>
-First Name
-    <?php echo $this->Form->text('first_name'); ?>
-    <?php echo $this->Form->isFieldError('first_name') ? $this->Form->error('first_name') : ''; ?>
-Surname
-    <?php echo $this->Form->text('surname'); ?>
-    <?php echo $this->Form->isFieldError('surname') ? $this->Form->error('surname') : ''; ?>
-Email
-    <?php echo $this->Form->text('email'); ?>
-    <?php echo $this->Form->isFieldError('email') ? $this->Form->error('email') : ''; ?>
-Telephone
-    <?php echo $this->Form->text('telephone'); ?>
-    <?php echo $this->Form->isFieldError('telephone') ? $this->Form->error('telephone') : ''; ?>
-Address line one
-    <?php echo $this->Form->text('address_line_one'); ?>
-    <?php echo $this->Form->isFieldError('address_line_one') ? $this->Form->error('address_line_one') : ''; ?>
-Address line two
-    <?php echo $this->Form->text('address_line_two'); ?>
-    <?php echo $this->Form->isFieldError('address_line_two') ? $this->Form->error('address_line_two') : ''; ?>
-Town
-    <?php echo $this->Form->text('address_line_three'); ?>
-    <?php echo $this->Form->isFieldError('address_line_three') ? $this->Form->error('address_line_three') : ''; ?>
-County
-    <?php echo $this->Form->text('address_line_four'); ?>
-    <?php echo $this->Form->isFieldError('address_line_four') ? $this->Form->error('address_line_four') : ''; ?>
-Postcode
-    <?php echo $this->Form->text('postcode'); ?>
-    <?php echo $this->Form->isFieldError('postcode') ? $this->Form->error('postcode') : ''; ?>
-    <div class="row">
-        <div  class="col-sm-6">
+<h1>Complete order</h1>
+<div class="row">
+    <div class="col-md-6">
+        <?php echo $this->Form->label('first_name', 'First name', ['class' => 'control-label']); ?>
+        <?php echo $this->Form->text('first_name', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getFirstName()]); ?>
+        <?php echo $this->Form->isFieldError('first_name') ? $this->Form->error('first_name') : ''; ?>
+    </div>
+    <div class="col-md-6">
+        <?php echo $this->Form->label('surname', 'Surname', ['class' => 'control-label']); ?>
+        <?php echo $this->Form->text('surname', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getSurname()]); ?>
+        <?php echo $this->Form->isFieldError('surname') ? $this->Form->error('surname') : ''; ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <?php echo $this->Form->label('email', 'Email address', ['class' => 'control-label']); ?>
+        <?php echo $this->Form->text('email', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getEmail()]); ?>
+        <?php echo $this->Form->isFieldError('email') ? $this->Form->error('email') : ''; ?>
+    </div>
+    <div class="col-md-6">
+        <?php echo $this->Form->label('telephone', 'Telephone', ['class' => 'control-label']); ?>
+        <?php echo $this->Form->text('telephone', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getTelephone()]); ?>
+        <?php echo $this->Form->isFieldError('telephone') ? $this->Form->error('telephone') : ''; ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <?php echo $this->Form->label('address_line_one', 'House name/number', ['class' => 'control-label']); ?>
+        <?php echo $this->Form->text('address_line_one', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineOne()]); ?>
+        <?php echo $this->Form->isFieldError('address_line_one') ? $this->Form->error('address_line_one') : ''; ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <?php echo $this->Form->label('address_line_two', 'Street', ['class' => 'control-label']); ?>
+        <?php echo $this->Form->text('address_line_two', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineTwo()]); ?>
+        <?php echo $this->Form->isFieldError('address_line_two') ? $this->Form->error('address_line_two') : ''; ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <?php echo $this->Form->label('address_line_three', 'Town', ['class' => 'control-label']); ?>
+        <?php echo $this->Form->text('address_line_three', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineThree()]); ?>
+        <?php echo $this->Form->isFieldError('address_line_three') ? $this->Form->error('address_line_three') : ''; ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <?php echo $this->Form->label('address_line_four', 'County', ['class' => 'control-label']); ?>
+        <?php echo $this->Form->text('address_line_four', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineFour()]); ?>
+        <?php echo $this->Form->isFieldError('address_line_four') ? $this->Form->error('address_line_four') : ''; ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <?php
+        $postcodeParams = ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getPostcode()];
+        if ($this->Entity->get('Order')->isDelivery()) {
+            $postcodeParams['disabled'] = 'disabled';
+        }
+        ?>
+        <?php echo $this->Form->label('postcode', 'Postcode', ['class' => 'control-label']); ?>
+        <?php echo $this->Form->text('postcode', $postcodeParams); ?>
+        <?php if ($this->Entity->get('Order')->isDelivery()) { ?>
+            <a href="<?php echo $this->Step->getStepLink('order_index'); ?>"><i>Change postcode</i></a>
+        <?php } ?>
+        <?php echo $this->Form->isFieldError('postcode') ? $this->Form->error('postcode') : ''; ?>
+    </div>
+</div>
+<div id="confirmBtns" class="row">
+    <?php if ($this->Entity->get('Takeaway')->getSettings()->hasPaymentType(\App\Entity\Takeaway\SettingsEntity::PAYMENT_METHOD_CASH, $this->Entity->get('Order')->getType())) { ?>
+        <div  class="col-md-6 text-center">
             <?php
-            echo $this->Form->button('Cash on delivery', array(
+            echo $this->Form->button('<i class="fa fa-money"></i> Pay with cash', array(
                 'div' => false,
-                'class' => 'btn btn-primary',
+                'class' => 'btn btn-primary btn-lg btn-block',
                 'name' => PAYMENT_TYPE_CASH
             ));
             ?>
         </div>
-        <div class="col-sm-6">
+    <?php } ?>
+    <?php if ($this->Entity->get('Takeaway')->getSettings()->hasPaymentType(\App\Entity\Takeaway\SettingsEntity::PAYMENT_METHOD_PAYPAL, $this->Entity->get('Order')->getType())) { ?>
+        <div class="col-sm-6 text-center">
             <?php
-            echo $this->Form->button('Pay by PayPal', array(
+            echo $this->Form->button('<i class="fa fa-paypal"></i> Pay by PayPal', array(
                 'div' => false,
-                'class' => 'btn btn-primary',
+                'class' => 'btn btn-primary btn-lg btn-block',
                 'name' => PAYMENT_TYPE_ONLINE
             ));
             ?>
         </div>
+    <?php } ?>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <a class="btn btn-warning btn-lg btn-block hidden-xs hidden-sm" href="<?php echo $this->Step->getStepLink('order_menu'); ?>">Back to menu</a>
+        <a class="btn btn-warning btn-lg btn-block hidden-md hidden-lg" href="<?php echo $this->Step->getStepLink('order_basket'); ?>">Back to basket</a>
     </div>
+</div>
 <?php echo $this->Form->end(); ?>
