@@ -35,7 +35,7 @@ class ItemEntity extends AbstractEntity
     /**
      * Order variation ID (specific to this order)
      */
-    protected $variation_id = null;
+    protected $variation_id = null;        
         
     /**
      * Any notes against the item
@@ -43,6 +43,8 @@ class ItemEntity extends AbstractEntity
      * @var string 
      */
     protected $notes = null;
+    
+   
     
     /**
      * Getters
@@ -152,5 +154,14 @@ class ItemEntity extends AbstractEntity
         $this->notes = $notes;
         return $this;
     }    
+    
+    /**
+     * Whether the item has notes
+     * 
+     * @return bool
+     */
+    public function hasNotes(){
+        return (empty($this->notes) ? false : true);
+    }
     
 }

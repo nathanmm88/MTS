@@ -3,7 +3,7 @@
 $subTotal = $this->Entity->get('Order')->getTotal(false);
 $total = $this->Entity->get('Order')->getTotal();
 $items = $this->Entity->get('Order')->getItems();
-pr($items);
+
 ?>
 <?php echo $this->Form->create($order, array('novalidate' => true)); ?>
 <div id="sidebar-content">
@@ -22,6 +22,9 @@ pr($items);
                             <strong class="pull-right"><?php echo $this->Takeaway->formatMoney($item->getPrice()); ?></strong>
                         </td>
                     </tr>
+                    <?php if ($orderItem->hasNotes()){ ?>
+                        <tr><td colspan="2" class="small"><?php echo $orderItem->getNotes(); ?></td></tr>
+                    <?php } ?>
                 <?php } ?>
                 <tr class="<?php echo $this->Entity->get('Order')->meetsMinimumOrderAmount($subTotal) ? '' : 'alert alert-warning'; ?>">
                     <td>Subtotal</td>

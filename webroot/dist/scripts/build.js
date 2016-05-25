@@ -11411,36 +11411,38 @@ function bindBasketEvents() {
      */
     $('.condiment').on('click', function(e) {
         e.preventDefault();
-        var description = $(this).html();
+               
+        //get the condiment type ID
         var type_id = $(this).parent().data('type');
 
         //set the description in the header
-        $('#condiment-desc-' + type_id).html(description);
+        $('#condiment-desc-' + type_id).html($(this).html());
 
-        //clear the selection for this condiment type
+        //clear the selection for this condiment type - remove all active classes
         $(this).parent().children('.condiment').removeClass('active');
 
-        //set this as the new condiment
+        //set this as the new condiment - add active class
         $(this).addClass('active');
 
-        //get the parent - we want to collapse this
+        //get the parent - we want to collapse this accordion
         var parent = $(this).closest('div.panel-collapse');
-        parent.collapse('toggle');
-      //  parent.removeClass('locked');
+        parent.collapse('toggle');        
 
+        //now we need to open the next panel
         //get all panels
         var panels = $('#ItemOptions div.panel-collapse');
 
         //get the next panel
-        var $next = panels.eq(panels.index(parent) + 1);
-       $next.removeClass('locked');
+        var nextPanel = panels.eq(panels.index(parent) + 1);
+        
+        //remove the locked class
+        nextPanel.removeClass('locked');
+        
         //show the next panel
-        $next.collapse('show');
+        nextPanel.collapse('show');     
 
-        $(this).closest('.condiment-desc').html('dbjksab');
-
-
-        $('#type-selection-' + type_id).val($(this).data('id'));
+        //update the hidden element with the selected condiment
+        $('#selected-condiment-' + type_id).val($(this).data('id'));
     });
 
     //when a section is opened
@@ -11449,17 +11451,14 @@ function bindBasketEvents() {
         $('.panel-collapse').not($(this))
                 .collapse('hide');
     });
-    
+
     //when a section is opened
     $('#ItemOptions div.panel-collapse').on('shown.bs.collapse', function() {
-        
-        if ($(this).hasClass('locked')){
-                
-                    $(this).collapse('hide');
-           
-                    
+        //if it has a class of locked immediately hide it
+        if ($(this).hasClass('locked')) {
+            $(this).collapse('hide');
         }
-    })
+    });
 }
 
 $(document).ready(function() {
@@ -11486,7 +11485,7 @@ $(document).ready(function() {
      * Now we have bound the click event check if we need to click it based on
      * it having a postcode already
      */
-    if($('[name="postcode"]').val() != '' && $('#wantsDelivery').length > 0){
+    if ($('[name="postcode"]').val() != '' && $('#wantsDelivery').length > 0) {
         $('#wantsDelivery').click();
     }
 
@@ -11543,46 +11542,57 @@ $(document).ready(function() {
     /**
      * When the user adds an item to the basket
      */
-    $('.add-item').on('click', function(e) {
+    $('#add-item').on('click', function(e) {
         e.preventDefault();
-        startBlocking();
+        //close the modal
+        $('#ItemOptions').modal('hide');
+        
         var url = '/ajax/addItem';
+        var data = $("#ItemOptionsForm").serialize();
 
-        $.post(url, {item: $(this).data('item-id'), section: $(this).data('section'), variation: $(this).data('variation-id')}, function(data) {
+        $.post(url, data, function(data) {
             if (data.success === true) {
+                //update the sidebar with the latest sidebar content
                 $('#sidebar-content').html(data.markup);
-
+                
+                //update the order total
+                $('.order-total').html(data.order_total);
+                
+                //bind the dynamically added elements
                 bindBasketEvents();
             }
 
         }, 'json').always(function() {
             stopBlocking();
+
         });
     });
 
+    //when the user selects an item to add
     $('.get-item-options').on('click', function(e) {
         e.preventDefault();
-        $('#ItemOptions').modal('show');
         startBlocking();
 
         var url = '/ajax/getItemOptions';
         $.post(url, {item: $(this).data('item-id'), variation: $(this).data('variation-id')}, function(data) {
             if (data.success === true) {
+                //populate the modal body with the item options markup
                 $('#ItemOptions div.modal-content div.modal-body').html(data.markup);
-                $('.order-total').html(data.order_total);
+                //show the modal as it now has the content
+                $('#ItemOptions').modal('show');
+                //bind the dynamically added elements
                 bindBasketEvents();
             }
 
         }, 'json').always(function() {
-            stopBlocking();
+
         });
-
-
     });
 
-
-
-
+    //stop blocking when the modal is closed
+    $('.modal').on('hidden.bs.modal', function() {
+        stopBlocking();
+    })
 
     //bind any events on load
     bindBasketEvents();

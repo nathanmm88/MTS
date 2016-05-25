@@ -89,15 +89,16 @@ class AjaxController extends AppController {
 
         //set the default response
         $success = false;
-
+        
         //get the item id from the post data
         $itemId = $this->request->data['item'];
         $variationId = $this->request->data['variation'];
         $section = $this->request->data['section'];
-
+        $notes = $this->request->data['notes'];       
+        
         if ($this->menu->itemExists($itemId, $variationId, $section)) {
             //add this item to the order;
-            $this->order->addItem(ItemEntity::fromArray(array('item_id' => $itemId, 'section_id' => $section, 'variation_id' => $variationId)), $this->request);
+            $this->order->addItem(ItemEntity::fromArray(array('item_id' => $itemId, 'section_id' => $section, 'variation_id' => $variationId, 'notes' => $notes)), $this->request);
             $success = true;
         }
 
@@ -132,18 +133,23 @@ class AjaxController extends AppController {
         ));
     }
     
+    /**
+     * When an item is selected we display a modal
+     * containing the condiments and an input for notes
+     */
     public function getItemOptions(){
+        //get the posted data
         $item_id = $this->request->data['item'];
-     
+        $variation_id = $this->request->data['variation'];
+      
+        //get all condiment types along with the condiments
         $condimentTypes = $this->menu->getAllCondimentsForItem($item_id);
+        
+        //set what we need to the view
         $this->set('condimentTypes', $condimentTypes);
-//        $condiment_id = $this->request->data['condiment_id'];
-//        $condiments = $this->menu->getCondiments[$condiment_id];
-//        pr($condiments);
-//        $this->set('condiments', $condiments);
-//        $markup = '<h1>Condiments here!</h1>';
-        $this->set('data', [
-           // 'markup' => $markup,
+        $this->set('itemId', $item_id);
+        $this->set('variationId', $variation_id);
+        $this->set('data', [           
             'success' => true
         ]);
     }
