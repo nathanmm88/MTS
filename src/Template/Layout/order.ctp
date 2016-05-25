@@ -15,21 +15,7 @@
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <?= $this->Html->charset() ?>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>
-            <?= $this->fetch('title') ?>
-        </title>
-        <?= $this->Html->meta('icon') ?>
-
-        <?= $this->Html->css('/dist/css/app.css') ?>
-        <?= $this->Html->script('/dist/scripts/build.js') ?>
-
-        <?= $this->fetch('meta') ?>
-        <?= $this->fetch('css') ?>
-        <?= $this->fetch('script') ?>
-    </head>
+    <?php echo $this->element('Layout/head'); ?>
     <body class="order">
         <div class="container">
             <div class="row">
@@ -38,17 +24,18 @@
                 </div>            
             </div>
             <div class="row">
-                <div class="col-md-9" >
+                <div class="<?php echo (!isset($noSidebar) || $noSidebar !== true) ? 'col-md-9' : 'col-xs-12'; ?>" >
                     <div id="menu">
                         <?= $this->fetch('content') ?>
                     </div>
                 </div>
-                
-                <div class="col-md-3 hidden-xs" >
-                    <div id="sidebar">
-                        <?= $this->element('sidebar') ?>
+                <?php if(!isset($noSidebar) || $noSidebar !== true){ ?>
+                    <div class="col-md-3 hidden-xs hidden-sm" >
+                        <div id="sidebar">
+                            <?= $this->element('sidebar') ?>
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
 

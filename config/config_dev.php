@@ -23,5 +23,12 @@ return [
             "acct1.AppId" => "APP-80W284485P519543T"
         ]
     ],
-    'log_api_calls' => true    
+    /**
+     * Set if we want to log the api calls
+     */
+    'log_api_calls' => true,
+    /**
+     * The timeout we want to enforce when the user is on the order system (minutes)
+     */
+    'timeout' => 10
 ];

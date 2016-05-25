@@ -11374,7 +11374,7 @@ function bindBasketEvents() {
         $.post(url, {item: $(this).data('order-item')}, function(data) {
             if (data.success === true) {
                 $('#sidebar-content').html(data.markup);
-
+                $('.order-total').html(data.order_total);
                 bindBasketEvents();
             }
 
@@ -11561,7 +11561,7 @@ $(document).ready(function() {
         $.post(url, {item: $(this).data('item-id'), variation: $(this).data('variation-id')}, function(data) {
             if (data.success === true) {
                 $('#ItemOptions div.modal-content div.modal-body').html(data.markup);
-
+                $('.order-total').html(data.order_total);
                 bindBasketEvents();
             }
 

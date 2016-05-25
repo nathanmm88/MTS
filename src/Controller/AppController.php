@@ -52,6 +52,13 @@ class AppController extends Controller {
     public $current_step = '';
     
     /**
+     *The default step that should be used if the user has no step yet
+     * 
+     * @var string
+     */
+    public $default_step = '';
+    
+    /**
      * The current step
      * 
      * @var App\Entity\TakeawayEntity
@@ -182,13 +189,16 @@ class AppController extends Controller {
         //if null or not in the restricted steps ignore this
         if(!is_null($this->steps) && in_array($this->current_step, $this->steps)){
             
+            //now we are on a locked down part of the journey lets make sure the session hasnt timed out
+            $this->_checkSessionTimeout();
+            
             //get the current step
             $currentSessionStep = $this->step->getCurrentStep();
             
             //check we have a step
             if(is_null($currentSessionStep)){
                 //get the default step
-                $defaultStep = reset($this->steps);
+                $defaultStep = $this->default_step;
                 //redirect to the first step
                 if($defaultStep != $this->current_step){
                     $this->_redirectToStep($defaultStep);
@@ -201,6 +211,17 @@ class AppController extends Controller {
                 //redirect to the step we should be on
                 $this->_redirectToStep($currentSessionStep);
             }
+        }
+    }
+    
+    /**
+     * Checks the session timeout
+     */
+    protected function _checkSessionTimeout(){
+        
+        //if the session has timed out
+        if($this->step->hasTimedOut(true)){
+            throw new \App\Exception\SessionTimeoutException('Session has timed out');
         }
     }
     
