@@ -41,6 +41,34 @@ class OrderEntity extends AbstractEntity
     public $address = '';
     
     /**
+     * First name
+     * 
+     * @var string
+     */
+    public $first_name = '';
+    
+    /**
+     * Surname
+     * 
+     * @var string
+     */
+    public $surname = '';
+    
+    /**
+     * Fhone
+     * 
+     * @var string
+     */
+    public $telephone = '';
+    
+    /**
+     * Email address
+     * 
+     * @var string
+     */
+    public $email = '';
+    
+    /**
      * Returns the order items
      * 
      * @return \App\Entity\Order\ItemEntity
@@ -141,6 +169,43 @@ class OrderEntity extends AbstractEntity
     }
     
     /**
+     * Returns the first name
+     * 
+     * @return string
+     */
+    public function getFirstName() {
+        return $this->_get('first_name');
+    }
+
+    /**
+     * Surname
+     * 
+     * @return string
+     */
+    public function getSurname() {
+        return $this->_get('surname');
+    }
+
+    /**
+     * Returns the telephone
+     * 
+     * @return string
+     */
+    public function getTelephone() {
+        return $this->_get('telephone');
+    }
+
+    /**
+     * Returns the email
+     * 
+     * @return string
+     */
+    public function getEmail() {
+        return $this->_get('email');
+    }
+
+        
+    /**
      * Sets the order type
      * 
      * @param string $type
@@ -159,6 +224,49 @@ class OrderEntity extends AbstractEntity
      */
     public function setAddress(OrderAddressEntity $address){
         $this->_set('address', $address->toArray());
+        return $this;
+    }
+    
+    /**
+     * Sets the first name
+     * 
+     * @param string $first_name
+     * @return \App\Entity\OrderEntity
+     */
+    public function setFirstName($first_name) {
+        $this->_set('first_name', $first_name);
+        return $this;
+    }
+
+    /**
+     * Sets the surname
+     * 
+     * @param string $surname
+     * @return \App\Entity\OrderEntity
+     */
+    public function setSurname($surname) {
+        $this->_set('surname', $surname);
+        return $this;
+    }
+
+    /**
+     * Sets the telephone
+     * @param type $telephone
+     * @return \App\Entity\OrderEntity
+     */
+    public function setTelephone($telephone) {
+        $this->_set('telephone', $telephone);
+        return $this;
+    }
+
+    /**
+     * Sets the email
+     * 
+     * @param string $email
+     * @return \App\Entity\OrderEntity
+     */
+    public function setEmail($email) {
+        $this->_set('email', $email);
         return $this;
     }
 

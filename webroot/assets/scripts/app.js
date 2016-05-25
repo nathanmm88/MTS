@@ -186,6 +186,14 @@ $(document).ready(function() {
     });
 
     /**
+     * Now we have bound the click event check if we need to click it based on
+     * it having a postcode already
+     */
+    if($('[name="postcode"]').val() != '' && $('#wantsDelivery').length > 0){
+        $('#wantsDelivery').click();
+    }
+
+    /**
      * When the user searches for a postcode
      */
     $('#searchPostcode').on('click', function(e) {

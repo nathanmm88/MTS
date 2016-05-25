@@ -65,6 +65,7 @@ class OrderController extends AppController {
         $this->viewBuilder()->layout('order');
 
         $this->_checkStep();
+        $this->step->setLastAccessed();
     }
 
     /**
@@ -167,6 +168,7 @@ class OrderController extends AppController {
             }
         }
         $this->set('confirmation', $confirmationForm);
+        $this->set('noCheckoutBtn', true);
     }
 
 }
