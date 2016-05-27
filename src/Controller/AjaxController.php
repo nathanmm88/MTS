@@ -21,6 +21,7 @@ use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\I18n\Number;
 use App\Entity\Order\ItemEntity;
+use App\Entity\Order\OrderItemCondimentEntity;
 use App\Form\OrderForm;
 
 /**
@@ -94,11 +95,21 @@ class AjaxController extends AppController {
         $itemId = $this->request->data['item'];
         $variationId = $this->request->data['variation'];
         $section = $this->request->data['section'];
-        $notes = $this->request->data['notes'];       
+        $notes = $this->request->data['notes']; 
+        $condiments = $this->request->data['selected-condiment'];              
         
         if ($this->menu->itemExists($itemId, $variationId, $section)) {
             //add this item to the order;
             $this->order->addItem(ItemEntity::fromArray(array('item_id' => $itemId, 'section_id' => $section, 'variation_id' => $variationId, 'notes' => $notes)), $this->request);
+            
+            //get the internal order item ID of this item
+            $orderItemId = $this->order->getLastOrderItemId();
+            
+            //save each condiment to the session
+            foreach ($condiments as $type_id => $condiment_id) {
+                $this->order->addCondiment(OrderItemCondimentEntity::fromArray(['id' => $condiment_id, 'type_id' => $type_id, 'item_id' => $orderItemId]));
+            }
+            
             $success = true;
         }
 

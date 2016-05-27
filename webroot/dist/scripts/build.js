@@ -11410,8 +11410,7 @@ function bindBasketEvents() {
      * If the user selects a condiment
      */
     $('.condiment').on('click', function(e) {
-        e.preventDefault();
-               
+        e.preventDefault();          
         //get the condiment type ID
         var type_id = $(this).parent().data('type');
 
@@ -11448,9 +11447,9 @@ function bindBasketEvents() {
     //when a section is opened
     $('#ItemOptions div.panel-collapse').on('show.bs.collapse', function() {
         //close all others
-        $('.panel-collapse').not($(this))
+        $('#ItemOptions div.panel-collapse').not($(this))
                 .collapse('hide');
-    });
+    }); 
 
     //when a section is opened
     $('#ItemOptions div.panel-collapse').on('shown.bs.collapse', function() {

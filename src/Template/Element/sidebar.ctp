@@ -22,9 +22,9 @@ $items = $this->Entity->get('Order')->getItems();
                             <strong class="pull-right"><?php echo $this->Takeaway->formatMoney($item->getPrice()); ?></strong>
                         </td>
                     </tr>
-                    <?php if ($orderItem->hasNotes()){ ?>
+                    <?php if ($orderItem->hasNotes()) { ?>
                         <tr><td colspan="2" class="small"><?php echo $orderItem->getNotes(); ?></td></tr>
-                    <?php } ?>
+                    <?php } ?>                   
                 <?php } ?>
                 <tr class="<?php echo $this->Entity->get('Order')->meetsMinimumOrderAmount($subTotal) ? '' : 'alert alert-warning'; ?>">
                     <td>Subtotal</td>
@@ -63,10 +63,10 @@ $items = $this->Entity->get('Order')->getItems();
     <?php } else { ?>
         <p class="alert alert-warning">Your order is empty, please use the menu to add items to your order.</p>
     <?php } ?>
-        <?php if(!isset($noCheckoutBtn) || $noCheckoutBtn !== true){ ?>
-            <?php echo $this->Form->submit('Checkout', array('class' => 'btn btn-primary btn-lg btn-block')); ?>
-        <?php } ?>
-    <?php if(isset($backBtn) && $backBtn === true){ ?>
+    <?php if (!isset($noCheckoutBtn) || $noCheckoutBtn !== true) { ?>
+        <?php echo $this->Form->submit('Checkout', array('class' => 'btn btn-primary btn-lg btn-block')); ?>
+    <?php } ?>
+    <?php if (isset($backBtn) && $backBtn === true) { ?>
         <a class="btn btn-warning btn-lg btn-block" href="<?php echo $this->Step->getStepLink('order_menu'); ?>">Back to menu</a>
     <?php } ?>
 </div>
