@@ -179,6 +179,9 @@ class AppController extends Controller {
         ) {
             $this->set('_serialize', true);
         }
+        if($this->step->getCurrentStep() === 'order_confirm'){
+            $this->set('noCheckoutBtn', true);
+        }
     }
     
     /**

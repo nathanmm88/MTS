@@ -161,14 +161,16 @@ class OrderController extends AppController {
     public function confirm() {
         $confirmationForm = new ConfirmationForm($this->request);
         if ($this->request->is('post')) {
-            if ($confirmationForm->execute($this->request->data)) {
-                die('success');
-            } else {
-                
+            if($this->order->isValidOrder()){
+                if ($confirmationForm->execute($this->request->data)) {
+                    die('success');
+                } else {
+
+                }
             }
         }
         $this->set('confirmation', $confirmationForm);
-        $this->set('noCheckoutBtn', true);
+        //$this->set('noCheckoutBtn', true);
     }
 
 }

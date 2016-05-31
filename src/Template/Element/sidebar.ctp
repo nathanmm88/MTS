@@ -60,7 +60,7 @@ $items = $this->Entity->get('Order')->getItems();
         <p class="alert alert-warning">Your order is empty, please use the menu to add items to your order.</p>
     <?php } ?>
         <?php if(!isset($noCheckoutBtn) || $noCheckoutBtn !== true){ ?>
-            <?php echo $this->Form->submit('Checkout', array('class' => 'btn btn-primary btn-lg btn-block')); ?>
+            <?php echo $this->Form->submit('Checkout', array('class' => 'btn btn-primary btn-lg btn-block', 'disabled' => !$this->Entity->get('Order')->isValidOrder())); ?>
         <?php } ?>
     <?php if(isset($backBtn) && $backBtn === true){ ?>
         <a class="btn btn-warning btn-lg btn-block" href="<?php echo $this->Step->getStepLink('order_menu'); ?>">Back to menu</a>

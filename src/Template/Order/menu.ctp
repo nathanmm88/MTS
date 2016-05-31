@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-xs-12 hidden-md hidden-lg">
         <div id="view-basket-mobile">
-            <a href="<?php echo $this->Step->getStepLink('order_basket'); ?>"><i class="fa fa-shopping-bag" aria-hidden="true"></i> <span class="order-total"><?php echo $this->Takeaway->formatMoney($this->Entity->get('Order')->getTotal()); ?></span></a>
+            <a href="<?php echo $this->Step->getStepLink('order_basket'); ?>"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <span class="order-total"><?php echo $this->Takeaway->formatMoney($this->Entity->get('Order')->getTotal()); ?></span></a>
         </div>
     </div>
 </div>
