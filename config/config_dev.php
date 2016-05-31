@@ -30,5 +30,5 @@ return [
     /**
      * The timeout we want to enforce when the user is on the order system (minutes)
      */
-    'timeout' => 10
+    'timeout' => 60
 ];

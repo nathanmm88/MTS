@@ -139,7 +139,9 @@ class AppController extends Controller {
         
         //make sure we call the settings everytime once the app has initialised 
         //but before we do anything
-        $this->Api->setSettings();
+        if (!$this->request->is('ajax')){            
+            $this->Api->setSettings();
+        }
     }
     
     

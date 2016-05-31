@@ -373,7 +373,7 @@ class OrderEntity extends AbstractEntity
         return $format === false ? $delay : $delay->format($format);
     }
     
-     /**
+    /**
      * Returns the internal order ID of the latest item
      * 
      * @return int
@@ -410,51 +410,5 @@ class OrderEntity extends AbstractEntity
         $this->_set('condiments', $condiments);
         
         return $this;        
-
-    }
-    
-    /**
-     * Checks is an order can be processed
-     * 
-     * this can be used to add a disabled class 
-     * 
-     * @return boolean
-     */
-    public function isValidOrder(){
-        
-        //default return
-        $return = true;
-        
-        //get the takeaway entity as we need to access the settings
-        $takeawayEntity = new TakeawayEntity($this->request);
-        
-        //get the sub total before delivery
-        $total = $this->getTotal(false);
-        
-        //add any delivery specific checks
-        if($this->isType(TakeawayEntity::ORDER_TYPE_DELIVERY)){
-            //check we are accepting delivery orders
-            if(!$takeawayEntity->getSettings()->getAcceptDeliveryOrders()){
-                $return = false;
-            }
-            //now lets check we meet the minimum order amount
-            if($takeawayEntity->getSettings()->getDeliveryMinOrder() < $total){
-                $return = false;
-            }
-        } else if($this->isType(TakeawayEntity::ORDER_TYPE_COLLECTION)){
-            //add any collection specific checks
-            //check we are accepting delivery orders
-            if(!$takeawayEntity->getSettings()->getAcceptCollectionOrders()){
-                $return = false;
-            }
-            //now lets check we meet the minimum order amount
-            if($takeawayEntity->getSettings()->getCollectionMinOrder() < $total){
-                $return = false;
-            }
-        }
-        
-        //return our result
-        return $return;
-        
     }
 }

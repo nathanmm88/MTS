@@ -94,6 +94,7 @@ class GetMenuCall extends AbstractCall {
                     //save this entity to the session
                     $this->menu->addVariation($variationEntity);
                 }
+                
                 //loop through the condiment types
                 foreach ($itemDotNotation->get('CondimentTypes') as $condimentType) {
 
@@ -126,6 +127,7 @@ class GetMenuCall extends AbstractCall {
 
                         //save this entity to the session
                         $this->menu->addCondiment($condimentEntity);
+                        
                     }
                 }
             }

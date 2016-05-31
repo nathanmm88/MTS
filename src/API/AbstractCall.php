@@ -76,7 +76,7 @@ abstract class AbstractCall extends AbstractEntity {
      * 
      */
     protected function _setToken() {
-        if (!$this->security->hasAPIToken()) {
+       // if (!$this->security->hasAPIToken()) {
             $response = $this->makeRequest(
                     'Token', 'grant_type=' . Configure::read('api.grant_type') . '&username=' . Configure::read('api.user') . '&password=' . Configure::read('api.password'), false
             );
@@ -91,7 +91,7 @@ abstract class AbstractCall extends AbstractEntity {
 
             $this->security->setAPIToken($response['access_token'])
                     ->setTokenType($response['token_type']);
-        }
+       // }
     }
     
     /**

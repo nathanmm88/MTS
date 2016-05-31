@@ -21,6 +21,7 @@ use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\I18n\Number;
 use App\Entity\Order\ItemEntity;
+use App\Entity\Order\OrderItemCondimentEntity;
 use App\Form\OrderForm;
 
 /**
@@ -89,15 +90,26 @@ class AjaxController extends AppController {
 
         //set the default response
         $success = false;
-
+        
         //get the item id from the post data
         $itemId = $this->request->data['item'];
         $variationId = $this->request->data['variation'];
         $section = $this->request->data['section'];
-
+        $notes = $this->request->data['notes']; 
+        $condiments = $this->request->data['selected-condiment'];              
+        
         if ($this->menu->itemExists($itemId, $variationId, $section)) {
             //add this item to the order;
-            $this->order->addItem(ItemEntity::fromArray(array('item_id' => $itemId, 'section_id' => $section, 'variation_id' => $variationId)), $this->request);
+            $this->order->addItem(ItemEntity::fromArray(array('item_id' => $itemId, 'section_id' => $section, 'variation_id' => $variationId, 'notes' => $notes)), $this->request);
+            
+            //get the internal order item ID of this item
+            $orderItemId = $this->order->getLastOrderItemId();
+            
+            //save each condiment to the session
+            foreach ($condiments as $type_id => $condiment_id) {
+                $this->order->addCondiment(OrderItemCondimentEntity::fromArray(['id' => $condiment_id, 'type_id' => $type_id, 'item_id' => $orderItemId]));
+            }
+            
             $success = true;
         }
 
@@ -132,11 +144,23 @@ class AjaxController extends AppController {
         ));
     }
     
-    public function getCondiments(){
-        //$this->menu->getCondiments($);
-        $markup = '<h1>Condiments here!</h1>';
-        $this->set('data', [
-            'markup' => $markup,
+    /**
+     * When an item is selected we display a modal
+     * containing the condiments and an input for notes
+     */
+    public function getItemOptions(){
+        //get the posted data
+        $item_id = $this->request->data['item'];
+        $variation_id = $this->request->data['variation'];
+      
+        //get all condiment types along with the condiments
+        $condimentTypes = $this->menu->getAllCondimentsForItem($item_id);
+        
+        //set what we need to the view
+        $this->set('condimentTypes', $condimentTypes);
+        $this->set('itemId', $item_id);
+        $this->set('variationId', $variation_id);
+        $this->set('data', [           
             'success' => true
         ]);
     }

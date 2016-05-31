@@ -232,7 +232,8 @@ class MenuEntity extends AbstractEntity
      */
     public function getCondimentTypes($itemId = null){
         //get the items
-        $condimentTypes = $this->_get('condimentTypes');
+        $condimentTypes = $this->_get('condiment_types');
+        
         //wont be an array if none have been set
         if(!is_array($condimentTypes)){
             $condimentTypes = [];
@@ -240,14 +241,16 @@ class MenuEntity extends AbstractEntity
         //set if we should be filtering
         $filter = is_null($itemId) ? false : true;
         //convert to objects
-        foreach($condimentTypes as $id => $condimentType){
+        foreach($condimentTypes as $id => $condimentType){            
             //add if we are not filtering or the id's match
-            if(!$filter || $itemId === $condimentType['item_id']){
+            if(!$filter || $itemId == $condimentType['item_id']){
+                unset($condimentType['sub_prefix']);
                 $condimentTypes[$id] = CondimentTypeEntity::fromArray($condimentType, $this->request);
             } else {
                 unset($condimentTypes[$id]);
             }
         }
+   
         //return the new objects
         return $condimentTypes;
     }
@@ -268,8 +271,10 @@ class MenuEntity extends AbstractEntity
         $filter = is_null($condimentTypeId) ? false : true;
         //convert to objects
         foreach($condiments as $id => $condiment){
+            
             //add if we are not filtering or the id's match
-            if(!$filter || $condimentTypeId === $condiment['condiment_type_id']){
+            if(!$filter || $condimentTypeId == $condiment['condiment_type_id']){
+                unset($condiment['sub_prefix']);
                 $condiments[$id] = CondimentEntity::fromArray($condiment, $this->request);
             } else {
                 unset($condiments[$id]);
@@ -548,5 +553,25 @@ class MenuEntity extends AbstractEntity
         //set the new condiment types
         $this->_set('condiments', $condiments);
         return $this;
+    }
+    
+    /**
+     * Return all condiment types and child items for a given item
+     * 
+     * @param type $item_id
+     * @return type
+     */
+    public function getAllCondimentsForItem($item_id){
+        //get the condiment types
+        $condimentTypes = $this->getCondimentTypes($item_id);      
+  
+        //for each type
+        foreach ($condimentTypes as $key => $condimentType) {
+            //add the actual conditments
+            $condimentTypes[$key]->setCondiments($this->getCondiments($condimentType->getId()));
+        }
+        
+        //return the result
+        return $condimentTypes;
     }
  }

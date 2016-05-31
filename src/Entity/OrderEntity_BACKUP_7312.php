@@ -373,47 +373,8 @@ class OrderEntity extends AbstractEntity
         return $format === false ? $delay : $delay->format($format);
     }
     
-     /**
-     * Returns the internal order ID of the latest item
-     * 
-     * @return int
-     */
-    public function getLastOrderItemId(){
-        //get all items
-        $items = $this->getItems();
-        
-        //move the pointer to the end
-        end($items);         
-        
-        //return the key of the end item
-        return key($items);
-    }
-    
     /**
-     * Adds a condiment to the order
-     * 
-     * @param \App\Entity\Order\OrderItemCondimentEntity $condiment
-     * @return \App\Entity\OrderEntity
-     */
-    public function addCondiment(OrderItemCondimentEntity $condiment){
-        //get the current condiments
-        $condiments = $this->_get('condiments');
-        
-        //if null default to an array
-        if (is_null($condiments)){
-            $condiments = [];
-        }
-    
-        $condiments[] = $condiment->toArray();
-        
-        //set the items back to the entity
-        $this->_set('condiments', $condiments);
-        
-        return $this;        
-
-    }
-    
-    /**
+<<<<<<< HEAD
      * Checks is an order can be processed
      * 
      * this can be used to add a disabled class 
@@ -455,6 +416,43 @@ class OrderEntity extends AbstractEntity
         
         //return our result
         return $return;
+=======
+     * Returns the internal order ID of the latest item
+     * 
+     * @return int
+     */
+    public function getLastOrderItemId(){
+        //get all items
+        $items = $this->getItems();
         
+        //move the pointer to the end
+        end($items);         
+        
+        //return the key of the end item
+        return key($items);
+    }
+    
+    /**
+     * Adds a condiment to the order
+     * 
+     * @param \App\Entity\Order\OrderItemCondimentEntity $condiment
+     * @return \App\Entity\OrderEntity
+     */
+    public function addCondiment(OrderItemCondimentEntity $condiment){
+        //get the current condiments
+        $condiments = $this->_get('condiments');
+        
+        //if null default to an array
+        if (is_null($condiments)){
+            $condiments = [];
+        }
+    
+        $condiments[] = $condiment->toArray();
+        
+        //set the items back to the entity
+        $this->_set('condiments', $condiments);
+        
+        return $this;        
+>>>>>>> 5a211e649e024c1cf121e23cb2906f29a5bb538b
     }
 }

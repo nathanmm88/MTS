@@ -40,6 +40,13 @@ class CondimentTypeEntity extends AbstractEntity
      * @var string 
      */
     protected $description = null;     
+    
+    /**
+     * Array of condiments for this type
+     * 
+     * @var array
+     */
+    protected $condiments = null;
 
     /**
      * Getters
@@ -53,7 +60,24 @@ class CondimentTypeEntity extends AbstractEntity
     public function getId() {
         return $this->id;        
     }
-        
+    
+    /**
+     * Returns the condiment type description
+     * 
+     * @return type
+     */
+    public function getDescription(){
+        return $this->description;
+    } 
+    
+    /**
+     * Returns the list of condiments against this type
+     * 
+     * @return type
+     */
+    public function getCondiments(){
+        return $this->condiments;
+    }
       
     /**
      * Setters
@@ -90,5 +114,14 @@ class CondimentTypeEntity extends AbstractEntity
     public function setDescription($description){
         $this->description = $description;
         return $this;
-    }                      
+    }       
+    
+    /**
+     * Set the condiments against the type
+     * 
+     * @param type $condiments
+     */
+    public function setCondiments($condiments){
+        $this->condiments = $condiments;
+    }
 }
