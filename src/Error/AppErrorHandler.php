@@ -23,7 +23,8 @@ class AppErrorHandler extends ErrorHandler
      */
     public function _displayException($exception)
     {
-        
+        //TODO:: add logging
+        //die(var_dump($exception));   
         if ($exception instanceof SessionTimeoutException) {
             $this->_redirect('/error/sessionTimeout');
         } else { 

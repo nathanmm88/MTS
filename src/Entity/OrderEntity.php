@@ -8,6 +8,7 @@ use App\Entity\Order\OrderAddressEntity;
 use App\Entity\MenuEntity;
 use App\Entity\TakeawayEntity;
 use App\Entity\Order\OrderItemCondimentEntity;
+use App\Lib\Functions;
 
 
 class OrderEntity extends AbstractEntity
@@ -69,6 +70,20 @@ class OrderEntity extends AbstractEntity
      * @var string
      */
     public $email = '';
+    
+    /**
+     * Delivery time
+     * 
+     * @var string
+     */
+    public $delivery_time = '';
+    
+    /**
+     * Collection time
+     * 
+     * @var string
+     */
+    public $collection_time = '';
     
     /**
      * Returns the order items
@@ -205,7 +220,93 @@ class OrderEntity extends AbstractEntity
     public function getEmail() {
         return $this->_get('email');
     }
+    
+    /**
+     * Returns the delivery time
+     * 
+     * @return int
+     */
+    public function getDeliveryTime() {
+        return $this->_get('delivery_time');
+    }
+    
+    /**
+     * Returns the delivery time options
+     * 
+     * @return array
+     */
+    public function getDeliveryTimeOptions(){
+        
+        //the array we want to store our times in
+        $return = array('' => 'A.S.A.P');
+        
+        //get the takeaway entity
+        $takeawayEntity = new TakeawayEntity($this->request);
+        
+        //get the time the takeaway is open until
+        $maxTime = $takeawayEntity->getMaxOpeningTime();
 
+        $dateTime = new \DateTime();
+
+        $dateTime->add(new \DateInterval('PT' . $takeawayEntity->getSettings()->getCurrentDeliveryTime() . 'M'));
+        
+        $dateTime = Functions::roundTime($dateTime->getTimestamp(), 15);
+
+        $loop = 1;
+        
+        while($dateTime->getTimestamp() < $maxTime && $loop < 30){
+            $return[$dateTime->getTimestamp()] = $dateTime->format('H:ia');
+            $dateTime->add(new \DateInterval('PT15M'));
+            $loop++;
+        }
+        
+        return $return;
+    }
+    
+    /**
+     * Returns the collection time options
+     * 
+     * @return array
+     */
+    public function getCollectionTimeOptions(){
+        
+        //the array we want to store our times in
+        $return = array('' => 'A.S.A.P');
+        
+        //get the takeaway entity
+        $takeawayEntity = new TakeawayEntity($this->request);
+        
+        //get the time the takeaway is open until
+        $maxTime = $takeawayEntity->getMaxOpeningTime();
+
+        $dateTime = new \DateTime();
+
+        $dateTime->add(new \DateInterval('PT' . $takeawayEntity->getSettings()->getCurrentCollectionTime() . 'M'));
+        
+        $dateTime = Functions::roundTime($dateTime->getTimestamp(), 15);
+
+        $loop = 1;
+        
+        while($dateTime->getTimestamp() < $maxTime && $loop < 30){
+            $return[$dateTime->getTimestamp()] = $dateTime->format('H:ia');
+            $dateTime->add(new \DateInterval('PT15M'));
+            $loop++;
+        }
+        
+        return $return;
+    }
+    
+
+    /**
+     * Returns the collection time
+     * 
+     * @return int
+     */
+    public function getCollectionTime() {
+        return $this->_get('collection_time');
+    }
+
+    
         
     /**
      * Sets the order type
@@ -414,6 +515,28 @@ class OrderEntity extends AbstractEntity
     }
     
     /**
+     * Sets the delivery time
+     * 
+     * @param int $delivery_time
+     * @return \App\Entity\OrderEntity
+     */
+    public function setDeliveryTime($delivery_time) {
+        $this->_set('delivery_time', $delivery_time);
+        return $this;
+    }
+
+    /**
+     * Sets the collection time
+     * 
+     * @param int $collection_time
+     * @return \App\Entity\OrderEntity
+     */
+    public function setCollectionTime($collection_time) {
+        $this->_set('collection_time', $collection_time);
+        return $this;
+    }
+
+    /**
      * Checks is an order can be processed
      * 
      * this can be used to add a disabled class 
@@ -433,12 +556,14 @@ class OrderEntity extends AbstractEntity
         
         //add any delivery specific checks
         if($this->isType(TakeawayEntity::ORDER_TYPE_DELIVERY)){
+            
             //check we are accepting delivery orders
             if(!$takeawayEntity->getSettings()->getAcceptDeliveryOrders()){
                 $return = false;
             }
+
             //now lets check we meet the minimum order amount
-            if($takeawayEntity->getSettings()->getDeliveryMinOrder() < $total){
+            if($total < $takeawayEntity->getSettings()->getDeliveryMinOrder()){
                 $return = false;
             }
         } else if($this->isType(TakeawayEntity::ORDER_TYPE_COLLECTION)){
@@ -448,7 +573,7 @@ class OrderEntity extends AbstractEntity
                 $return = false;
             }
             //now lets check we meet the minimum order amount
-            if($takeawayEntity->getSettings()->getCollectionMinOrder() < $total){
+            if($total < $takeawayEntity->getSettings()->getCollectionMinOrder()){
                 $return = false;
             }
         }

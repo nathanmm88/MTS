@@ -170,7 +170,6 @@ class OrderController extends AppController {
             }
         }
         $this->set('confirmation', $confirmationForm);
-        //$this->set('noCheckoutBtn', true);
     }
 
 }

@@ -183,6 +183,35 @@ class TakeawayEntity extends AbstractEntity
     }
     
     /**
+     * Returns the max opening time for the day, this is because we can have 
+     * more than one opening time in a day
+     */
+    public function getMaxOpeningTime($day = null){
+        
+        //default value to return
+        $return = 0;
+        
+        //if null then get today
+        if(is_null($day)){
+            $day = date('l');
+        }
+        
+        $openingHours = $this->getOpeningHours(true);
+        
+        if(array_key_exists($day, $openingHours)){
+            foreach($openingHours[$day] as $openingHours){
+                $time = strtotime(date('Y-m-d ') . $openingHours['EndTime']);
+                if($time > $return){
+                    $return = $time;
+                }
+            }
+        }
+        
+        //return the latest found time
+        return $return;
+    }
+    
+    /**
      * Returns the delivery charges
      * 
      * @return array

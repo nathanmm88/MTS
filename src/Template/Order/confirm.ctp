@@ -26,30 +26,49 @@
 </div>
 <div class="row">
     <div class="col-md-6">
-        <?php echo $this->Form->label('address_line_one', 'House name/number', ['class' => 'control-label']); ?>
-        <?php echo $this->Form->text('address_line_one', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineOne()]); ?>
-        <?php echo $this->Form->isFieldError('address_line_one') ? $this->Form->error('address_line_one') : ''; ?>
+        <div class="row">
+            <div class="col-md-12">
+                <?php echo $this->Form->label('address_line_one', 'House name/number', ['class' => 'control-label']); ?>
+                <?php echo $this->Form->text('address_line_one', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineOne()]); ?>
+                <?php echo $this->Form->isFieldError('address_line_one') ? $this->Form->error('address_line_one') : ''; ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php echo $this->Form->label('address_line_two', 'Street', ['class' => 'control-label']); ?>
+                <?php echo $this->Form->text('address_line_two', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineTwo()]); ?>
+                <?php echo $this->Form->isFieldError('address_line_two') ? $this->Form->error('address_line_two') : ''; ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php echo $this->Form->label('address_line_three', 'Town', ['class' => 'control-label']); ?>
+                <?php echo $this->Form->text('address_line_three', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineThree()]); ?>
+                <?php echo $this->Form->isFieldError('address_line_three') ? $this->Form->error('address_line_three') : ''; ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php echo $this->Form->label('address_line_four', 'County', ['class' => 'control-label']); ?>
+                <?php echo $this->Form->text('address_line_four', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineFour()]); ?>
+                <?php echo $this->Form->isFieldError('address_line_four') ? $this->Form->error('address_line_four') : ''; ?>
+            </div>
+        </div>
     </div>
-</div>
-<div class="row">
     <div class="col-md-6">
-        <?php echo $this->Form->label('address_line_two', 'Street', ['class' => 'control-label']); ?>
-        <?php echo $this->Form->text('address_line_two', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineTwo()]); ?>
-        <?php echo $this->Form->isFieldError('address_line_two') ? $this->Form->error('address_line_two') : ''; ?>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <?php echo $this->Form->label('address_line_three', 'Town', ['class' => 'control-label']); ?>
-        <?php echo $this->Form->text('address_line_three', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineThree()]); ?>
-        <?php echo $this->Form->isFieldError('address_line_three') ? $this->Form->error('address_line_three') : ''; ?>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <?php echo $this->Form->label('address_line_four', 'County', ['class' => 'control-label']); ?>
-        <?php echo $this->Form->text('address_line_four', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineFour()]); ?>
-        <?php echo $this->Form->isFieldError('address_line_four') ? $this->Form->error('address_line_four') : ''; ?>
+        <div class="row">
+            <div class="col-md-12">
+                <?php if($this->Entity->get('Order')->isType(\App\Entity\TakeawayEntity::ORDER_TYPE_DELIVERY)){ ?>
+                    <?php echo $this->Form->label('delivery_time', 'When would you like us to deliver?', ['class' => 'control-label']); ?>
+                    <?php echo $this->Form->select('delivery_time', $this->Entity->get('Order')->getDeliveryTimeOptions(), ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getDeliveryTime()]); ?>
+                    <?php echo $this->Form->isFieldError('delivery_time') ? $this->Form->error('delivery_time') : ''; ?>
+                <?php } else if ($this->Entity->get('Order')->isType(\App\Entity\TakeawayEntity::ORDER_TYPE_COLLECTION)){ ?>
+                    <?php echo $this->Form->label('collection_time', 'When would you like to pick up your order?', ['class' => 'control-label']); ?>
+                    <?php echo $this->Form->select('collection_time', $this->Entity->get('Order')->getCollectionTimeOptions(), ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getCollectionTime()]); ?>
+                    <?php echo $this->Form->isFieldError('collection_time') ? $this->Form->error('collection_time') : ''; ?>
+                <?php } ?>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">

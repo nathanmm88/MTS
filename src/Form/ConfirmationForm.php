@@ -81,7 +81,9 @@ class ConfirmationForm extends AbstractForm {
                 ->setFirstName($dataDotNotation->get('first_name'))
                 ->setSurname($dataDotNotation->get('surname'))
                 ->setEmail($dataDotNotation->get('email'))
-                ->setTelephone($dataDotNotation->get('telephone'));
+                ->setTelephone($dataDotNotation->get('telephone'))
+                ->setDeliveryTime($dataDotNotation->get('delivery_time'))
+                ->setCollectionTime($dataDotNotation->get('collection_time'));
         
         die(pr($_SESSION));
         return true;

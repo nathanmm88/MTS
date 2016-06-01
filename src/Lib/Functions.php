@@ -38,5 +38,19 @@ class Functions {
         }
         return implode('_', $ret);
     }
-       
+
+    /**
+     * Rounds time to the nearest 15 minutes
+     * 
+     * @param int $timestamp
+     * @param int $precision
+     * @return \DateTime
+     */
+    public static function roundTime($timestamp, $precision = 15) {
+        $precision = 60 * $precision;
+        $time = (round($timestamp / $precision) * $precision);
+        $return = new \DateTime(date('Y-m-d H:i:s', $time));
+        return $return;
+    }
+
 }
