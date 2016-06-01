@@ -493,10 +493,11 @@ class OrderEntity extends AbstractEntity
     /**
      * Adds a condiment to the order
      * 
+     * @param int $$orderItemId The order item index
      * @param \App\Entity\Order\OrderItemCondimentEntity $condiment
      * @return \App\Entity\OrderEntity
      */
-    public function addCondiment(OrderItemCondimentEntity $condiment){
+    public function addCondiment($orderItemId, OrderItemCondimentEntity $condiment){
         //get the current condiments
         $condiments = $this->_get('condiments');
         
@@ -505,13 +506,45 @@ class OrderEntity extends AbstractEntity
             $condiments = [];
         }
     
-        $condiments[] = $condiment->toArray();
+        if(!array_key_exists($orderItemId, $condiments)){
+            $condiments[$orderItemId] = [];
+        }
+        
+        $condiments[$orderItemId][] = $condiment->toArray();
         
         //set the items back to the entity
         $this->_set('condiments', $condiments);
         
         return $this;        
 
+    }
+    
+    /**
+     * Checks if the item has condiments
+     * 
+     * @param int $itemId
+     * @return boolean
+     */
+    public function itemHasCondiments($itemId){
+        return count($this->getCondimentsForItemId($itemId)) > 0 ? true : false;
+    }
+    
+    /**
+     * Returns the contiments for a given item id
+     * 
+     * @param int $itemId
+     * @return array
+     */
+    public function getCondimentsForItemId($itemId){
+        //get the current condiments
+        $condiments = $this->_get('condiments');
+        
+        //if null default to an array
+        if (is_null($condiments)){
+            $condiments = [];
+        }
+        
+        return array_key_exists($itemId, $condiments) ? $condiments[$itemId] : array();
     }
     
     /**

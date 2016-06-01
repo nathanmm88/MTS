@@ -79,7 +79,12 @@ body.order{
             border:1px solid #CFCFCF;
             padding:0 15px 15px 15px;
             border-radius:4px;
-
+            
+            p.note{
+                font-style: italic;
+                margin-bottom: 0;
+                margin-left: 16px;
+            }
         }
 
         #view-basket-mobile{

@@ -256,6 +256,22 @@ class MenuEntity extends AbstractEntity
     }
     
     /**
+     * Returns the condiment type for a given item
+     * 
+     * @param type $itemId
+     * @param type $condimentType
+     */
+    public function getCondimentTypeForItem($itemId, $condimentType){
+        $condiments = $this->getCondimentTypes($itemId);
+        foreach($condiments as $condiment){
+            if($condiment->getId() == $condimentType){
+                return $condiment;
+            }
+        }
+        return false;
+    }
+    
+    /**
      * Returns the condiments
      * 
      * @return array
@@ -282,6 +298,22 @@ class MenuEntity extends AbstractEntity
         }
         //return the new objects
         return $condiments;
+    }
+    
+    /**
+     * Returns the condiment for a given type and ID
+     * 
+     * @param type $condimentTypeId
+     * @param type $condimentId
+     */
+    public function getCondimentForType($condimentTypeId, $condimentId){
+        $condiments = $this->getCondiments($condimentTypeId);
+        foreach($condiments as $condiment){
+            if($condiment->getId() == $condimentId){
+                return $condiment;
+            }
+        }
+        return false;
     }
         
     /**

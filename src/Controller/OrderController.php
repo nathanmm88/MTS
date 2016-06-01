@@ -127,7 +127,7 @@ class OrderController extends AppController {
      * This will display the menu to the customer to order from
      */
     public function menu() {
-
+//pr($_SESSION);
         //get the latest menu and save to the session
         $this->Api->getMenu();
 

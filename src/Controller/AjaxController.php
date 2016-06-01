@@ -107,7 +107,7 @@ class AjaxController extends AppController {
             
             //save each condiment to the session
             foreach ($condiments as $type_id => $condiment_id) {
-                $this->order->addCondiment(OrderItemCondimentEntity::fromArray(['id' => $condiment_id, 'type_id' => $type_id, 'item_id' => $orderItemId]));
+                $this->order->addCondiment($orderItemId, OrderItemCondimentEntity::fromArray(['id' => $condiment_id, 'type_id' => $type_id, 'item_id' => $orderItemId]));
             }
             
             $success = true;

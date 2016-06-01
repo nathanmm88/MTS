@@ -3,7 +3,6 @@
 $subTotal = $this->Entity->get('Order')->getTotal(false);
 $total = $this->Entity->get('Order')->getTotal();
 $items = $this->Entity->get('Order')->getItems();
-
 ?>
 <?php echo $this->Form->create($order, array('novalidate' => true)); ?>
 <div id="sidebar-content">
@@ -17,14 +16,32 @@ $items = $this->Entity->get('Order')->getItems();
                     <tr>
                         <td>
                             <a class="remove-item" href="#" data-order-item="<?php echo $orderItemKey; ?>"><i class="fa fa-minus-circle"></i></a> <?php echo $item->getFullName(); ?>
+                            <?php if ($orderItem->hasNotes() || $this->Entity->get('Order')->itemHasCondiments($orderItemKey)) { ?>
+                                <p class="note"><b>Notes:</b></p>
+                            <?php } ?>
+                                
+                            <?php if ($this->Entity->get('Order')->itemHasCondiments($orderItemKey)) { ?>
+                                <?php foreach ($this->Entity->get('Order')->getCondimentsForItemId($orderItemKey) as $condimentInfo) { ?>
+                                    <?php
+                                    $condimentType = $this->Entity->get('Menu')->getCondimentTypeForItem($orderItem->getId(), $condimentInfo['type_id']);
+                                    $condiment = $this->Entity->get('Menu')->getCondimentForType($condimentInfo['type_id'], $condimentInfo['id']);
+                                    ?>
+                                    <?php if ($condiment instanceof \App\Entity\Menu\CondimentEntity) { ?>
+                                        <p class="note"><b><?php echo $condimentType->getDescription() ?></b> - <?php echo $condiment->getDescription(); ?></p>
+                                    <?php } ?>
+                                <?php } ?>
+                            <?php } ?>
+                            <?php if ($orderItem->hasNotes()) { ?>
+                                <p class="note">
+                                    <?php echo $orderItem->getNotes(); ?>
+                                </p>
+                            <?php } ?> 
                         </td>
                         <td>
                             <strong class="pull-right"><?php echo $this->Takeaway->formatMoney($item->getPrice()); ?></strong>
                         </td>
                     </tr>
-                    <?php if ($orderItem->hasNotes()) { ?>
-                        <tr><td colspan="2" class="small"><?php echo $orderItem->getNotes(); ?></td></tr>
-                    <?php } ?>                   
+
                 <?php } ?>
                 <tr class="<?php echo $this->Entity->get('Order')->meetsMinimumOrderAmount($subTotal) ? '' : 'alert alert-warning'; ?>">
                     <td>Subtotal</td>
