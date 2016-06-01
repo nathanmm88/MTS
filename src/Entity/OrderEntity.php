@@ -186,6 +186,26 @@ class OrderEntity extends AbstractEntity
     }
     
     /**
+     * Removes the condiments from an order item from a specific index
+     * 
+     * @param int $index 
+     * @return \App\Entity\OrderEntity
+     */
+    public function removeCondiments($index){
+        //get the current items
+        $condiments = $this->_get('condiments');
+        
+        if(is_array($condiments) && array_key_exists($index, $condiments)){
+            unset($condiments[$index]);
+        }
+        
+        //set the condiments back to the entity
+        $this->_set('condiments', $condiments);
+        
+        return $this;
+    }
+    
+    /**
      * Returns the first name
      * 
      * @return string

@@ -133,7 +133,11 @@ class AjaxController extends AppController {
         //get the item id from the post data
         $orderItemId = $this->request->data['item'];
 
+        //remove the item
         $this->order->removeItem($orderItemId);
+        
+        //remove any condiments
+        $this->order->removeCondiments($orderItemId);
 
         $orderForm = new OrderForm($this->request);
         $this->set('order', $orderForm);
