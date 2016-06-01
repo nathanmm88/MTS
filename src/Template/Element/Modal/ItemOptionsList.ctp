@@ -7,12 +7,12 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="ItemOptionsHeading<?php echo $condimentType->getId(); ?>">
                 <h4 class="panel-title">
-                    <a  role="button" data-toggle="collapse" data-parent="#ItemOptionsAccordion" href="#ItemOptionsCollapse<?php echo $condimentType->getId(); ?>" aria-expanded="<?php echo ($key == 0) ? 'true' : 'false'; ?>" aria-controls="ItemOptionsCollapse<?php echo $condimentType->getId(); ?>">
+                    <a class="<?php echo ($key == 0) ? '' : 'locked'; ?>" role="button" data-toggle="collapse" data-parent="#ItemOptionsAccordion" href="#ItemOptionsCollapse<?php echo $condimentType->getId(); ?>" aria-expanded="<?php echo ($key == 0) ? 'true' : 'false'; ?>" aria-controls="ItemOptionsCollapse<?php echo $condimentType->getId(); ?>">
                         Condiment: <?php echo $condimentType->getDescription(); ?><span id="condiment-desc-<?php echo $condimentType->getId(); ?>" class="small pull-right"></span>
                     </a>
                 </h4>
             </div>
-            <div id="ItemOptionsCollapse<?php echo $condimentType->getId(); ?>" class="<?php echo ($key == 0) ? '' : 'locked'; ?> panel-collapse collapse <?php echo ($key == 0) ? 'in' : ''; ?>" role="tabpanel" aria-labelledby="ItemOptionsHeading<?php echo $condimentType->getId(); ?>">
+            <div id="ItemOptionsCollapse<?php echo $condimentType->getId(); ?>" class="panel-collapse collapse <?php echo ($key == 0) ? 'in' : ''; ?>" role="tabpanel" aria-labelledby="ItemOptionsHeading<?php echo $condimentType->getId(); ?>">
                 <input type="hidden" name="selected-condiment[<?php echo $condimentType->getId(); ?>]" id="selected-condiment-<?php echo $condimentType->getId(); ?>" value="">
                 <div class="panel-body">
                     <ul class="list-group" data-type="<?php echo $condimentType->getId(); ?>">
@@ -27,7 +27,7 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="ItemNotesHeading">
             <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#ItemOptionsAccordion" href="#ItemNotesCollapse" aria-expanded="true" aria-controls="ItemNotesCollapse">
+                <a class="<?php echo ($key == 0) ? '' : 'locked'; ?>" role="button" data-toggle="collapse" data-parent="#ItemOptionsAccordion" href="#ItemNotesCollapse" aria-expanded="true" aria-controls="ItemNotesCollapse">
                     Notes
                 </a>
             </h4>

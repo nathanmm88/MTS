@@ -11434,8 +11434,8 @@ function bindBasketEvents() {
         //get the next panel
         var nextPanel = panels.eq(panels.index(parent) + 1);
         
-        //remove the locked class
-        nextPanel.removeClass('locked');
+        //remove the locked class from the panel heading link so the user can go back and amend their choice
+        nextPanel.siblings('.panel-heading').find('a').removeClass('locked');
         
         //show the next panel
         nextPanel.collapse('show');     
@@ -11445,17 +11445,17 @@ function bindBasketEvents() {
     });
 
     //when a section is opened
-    $('#ItemOptions div.panel-collapse').on('show.bs.collapse', function() {
+    $('#ItemOptions div.panel-collapse').on('show.bs.collapse', function(e) {
         //close all others
         $('#ItemOptions div.panel-collapse').not($(this))
-                .collapse('hide');
+                .collapse('hide');      
     }); 
 
-    //when a section is opened
-    $('#ItemOptions div.panel-collapse').on('shown.bs.collapse', function() {
-        //if it has a class of locked immediately hide it
-        if ($(this).hasClass('locked')) {
-            $(this).collapse('hide');
+    //when the user attempts to open a locked section
+    $('.panel-heading a').on('click', function(e) {
+        //if it has a class of locked stop the accordion opening
+        if ($(this).hasClass('locked')) {            
+            e.stopPropagation();
         }
     });
 }
