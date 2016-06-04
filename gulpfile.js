@@ -38,7 +38,7 @@ var jsPaths = [
   './vendor/bower_components/bootstrap-daterangepicker/daterangepicker.js',
   './vendor/bower_components/chosen/chosen.jquery.js',
   './vendor/bower_components/blockUI/jquery.blockUI.js',
-  './webroot/assets/scripts/app.js',
+  './webroot/assets/scripts/*',
 ];
 
 // Options

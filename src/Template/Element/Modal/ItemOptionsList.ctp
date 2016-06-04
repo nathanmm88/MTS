@@ -13,7 +13,7 @@
                 </h4>
             </div>
             <div id="ItemOptionsCollapse<?php echo $condimentType->getId(); ?>" class="panel-collapse collapse <?php echo ($key == 0) ? 'in' : ''; ?>" role="tabpanel" aria-labelledby="ItemOptionsHeading<?php echo $condimentType->getId(); ?>">
-                <input type="hidden" name="selected-condiment[<?php echo $condimentType->getId(); ?>]" id="selected-condiment-<?php echo $condimentType->getId(); ?>" value="">
+                <input type="hidden" class="selected-condiment" name="selected-condiment[<?php echo $condimentType->getId(); ?>]" id="selected-condiment-<?php echo $condimentType->getId(); ?>" value="">
                 <div class="panel-body">
                     <ul class="list-group" data-type="<?php echo $condimentType->getId(); ?>">
                         <?php foreach ($condimentType->getCondiments() as $condiment) { ?>                                                        
@@ -27,12 +27,12 @@
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="ItemNotesHeading">
             <h4 class="panel-title">
-                <a class="<?php echo ($key == 0) ? '' : 'locked'; ?>" role="button" data-toggle="collapse" data-parent="#ItemOptionsAccordion" href="#ItemNotesCollapse" aria-expanded="true" aria-controls="ItemNotesCollapse">
+                <a role="button" data-toggle="collapse" data-parent="#ItemOptionsAccordion" href="#ItemNotesCollapse" aria-expanded="true" aria-controls="ItemNotesCollapse">
                     Notes
                 </a>
             </h4>
         </div>
-        <div id="ItemNotesCollapse" class="locked panel-collapse collapse" role="tabpanel" aria-labelledby="ItemNotesHeading">
+        <div id="ItemNotesCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="ItemNotesHeading">
             <div class="row">
                 <div class="col-md-12">                    
                     <?php echo $this->Form->text('notes', ['class' => 'form-control']); ?>
