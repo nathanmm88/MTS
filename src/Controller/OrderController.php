@@ -74,7 +74,8 @@ class OrderController extends AppController {
      */
     public function start() {
         //clear the session
-        $this->request->session()->clearDomain();
+        $this->request->session()->destroy();
+        //$this->request->session()->clearDomain();
 
         //set the last accessed time
         $this->step->setLastAccessed();
