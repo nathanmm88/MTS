@@ -87,6 +87,13 @@
         <?php echo $this->Form->isFieldError('postcode') ? $this->Form->error('postcode') : ''; ?>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <?php echo $this->Form->checkbox('allergy_disclaimer'); ?>
+        <?php echo $this->Form->label('allergy_disclaimer', 'I confirm I have read and understand the <a href="#" id="open-allergy-disclaimer">allergy disclaimer</a>', ['class' => 'control-label', 'escape' => false]); ?>            
+        <?php echo $this->Form->isFieldError('allergy_disclaimer') ? $this->Form->error('allergy_disclaimer') : ''; ?>
+    </div>
+</div>
 <div id="confirmBtns" class="row">
     <?php if ($this->Entity->get('Takeaway')->getSettings()->hasPaymentType(\App\Entity\Takeaway\SettingsEntity::PAYMENT_METHOD_CASH, $this->Entity->get('Order')->getType())) { ?>
         <div  class="col-md-6 text-center">
@@ -118,3 +125,4 @@
     </div>
 </div>
 <?php echo $this->Form->end(); ?>
+<?php echo $this->element('Modal/AllergyDisclaimer'); ?>

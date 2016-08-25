@@ -12,71 +12,80 @@ class ConfirmationForm extends AbstractForm {
 
     protected function _buildValidator(Validator $validator) {
         return $validator
-                ->notEmpty('first_name', 'Please enter a valid first name')
-                ->add('first_name', [
-                    'length' => [
-                        'rule' => ['maxLength', 50],
-                        'message' => 'Please enter a valid first name',
-                    ]
-                        ]
-                )
-                ->notEmpty('surname', 'Please enter a valid surname')
-                ->add('surname', [
-                    'length' => [
-                        'rule' => ['maxLength', 50],
-                        'message' => 'Please enter a valid surname',
-                    ]
-                        ]
-                )
-                ->allowEmpty('email')
-                ->add('email', [
-                    'length' => [
-                        'rule' => 'email',
-                        'message' => 'Please enter a valid email address',
-                    ]
-                        ]
-                )
-                ->notEmpty('address_line_one', 'Please enter a valid address line one')
-                ->add('address_line_one', [
-                    'length' => [
-                        'rule' => ['maxLength', 50],
-                        'message' => 'Please enter a valid address line one',
-                    ]
-                        ]
-                )
-                ->notEmpty('address_line_three', 'Please enter a valid town')
-                ->add('address_line_three', [
-                    'length' => [
-                        'rule' => ['maxLength', 50],
-                        'message' => 'Please enter a valid town',
-                    ]
-                        ]
-                )
-                ->notEmpty('postcode', 'Please enter a valid UK postcode')
-                ->add('postcode', [
-                    'length' => [
-                        'rule' => ['maxLength', 50],
-                        'message' => 'Please enter a valid UK postcode',
-                    ]
-                        ]
-                );
+                        ->notEmpty('first_name', 'Please enter a valid first name')
+                        ->add('first_name', [
+                            'length' => [
+                                'rule' => ['maxLength', 50],
+                                'message' => 'Please enter a valid first name',
+                            ]
+                                ]
+                        )
+                        ->notEmpty('surname', 'Please enter a valid surname')
+                        ->add('surname', [
+                            'length' => [
+                                'rule' => ['maxLength', 50],
+                                'message' => 'Please enter a valid surname',
+                            ]
+                                ]
+                        )
+                        ->allowEmpty('email')
+                        ->add('email', [
+                            'length' => [
+                                'rule' => 'email',
+                                'message' => 'Please enter a valid email address',
+                            ]
+                                ]
+                        )
+                        ->notEmpty('address_line_one', 'Please enter a valid address line one')
+                        ->add('address_line_one', [
+                            'length' => [
+                                'rule' => ['maxLength', 50],
+                                'message' => 'Please enter a valid address line one',
+                            ]
+                                ]
+                        )
+                        ->notEmpty('address_line_three', 'Please enter a valid town')
+                        ->add('address_line_three', [
+                            'length' => [
+                                'rule' => ['maxLength', 50],
+                                'message' => 'Please enter a valid town',
+                            ]
+                                ]
+                        )
+                        ->notEmpty('postcode', 'Please enter a valid UK postcode')
+                        ->add('postcode', [
+                            'length' => [
+                                'rule' => ['maxLength', 50],
+                                'message' => 'Please enter a valid UK postcode',
+                            ]
+                                ]
+                        )
+                        //->requirePresence('allergy_disclaimer', true)                        
+                        ->add('allergy_disclaimer', [
+                            'comparison' => [
+                                'rule' => ['comparison', '==', 1],
+                                'message' => 'Please confirm you have read the allergy disclaimer'
+                            ]
+                                ]
+                        )
+        ;
     }
 
     protected function _execute(array $data) {
-       // die(var_dump($data));
+        die(var_dump($data));
         $dataDotNotation = new DotNotation($data);
-        
+
         $orderEntity = new OrderEntity($this->request);
-        
+
         //map the form data to the session
         $orderAddressEntity = OrderAddressEntity::fromArray([
-            'address_line_one' => $dataDotNotation->get('address_line_one'),
-            'address_line_two' => $dataDotNotation->get('address_line_two'),
-            'address_line_three' => $dataDotNotation->get('address_line_three'),
-            'address_line_four' => $dataDotNotation->get('address_line_four'),
-            'postcode' => $dataDotNotation->get('postcode')
+                    'address_line_one' => $dataDotNotation->get('address_line_one'),
+                    'address_line_two' => $dataDotNotation->get('address_line_two'),
+                    'address_line_three' => $dataDotNotation->get('address_line_three'),
+                    'address_line_four' => $dataDotNotation->get('address_line_four'),
+                    'postcode' => $dataDotNotation->get('postcode')
         ]);
-        
+
         $orderEntity->setAddress($orderAddressEntity)
                 ->setFirstName($dataDotNotation->get('first_name'))
                 ->setSurname($dataDotNotation->get('surname'))
@@ -84,7 +93,7 @@ class ConfirmationForm extends AbstractForm {
                 ->setTelephone($dataDotNotation->get('telephone'))
                 ->setDeliveryTime($dataDotNotation->get('delivery_time'))
                 ->setCollectionTime($dataDotNotation->get('collection_time'));
-        
+
         die(pr($_SESSION));
         return true;
     }

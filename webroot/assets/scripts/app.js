@@ -136,6 +136,11 @@ $(document).ready(function() {
     //stop blocking when the modal is closed
     $('.modal').on('hidden.bs.modal', function() {
         stopBlocking();
-    })
+    });
+    
+    $('#open-allergy-disclaimer').on('click', function(e){
+        e.preventDefault();
+        $('#allergy-disclaimer').modal('show');
+    });
 });
 
