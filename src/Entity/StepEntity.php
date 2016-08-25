@@ -123,9 +123,9 @@ class StepEntity extends AbstractEntity
      * @return boolean
      */
     public function hasTimedOut($updateTime = false){
-        $return = false;
+        $return = false;        
         
-        if(($this->getLastAccessed() + (\Cake\Core\Configure::read('timeout') * 60)) < time()){
+        if(($this->getLastAccessed()) && (($this->getLastAccessed() + (\Cake\Core\Configure::read('timeout') * 60)) < time())){
             $return = true;
         }
         
