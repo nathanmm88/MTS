@@ -59,12 +59,18 @@ class ConfirmationForm extends AbstractForm {
                                 'message' => 'Please enter a valid UK postcode',
                             ]
                                 ]
-                        )
-                        //->requirePresence('allergy_disclaimer', true)                        
+                        )                        
                         ->add('allergy_disclaimer', [
                             'comparison' => [
                                 'rule' => ['comparison', '==', 1],
-                                'message' => 'Please confirm you have read the allergy disclaimer'
+                                'message' => 'Please confirm you have read and understand the allergy disclaimer'
+                            ]
+                                ]
+                        )
+                        ->add('terms', [
+                            'comparison' => [
+                                'rule' => ['comparison', '==', 1],
+                                'message' => 'Please confirm you have read and agree to the terms and conditions'
                             ]
                                 ]
                         )

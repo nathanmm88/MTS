@@ -94,6 +94,13 @@
         <?php echo $this->Form->isFieldError('allergy_disclaimer') ? $this->Form->error('allergy_disclaimer') : ''; ?>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <?php echo $this->Form->checkbox('terms'); ?>
+        <?php echo $this->Form->label('terms', 'I confirm I have read and agree to the <a href="#" id="open-terms">terms and conditions</a>', ['class' => 'control-label', 'escape' => false]); ?>            
+        <?php echo $this->Form->isFieldError('terms') ? $this->Form->error('terms') : ''; ?>
+    </div>
+</div>
 <div id="confirmBtns" class="row">
     <?php if ($this->Entity->get('Takeaway')->getSettings()->hasPaymentType(\App\Entity\Takeaway\SettingsEntity::PAYMENT_METHOD_CASH, $this->Entity->get('Order')->getType())) { ?>
         <div  class="col-md-6 text-center">
