@@ -74,7 +74,7 @@ $items = $this->Entity->get('Order')->getItems();
         <?php } else { ?>
             <p class="alert alert-info text-center">Collection from <br/><?php echo $this->Takeaway->getAddress('<br/>') ?> <br/> at approximately <strong><?php echo $this->Entity->get('Order')->getEstimatedTime('g:ia'); ?></strong></p>
             <?php if ($this->Entity->get('Takeaway')->getSettings()->getAcceptDeliveryOrders()) { ?>
-                <p class="text-center"><a id="changeToDelivery" href="<?php echo $this->Step->getStepLink('order_index') ?>">Change to delivery?</a></p>
+                <p class="text-center"><a id="changeToDelivery" href="<?php echo $this->Step->getStepLink('order_index', 'order_menu'); ?>">Change to delivery?</a></p>
             <?php } ?>
         <?php } ?>
     <?php } else { ?>
