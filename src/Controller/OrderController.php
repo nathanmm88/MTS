@@ -22,7 +22,10 @@ use Cake\View\Exception\MissingTemplateException;
 use App\Form\ConfirmationForm;
 use App\Form\OrderForm;
 use App\Entity\Order\ItemEntity;
+use App\Entity\Order;
 use App\Entity\Order\OrderAddressEntity;
+use App\Email\ConfirmationEmail;
+use Cake\Mailer\MailerAwareTrait;
 
 /**
  * Order controller
@@ -32,6 +35,8 @@ use App\Entity\Order\OrderAddressEntity;
  * @link http://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
 class OrderController extends AppController {
+
+    use MailerAwareTrait;
 
     /**
      * The steps we want to lock down for a diven controller
@@ -76,7 +81,6 @@ class OrderController extends AppController {
         //clear the session
         $this->request->session()->destroy();
         //$this->request->session()->clearDomain();
-
         //set the last accessed time
         $this->step->setLastAccessed();
 
@@ -144,14 +148,14 @@ class OrderController extends AppController {
      * The basket page
      */
     public function basket() {
-        
+
         if ($this->request->is('post')) {
 
             $this->_redirectToStep('order_confirm');
         }
         $orderForm = new OrderForm($this->request);
         $this->set('order', $orderForm);
-        
+
         //make sure we dont render the basket in the hidden sidebar
         $this->set('noSidebar', true);
     }
@@ -162,11 +166,15 @@ class OrderController extends AppController {
     public function confirm() {
         $confirmationForm = new ConfirmationForm($this->request);
         if ($this->request->is('post')) {
-            if($this->order->isValidOrder()){
+            if ($this->order->isValidOrder()) {
                 if ($confirmationForm->execute($this->request->data)) {
-                    die('success');
+                    try {
+                        $this->getMailer('Order')->send('confirmation', [$this->order, $this->menu]);
+                    } catch (Exception $e) {
+                        echo $e->getMessage();
+                    }             
                 } else {
-
+                    
                 }
             }
         }

@@ -1,11 +1,11 @@
- // Includes (run: 'npm install' to install these before running 'gulp')
+         // Includes (run: 'npm install' to install these before running 'gulp')
 var gulp = require('gulp')
   , prompt = require('gulp-prompt')
   , sass = require('gulp-sass')
   , sourcemaps = require('gulp-sourcemaps')
   , autoprefixer = require('gulp-autoprefixer')
   , imagemin = require('gulp-imagemin')
-  , pngquant = require('imagemin-pngquant') // $ npm i -D imagemin-pngquant
+  //, pngquant = require('imagemin-pngquant') // $ npm i -D imagemin-pngquant
   , source = require('vinyl-source-stream')
   , concat = require('gulp-concat')
   , minify = require('gulp-minify')

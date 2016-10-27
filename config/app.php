@@ -203,7 +203,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => 'you@localhost',
+            'from' => 'order@mts.co.uk',
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],

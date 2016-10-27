@@ -77,8 +77,7 @@ class ConfirmationForm extends AbstractForm {
         ;
     }
 
-    protected function _execute(array $data) {
-        die(var_dump($data));
+    protected function _execute(array $data) {        
         $dataDotNotation = new DotNotation($data);
 
         $orderEntity = new OrderEntity($this->request);
@@ -100,7 +99,7 @@ class ConfirmationForm extends AbstractForm {
                 ->setDeliveryTime($dataDotNotation->get('delivery_time'))
                 ->setCollectionTime($dataDotNotation->get('collection_time'));
 
-        die(pr($_SESSION));
+        
         return true;
     }
 
