@@ -6,39 +6,39 @@ use App\Exception\SessionTimeoutException;
 use Cake\Routing\Exception\MissingControllerException;
 use Cake\Error\ErrorHandler;
 
+class AppErrorHandler extends ErrorHandler {
 
-
-class AppErrorHandler extends ErrorHandler
-{
-    
-    public function _displayError($error, $debug)
-    {
+    public function _displayError($error, $debug) {
         return 'There has been an error!';
     }
-    
+
     /**
      * When handling certain exceptions we may want to redirect to certain pages
      * 
      * @param mixed Exceptions
      */
-    public function _displayException($exception)
-    {
-        //TODO:: add logging
-      //  die(var_dump($exception));   
+    public function _displayException($exception) {
+        //TODO:: add logging      
+        //if the session has timed out
         if ($exception instanceof SessionTimeoutException) {
             $this->_redirect('/error/sessionTimeout');
-        } else { 
+        //else if there was a 404 we don't want to manually redirect (302) - we want to maintain the 404
+        } else if ($exception instanceof MissingControllerException) {
+            parent::_displayException($exception); //this loads /src/Template/Error/error500.ctp
+        } else {
+            //else reidrect to the standard error page
             $this->_redirect('/error/service');
         }
     }
-    
+
     /**
      * Redirects to a URL
      * 
      * @param type $url
      */
-    protected function _redirect($url){
+    protected function _redirect($url) {
         header("Location: " . $url);
         die();
     }
+
 }
