@@ -172,13 +172,25 @@ class OrderController extends AppController {
                         $this->getMailer('Order')->send('confirmation', [$this->order, $this->menu]);
                     } catch (Exception $e) {
                         echo $e->getMessage();
-                    }             
+                    }         
+                    
+                    //all good so redirect to the thank you page
+                    $this->_redirectToStep('order_thanks');
                 } else {
                     
                 }
             }
         }
         $this->set('confirmation', $confirmationForm);
+    }
+    
+    /**
+     * The thank you page
+     * 
+     */
+    public function thanks(){
+        //make sure we dont render the basket on this page
+        $this->set('noSidebar', true);
     }
 
 }
