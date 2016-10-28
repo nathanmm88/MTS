@@ -80,5 +80,30 @@ class Functions {
         //return the input array which now contains camelized keys
         return $inputArray;
     }
+    
+    /**
+     * Merges the 2 arrays, the second array values will be coppied to the first array
+     * 
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    public static function overwriteArray($array1 = array(), $array2 = array()) {
+
+        //foreach item in the second array
+        foreach ($array2 as $key => $value) {
+            // if the item in array 1 is an array and the item in array 2 is then 
+            // call this function passing the two arrays
+            if (array_key_exists($key, $array1) && is_array($array1[$key]) && is_array($value)) {
+                $array1[$key] = self::overwriteArray($array1[$key], $value);
+            } else {
+                //write the value to the key
+                $array1[$key] = $value;
+            }
+        }
+
+        //return the array
+        return $array1;
+    }
 
 }

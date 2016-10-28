@@ -12,6 +12,7 @@
  * @since         0.10.8
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+use App\Lib\Functions;
 
 //define some constants for the application 
 define('ORDER_TYPE_DELIVERY', 'delivery');
@@ -225,6 +226,14 @@ Plugin::load('Migrations');
 if (Configure::read('debug')) {
     Plugin::load('DebugKit', ['bootstrap' => true]);
 }
+
+
+//load the text file into the main app config
+$textFileLocation = realpath( dirname( __FILE__ ) ).DIRECTORY_SEPARATOR.'text.php';
+require $textFileLocation;
+
+//write to the config
+Configure::write(Functions::overwriteArray(Configure::read(), $text));
 
 /**
  * Connect middleware/dispatcher filters.
