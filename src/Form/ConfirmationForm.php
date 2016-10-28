@@ -28,6 +28,14 @@ class ConfirmationForm extends AbstractForm {
                             ]
                                 ]
                         )
+                        ->notEmpty('telephone', 'Please enter a valid telephone number')
+                        ->add('telephone', [
+                            'length' => [
+                                'rule' => ['maxLength', 50],
+                                'message' => 'Please enter a valid telephone number',
+                            ]
+                                ]
+                        )
                         ->allowEmpty('email')
                         ->add('email', [
                             'length' => [

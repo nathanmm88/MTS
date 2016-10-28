@@ -17,6 +17,7 @@ var gulp = require('gulp')
 
 // Source / compilation directories
 var sassDir = './sass/**/*.scss'
+  , bowerDir = './vendor/bower_components'
   , jsDir = './webroot/assets/scripts/*'
   , bootstrapFontsDir = './vendor/bower_components/bootstrap-sass/assets/fonts/bootstrap/**/*'
   , bootstrapFontsDistDir = './webroot/dist/bootstrap'
@@ -148,7 +149,12 @@ gulp.task('install-bower', function() {
   return bower({ directory: './vendor/bower_components'});
 });
 
+gulp.task('icons', function() { 
+    return gulp.src(bowerDir + '/font-awesome/fonts/**.*') 
+        .pipe(gulp.dest(fontsDistDir)); 
+});
+
 // TASK: default
 // The default task, ie. 'gulp' – runs sass, img, fonts, scripts and watch tasks
-gulp.task('default', ['sass:dev', 'scripts:dev', 'img', 'watch']);
+gulp.task('default', ['sass:dev', 'scripts:dev', 'img', 'icons', 'watch']);
 
