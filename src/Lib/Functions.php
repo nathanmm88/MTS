@@ -52,5 +52,33 @@ class Functions {
         $return = new \DateTime(date('Y-m-d H:i:s', $time));
         return $return;
     }
+    
+    /**
+     * Takes an array and converts all keys tc camel case
+     * 
+     * @param type $inputArray
+     * @return type
+     */
+    public static function camelizeArrayKeys($inputArray){
+        //loop through the array
+        foreach ($inputArray as $key => $value) {           
+            //covert the key to camel case
+            $camelizedKey = Functions::underscoreToCamelCase($key);
+            
+            //unset the original key
+            unset($inputArray[$key]);
+            
+            //set the new camelized key
+            $inputArray[$camelizedKey] = $value;
+            
+            //if the element is an array recursively call this function
+            if (is_array($value)){
+                $inputArray[$camelizedKey] = Functions::camelizeArrayKeys($inputArray[$camelizedKey]);
+            }
+        }
+   
+        //return the input array which now contains camelized keys
+        return $inputArray;
+    }
 
 }

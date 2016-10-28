@@ -211,5 +211,21 @@ class TakeawayAddressEntity extends AbstractEntity
         $this->longitude = $longitude;
         return $this;
     }
+    
+    /**
+     * Return the main address details as an array
+     * 
+     * @return array
+     */
+    public function getAddressDetailsAsArray(){
+        //set all address parts to the return array
+        $return['address_line_one'] = $this->getAddressLineOne();
+        $return['address_line_two'] = $this->getAddressLineTwo();
+        $return['address_line_three'] = $this->getAddressLineThree();
+        $return['address_line_four'] = $this->getAddressLineFour();
+        $return['postcode'] = $this->getPostcode();
+        
+        return $return;
+    }
 
 }

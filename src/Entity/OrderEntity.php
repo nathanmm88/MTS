@@ -631,31 +631,53 @@ class OrderEntity extends AbstractEntity {
     /**
      * Build the order as a JSON object so we can pass to the API
      */
-    public function buildOrderObject() {
-        //get all items for the current order
-        $items = $this->getItems();
-        
-        //create an array to house the order
-        $orderObject = array();
+    public function buildOrderObject() {           
+        //initialise arrays
+        $orderObject = array();        
+        $items = array();
 
         //get all items
-        foreach ($items as $item) {
+        foreach ($this->getItems() as $item) {
             //add this item (as an array) to the order array
-            array_push($orderObject, $item->toArray());
-            
+            array_push($items, $item->toArray());
+                                    
             //get the key for this item
-            end($orderObject);
-            $key = key($orderObject);
+            end($items);
+            $key = key($items);
             
             //get the condiments for this order item
             $condiments = $this->getCondimentsForItemId($item->getItemId());
-            
+       
             //add the condiments to this order item in the order array
-            $orderObject[$key]['condiments'] = $condiments;
+            $items[$key]['condiments'] = $condiments;
         }
-        
+               
+        //set the various keys of the final order object
+        $orderObject['items'] = $items;
+        $orderObject['details'] = $this->_getPersonalDetails();
+    
+        //camelize all keys in the array
+        $orderObject = Functions::camelizeArrayKeys($orderObject);
+  
         //return the json encoded order
         return json_encode($orderObject);
+    }
+    
+    /**
+     * Return the personal details as an array
+     * 
+     * @return array
+     */
+    private function _getPersonalDetails(){
+        //set the relevant details from the model
+        $details['firstName'] = $this->getFirstName();
+        $details['surname'] = $this->getSurname();
+        $details['email'] = $this->getEmail();
+        $details['telephone'] = $this->getTelephone();
+        $details['orderType'] = $this->getType();
+        $details['address'] = $this->getAddress()->getAddressDetailsAsArray();
+                            
+        return $details;
     }
 
 }
