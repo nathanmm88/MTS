@@ -11655,10 +11655,22 @@ $(document).ready(function() {
         stopBlocking();
     });
     
+    /**
+     * Load the allergy disclaimer modal
+     */
     $('#open-allergy-disclaimer').on('click', function(e){
         e.preventDefault();
         $('#allergy-disclaimer').modal('show');
     });
+    
+    /**
+     * Load the terms and conditions modal
+     */ 
+    $('#open-terms').on('click', function(e){
+        e.preventDefault();
+        $('#terms-and-conditions').modal('show');
+    });
+    
 });
 
 

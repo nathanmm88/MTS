@@ -133,3 +133,4 @@
 </div>
 <?php echo $this->Form->end(); ?>
 <?php echo $this->element('Modal/AllergyDisclaimer'); ?>
+<?php echo $this->element('Modal/TermsAndConditions'); ?>
