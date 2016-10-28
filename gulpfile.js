@@ -21,8 +21,9 @@ var sassDir = './sass/**/*.scss'
   , bootstrapFontsDir = './vendor/bower_components/bootstrap-sass/assets/fonts/bootstrap/**/*'
   , bootstrapFontsDistDir = './webroot/dist/bootstrap'
   , fontsDir = './webroot/assets/fonts/**/*'
+  , imgDir = './webroot/assets/img/*'
   , fontsDistDir = './webroot/dist/fonts'
-  , imgDistDir = './webroot/dist/images'
+  , imgDistDir = './webroot/dist/img'
   , cssDir = './webroot/dist/css';
 
 // These files get concatenated in this order, into /dist/scripts/build.js
@@ -118,6 +119,13 @@ gulp.task('scripts:prod', function() {
     .pipe(gulp.dest('./webroot/dist'))
 });
 
+// The img task - copy from assets to dist and minify
+gulp.task('img', function() {
+  return gulp.src(imgDir)
+  .pipe(imagemin())
+    .pipe(gulp.dest(imgDistDir));
+});
+
 // TASK: build
 // Force a clean and then compile into /dist
 gulp.task('build', function(callback) {
@@ -142,5 +150,5 @@ gulp.task('install-bower', function() {
 
 // TASK: default
 // The default task, ie. 'gulp' – runs sass, img, fonts, scripts and watch tasks
-gulp.task('default', ['sass:dev', 'scripts:dev', 'watch']);
+gulp.task('default', ['sass:dev', 'scripts:dev', 'img', 'watch']);
 

@@ -11559,7 +11559,8 @@ function startBlocking() {
         textAlign: 'center',
         cursor: 'wait'
     };
-    $.blockUI({message: '<img alt="Loading" src="/dist/img/ajax-loader.gif"/>'});
+    
+    $.blockUI({message: '<img alt="Loading" src="/dist/img/spin.svg"/>'});
 }
 
 /**
