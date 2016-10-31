@@ -80,7 +80,7 @@ $(document).ready(function() {
      * Now we have bound the click event check if we need to click it based on
      * it having a postcode already
      */
-    if ($('[name="postcode"]').val() != '' && $('#wantsDelivery').length > 0) {
+    if ($('[name="postcode"]').val() !== '' && $('#wantsDelivery').length > 0) {
         $('#wantsDelivery').click();
     }
 
@@ -92,7 +92,7 @@ $(document).ready(function() {
 
         var postcode = $('input[name="postcode"]');
 
-        if (postcode.val().length == 0) {
+        if (postcode.val().length === 0) {
             addValidationError(postcode, 'Please enter a valid UK postcode');
         } else {
             removeValidationError(postcode);
@@ -100,9 +100,9 @@ $(document).ready(function() {
             var data = {'postcode': postcode.val()};
             $.post("/ajax/getDeliveryDetailsForPostcode", data, function(response) {
 
-                if (response.data.success == false) {
+                if (response.data.success === false) {
                     addValidationError(postcode, response.data.error);
-                } else if (response.data.can_deliver == true) {
+                } else if (response.data.can_deliver === true) {
                     $('#lookupPostcode').addClass('hidden');
                     $('.postcodeContainer').html(response.data.details.postcode);
                     $('.delivery-cost').html(response.data.details.format_cost);

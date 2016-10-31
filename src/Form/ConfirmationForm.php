@@ -36,7 +36,7 @@ class ConfirmationForm extends AbstractForm {
                             ]
                                 ]
                         )
-                        ->allowEmpty('email')
+                        ->notEmpty('email', 'Please enter a valid e-mail address')
                         ->add('email', [
                             'length' => [
                                 'rule' => 'email',
