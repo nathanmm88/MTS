@@ -172,7 +172,7 @@ class OrderController extends AppController {
 
                     $orderObject = $this->order->buildOrderObject();//TODO - MOVE THIS TO THE ACTUAL API CALL - this builds the order as a json object
                     pr($orderObject);
-                    die('Died at OrderController.php - line 175');
+                    die('Died at OrderController.php - line 175 - test commit with phpstorm');
                     try {
                         $this->getMailer('Order')->send('confirmation', [$this->order, $this->menu]);
                     } catch (Exception $e) {

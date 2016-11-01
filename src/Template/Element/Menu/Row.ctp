@@ -6,6 +6,9 @@
         </p>
     </td>
     <td>
+        <?php echo $this->element('Menu/ItemInfo', get_defined_vars()); ?>
+    </td>
+    <td>
         <strong><?php echo $this->Takeaway->formatMoney($item->getPrice()); ?></strong>
     </td>
     <td>
@@ -20,4 +23,4 @@
         ?>
         <a class="btn btn-default get-item-options" href="#" data-item-id="<?php echo $itemId; ?>" data-variation-id="<?php echo $variationId; ?>" data-section="<?php echo $section->getId(); ?>">Add</a>
     </td>
-</tr>                   
+</tr>

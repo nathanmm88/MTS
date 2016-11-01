@@ -12,8 +12,9 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th class="col-xs-8">Item</th>
-                        <th class="col-xs-2">Price</th>
+                        <th class="col-xs-7">Item</th>
+                        <th class="col-xs-2"></th>
+                        <th class="col-xs-1">Price</th>
                         <th class="col-xs-2"></th>
                     </tr>
                 </thead>
