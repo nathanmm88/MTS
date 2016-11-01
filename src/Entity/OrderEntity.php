@@ -559,6 +559,26 @@ class OrderEntity extends AbstractEntity {
 
         return array_key_exists($itemId, $condiments) ? $condiments[$itemId] : array();
     }
+    
+    /**
+     * Returns the contiments for a given item id in the format expected for the API
+     * 
+     * @param int $itemId
+     * @return array
+     */
+    public function getOrderCondimentsForItemId($itemId) {
+        $condiments = $this->getCondimentsForItemId($itemId);
+        
+        foreach($condiments as $index => $condiment){
+            $condiments[$index] = [
+                'Order_MenuItemID' => $condiment['item_id'],
+                'CondimentID' => $condiment['id'],
+                'CondimentTypeID' => $condiment['type_id']
+            ];
+        }
+
+        return $condiments;
+    }
 
     /**
      * Sets the delivery time
@@ -630,54 +650,81 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Build the order as a JSON object so we can pass to the API
+     * 
+     * @return string
      */
     public function buildOrderObject() {           
-        //initialise arrays
-        $orderObject = array();        
+        //return the json encoded order
+        return json_encode([
+            'Order' => $this->_getOrderDetails(),
+            'Items' => $this->_getOrderItems()
+        ]);
+    }
+    
+    /**
+     * Returns the order details from our session in a structure for the API
+     * 
+     * @return array
+     */
+    private function _getOrderDetails(){
+        
+        //get the address object
+        $address = $this->getAddress();
+        
+        //get the takeaway entity
+        $takeawayEntity = new TakeawayEntity($this->request);
+        
+        return [
+            //'OrderID' => '',
+            'TakeawayID' => $takeawayEntity->getId(),
+            'OrderTypeID' => '',
+            'OrderStatusID' => '',
+            'PaymentMethodID' => '',
+            'OrderTime' => date('Y-m-d H:i:s'),
+            'EstimatedCompletionTime' => $this->getEstimatedTime(),
+            'TotalOrder' => $this->getTotal(),
+            'TotalDelivery' => $this->isDelivery() ? $this->getAddress()->getDeliveryCost() : null,
+            //'TrackingID' => '',
+            //'Archived' => '',
+            //'Deleted' => '',
+            'DeliveryName' => $this->getFirstName() . ' ' . $this->getSurname(),
+            'DeliveryAddressLine1' => $address->getAddressLineOne(),
+            'DeliveryAddressLine2' => $address->getAddressLineTwo(),
+            'DeliveryTown' => $address->getAddressLineThree(),
+            'DeliveryPostcode' => $address->getPostcode(),
+            'DeliveryPhone' => $this->getTelephone(),
+            'DeliveryEmail' => $this->getEmail(),
+            'DeliveryLat' => $address->getLatitude(),
+            'DeliveryLong' => $address->getLongitude(),
+        ];
+    }
+    
+    /**
+     * Returns the order items in a structure ready for the API
+     * 
+     * @return array
+     */
+    private function _getOrderItems(){
+        
         $items = array();
-
+//die(var_dump($this->getItems()));
         //get all items
         foreach ($this->getItems() as $item) {
             //add this item (as an array) to the order array
-            array_push($items, $item->toArray());
+            array_push($items, $item->toOrderArray($this->request));
                                     
             //get the key for this item
             end($items);
             $key = key($items);
             
             //get the condiments for this order item
-            $condiments = $this->getCondimentsForItemId($item->getItemId());
+            $condiments = $this->getOrderCondimentsForItemId($item->getItemId());
        
             //add the condiments to this order item in the order array
-            $items[$key]['condiments'] = $condiments;
+            $items[$key]['Condiments'] = $condiments;
         }
-               
-        //set the various keys of the final order object
-        $orderObject['items'] = $items;
-        $orderObject['details'] = $this->_getPersonalDetails();
-    
-        //camelize all keys in the array
-        $orderObject = Functions::camelizeArrayKeys($orderObject);
-  
-        //return the json encoded order
-        return json_encode($orderObject);
-    }
-    
-    /**
-     * Return the personal details as an array
-     * 
-     * @return array
-     */
-    private function _getPersonalDetails(){
-        //set the relevant details from the model
-        $details['firstName'] = $this->getFirstName();
-        $details['surname'] = $this->getSurname();
-        $details['email'] = $this->getEmail();
-        $details['telephone'] = $this->getTelephone();
-        $details['orderType'] = $this->getType();
-        $details['address'] = $this->getAddress()->getAddressDetailsAsArray();
-                            
-        return $details;
+
+        return $items;
     }
 
 }

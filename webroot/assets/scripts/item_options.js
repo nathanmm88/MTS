@@ -194,7 +194,7 @@ $(document).ready(function() {
     //when the user selects an item to add
     $('.get-item-options').on('click', function(e) {
         e.preventDefault();
-        startBlocking();
+        //startBlocking();
 
         var url = '/ajax/getItemOptions';
         $.post(url, {item: $(this).data('item-id'), variation: $(this).data('variation-id')}, function(data) {

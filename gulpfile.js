@@ -13,7 +13,6 @@ var gulp = require('gulp')
         , del = require('del')
         , runSequence = require('run-sequence')
         , jshint = require('gulp-jshint')
-        , jslint = require('gulp-jslint')
         , bower = require('gulp-bower')
         , browserSync = require('browser-sync').create();
 

@@ -161,4 +161,23 @@ class ItemEntity extends AbstractEntity {
     public function hasNotes() {
         return (empty($this->notes) ? false : true);
     }
+    
+    /**
+     * Returns the object as an array ready to pass to the API
+     * 
+     * @return array
+     */
+    public function toOrderArray($request) {
+
+        $menuEntity = new MenuEntity($request);
+        
+        return [
+            'MenuItemID' => $this->getItemId(),
+            'MenuItem_VariationID' => $this->getVariationId(),
+            'Quantity' => 1,
+            'TotalPrice' => $menuEntity->getItem($this->getItemId(), $this->getVariationId())->getPrice(),
+            'IsFreeItem' => null,
+            'Notes' => $this->getNotes()
+        ];
+    }
 }
