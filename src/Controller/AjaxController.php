@@ -31,7 +31,8 @@ use App\Form\OrderForm;
  *
  * @link http://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
-class AjaxController extends AppController {
+class AjaxController extends AppController
+{
 
     public function initialize() {
         parent::initialize();
@@ -74,10 +75,10 @@ class AjaxController extends AppController {
         }
 
         $this->set('data', array('data' => array(
-                'success' => $success,
-                'error' => $error,
-                'can_deliver' => $canDeliver,
-                'details' => $details
+            'success' => $success,
+            'error' => $error,
+            'can_deliver' => $canDeliver,
+            'details' => $details
         )));
 
         $this->render('json');
@@ -90,38 +91,38 @@ class AjaxController extends AppController {
 
         //set the default response
         $success = false;
-        
+
         //get the item id from the post data
         $itemId = $this->request->data['item'];
         $variationId = $this->request->data['variation'];
         $section = $this->request->data['section'];
-        $notes = $this->request->data['notes']; 
-        $condiments = $this->request->data['selected-condiment'];              
-        
+        $notes = $this->request->data['notes'];
+        $condiments = $this->request->data['selected-condiment'];
+
         if ($this->menu->itemExists($itemId, $variationId, $section)) {
             //add this item to the order;
             $this->order->addItem(ItemEntity::fromArray(array('item_id' => $itemId, 'section_id' => $section, 'variation_id' => $variationId, 'notes' => $notes)), $this->request);
-            
+
             //get the internal order item ID of this item
             $orderItemId = $this->order->getLastOrderItemId();
-            
+
             //save each condiment to the session
             foreach ($condiments as $type_id => $condiment_id) {
                 $this->order->addCondiment($orderItemId, OrderItemCondimentEntity::fromArray(['id' => $condiment_id, 'type_id' => $type_id, 'item_id' => $orderItemId]));
             }
-            
+
             $success = true;
         }
 
         $orderForm = new OrderForm($this->request);
         $this->set('order', $orderForm);
-        
+
         $this->set('data', array(
             'order_total' => Number::currency($this->order->getTotal(), $this->takeaway->getCurrency()->getCode()),
             'success' => $success
         ));
     }
-    
+
     /**
      * This function removes an item to the basket
      */
@@ -135,58 +136,72 @@ class AjaxController extends AppController {
 
         //remove the item
         $this->order->removeItem($orderItemId);
-        
+
         //remove any condiments
         $this->order->removeCondiments($orderItemId);
 
         $orderForm = new OrderForm($this->request);
         $this->set('order', $orderForm);
-        
+
         $this->set('data', array(
             'order_total' => Number::currency($this->order->getTotal(), $this->takeaway->getCurrency()->getCode()),
             'success' => $success
         ));
     }
-    
+
     /**
      * When an item is selected we display a modal
      * containing the condiments and an input for notes
      */
-    public function getItemOptions(){
+    public function getItemOptions() {
         //get the posted data
         $item_id = $this->request->data['item'];
         $variation_id = $this->request->data['variation'];
-      
+
         //get all condiment types along with the condiments
         $condimentTypes = $this->menu->getAllCondimentsForItem($item_id);
-        
+
         //set what we need to the view
         $this->set('condimentTypes', $condimentTypes);
         $this->set('itemId', $item_id);
         $this->set('variationId', $variation_id);
-        $this->set('data', [           
+        $this->set('data', [
             'success' => true
         ]);
     }
-    
+
     /**
      * Changes the order to a collection order
      */
-    public function changeToCollection(){
-        
+    public function changeToCollection() {
+
         //sets the order to a collection order
-        if($this->takeaway->getSettings()->getAcceptCollectionOrders()){
+        if ($this->takeaway->getSettings()->getAcceptCollectionOrders()) {
             $this->order->setType(\App\Entity\TakeawayEntity::ORDER_TYPE_COLLECTION);
         }
-        
+
         //get the order form for the sidebar
         $orderForm = new OrderForm($this->request);
         $this->set('order', $orderForm);
-        
+
         //set the response
         $this->set('data', [
             'success' => true
         ]);
+    }
+
+    /**
+     * Action to check if the session has expired
+     */
+    public function checkSession() {
+        //if the session has timed out
+        if ($this->step->hasTimedOut(true)) {
+            $timeout = true;
+        } else {
+            $timeout = false;
+        }
+        $this->set('data', ['timeout' => $timeout]);
+        $this->render('json');
     }
 
 }
