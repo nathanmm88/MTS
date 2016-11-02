@@ -23,6 +23,8 @@ if ($item->mayContainBones()) {
     array_push($itemInfo, 'May Contain Bones');
 }
 
+array_push($itemInfo, 'Heat: '.$item->getHeat());
+
 //implode the array into a string we can display to the user
 $itemInfoString = implode('<br/>', $itemInfo);
 
