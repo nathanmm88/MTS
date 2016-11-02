@@ -5,6 +5,7 @@ namespace App\Controller\Component;
 use App\Controller\Component\AbstractComponent;
 use App\API\GetSettingsCall;
 use App\API\GetMenuCall;
+use App\API\UpdatePaymentStatusCall;
 
 class APIComponent extends AbstractComponent {
 
@@ -53,5 +54,28 @@ class APIComponent extends AbstractComponent {
 
         //handle the response
         $getMenuCall->handleResult($response);        
+    }
+
+    /**
+     * Update the payment status of a given order
+     */
+    public function updatePaymentStatus(){
+        //get a new instance of the call
+        $updatePaymentSettingsCall = new UpdatePaymentStatusCall();
+
+        //generate the body
+        $body = ['orderID' => $this->order->getOrderId(),
+            'trackingID' => '',
+            'paymentStatusID' => '',
+            'transactionRef' => '',
+        ];
+
+        //make the request
+        $response = $updatePaymentSettingsCall->makeRequest(
+            '/api/Orders/UpdatePaymentStatus', $updatePaymentSettingsCall->createRequestMessage($body)
+        );
+
+        //handle the response
+        $updatePaymentSettingsCall->handleResult($response);
     }
 }

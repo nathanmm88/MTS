@@ -85,6 +85,33 @@ class OrderEntity extends AbstractEntity {
     public $collection_time = '';
 
     /**
+     * Order ID
+     * @var string
+     */
+    public $order_id = '';
+
+    /**
+     * Get order ID
+     *
+     * @return string
+     */
+    public function getOrderId()
+    {
+        return $this->_get('order_id');
+    }
+
+    /**
+     * Set order ID
+     *
+     * @param string $order_id
+     */
+    public function setOrderId($order_id)
+    {
+        $this->order_id = $order_id;
+        return $this;
+    }
+
+    /**
      * Returns the order items
      * 
      * @return \App\Entity\Order\ItemEntity
