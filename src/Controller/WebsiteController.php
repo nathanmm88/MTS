@@ -49,4 +49,12 @@ class WebsiteController extends AppController
         }
 
     }
+    
+    /**
+     * If the takeaway is inactive
+     */
+    public function inactive(){
+        //we want to use the minimal layout
+        $this->viewBuilder()->layout('mts_simple');
+    }
 }
