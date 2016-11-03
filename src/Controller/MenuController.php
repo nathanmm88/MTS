@@ -25,7 +25,7 @@ use Cake\View\Exception\MissingTemplateException;
  *
  * @link http://book.cakephp.org/3.0/en/controllers/pages-controller.html
  */
-class WebsiteController extends AppController
+class MenuController extends AppController
 {
 
     /**
@@ -37,32 +37,8 @@ class WebsiteController extends AppController
      */
     public function display()
     {
-        /**
-         * First check if the takeaway has a website
-         * if they dont then send them onto the ordering system and the request
-         * will be handles from there
-         */
-        if((bool)Configure::read('takeaway.website') !== true){
-            $this->redirect(['controller' => 'order', 'action' => 'index']);
-        } else {
-            die('TODO:: add in the website builder');
-        }
-
-    }
-    
-    /**
-     * If the takeaway is inactive
-     */
-    public function inactive(){
-        //we want to use the minimal layout
-        $this->viewBuilder()->layout('mts_simple');
-    }
-    
-    /**
-     * If the takeaway is inactive
-     */
-    public function offline(){
-        //we want to use the minimal layout
         $this->viewBuilder()->layout('minimal');
+        $this->Api->getMenu();
+        $this->set('readOnly', true);
     }
 }

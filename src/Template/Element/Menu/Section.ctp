@@ -12,10 +12,16 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th class="col-xs-7">Item</th>
+                        <?php if(!isset($readOnly) || $readOnly == false){ ?>
+                            <th class="col-xs-7">Item</th>
+                        <?php } else { ?>
+                            <th class="col-xs-9">Item</th>
+                        <?php } ?>
                         <th class="col-xs-2"></th>
                         <th class="col-xs-1">Price</th>
-                        <th class="col-xs-2"></th>
+                        <?php if(!isset($readOnly) || $readOnly == false){ ?>
+                            <th class="col-xs-2"></th>
+                        <?php } ?>
                     </tr>
                 </thead>
                 <tbody>
