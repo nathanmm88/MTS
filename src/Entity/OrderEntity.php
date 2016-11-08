@@ -588,7 +588,7 @@ class OrderEntity extends AbstractEntity {
     }
     
     /**
-     * Returns the contiments for a given item id in the format expected for the API
+     * Returns the condiments for a given item id in the format expected for the API
      * 
      * @param int $itemId
      * @return array
@@ -706,6 +706,7 @@ class OrderEntity extends AbstractEntity {
             'TakeawayID' => $takeawayEntity->getId(),
             'OrderTypeID' => '',
             'OrderStatusID' => '',
+            'PaymentStatusID' => '',
             'PaymentMethodID' => '',
             'OrderTime' => date('Y-m-d H:i:s'),
             'EstimatedCompletionTime' => $this->getEstimatedTime(),
