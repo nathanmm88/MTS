@@ -4,14 +4,7 @@ namespace App\API;
 
 use App\Lib\DotNotation;
 
-class CreateOrderCall extends AbstractCall {
-
-    /**
-     * Content type of the request
-     *
-     * @var string
-     */
-    public $content_type = 'application/json';
+class GetOrderDetailsCall extends AbstractCall {
 
     /**
      * Handle the API response
@@ -23,9 +16,10 @@ class CreateOrderCall extends AbstractCall {
         $responseDotNotation = new DotNotation($response);
 
         //set the response values we need
-        $this->order->setOrderId($responseDotNotation->get('Order.OrderID'));
-        $this->order->setTrackingId($responseDotNotation->get('Order.TrackingID'));
         $this->order->setStatusId($responseDotNotation->get('Order.OrderStatusID'));
+
+        //TODO - we may want to map the description our end from the ID
+        $this->order->setStatusDesc($responseDotNotation->get('Order.OrderStatusDesc'));
     }
 
 }

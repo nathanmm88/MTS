@@ -5,6 +5,7 @@ namespace App\Controller\Component;
 use App\Controller\Component\AbstractComponent;
 use App\API\GetSettingsCall;
 use App\API\GetMenuCall;
+use App\API\GetOrderDetailsCall;
 use App\API\UpdatePaymentStatusCall;
 use App\API\CreateOrderCall;
 
@@ -97,5 +98,26 @@ class APIComponent extends AbstractComponent {
 
         //handle the response
         $createOrderCall->handleResult($response);
+    }
+
+    /**
+     * Get the order details
+     */
+    public function getOrderDetails() {
+        //get a new instance of the call
+        $getOrderDetailsCall = new GetOrderDetailsCall();
+
+        //generate the body
+        $body = ['OrderID' => $this->order->getOrderId(),
+            'TrackingID' => $this->order->getTrackingId(),
+        ];
+
+        //make the request
+        $response = $getOrderDetailsCall->makeRequest(
+            '/api/Orders/GetOrderDetails', $getOrderDetailsCall->createRequestMessage($body)
+        );
+
+        //handle the response
+        $getOrderDetailsCall->handleResult($response);
     }
 }

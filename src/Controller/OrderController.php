@@ -192,6 +192,8 @@ class OrderController extends AppController {
      * 
      */
     public function thanks(){
+        //TODO - move this from here to the tracking page
+        $this->Api->getOrderDetails();
         //make sure we dont render the basket on this page
         $this->set('noSidebar', true);
     }
