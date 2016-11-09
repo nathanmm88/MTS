@@ -10,76 +10,77 @@ use App\Entity\TakeawayEntity;
 use App\Entity\Order\OrderItemCondimentEntity;
 use App\Lib\Functions;
 
-class OrderEntity extends AbstractEntity {
+class OrderEntity extends AbstractEntity
+{
 
     /**
      * The prefix for the entity
-     * 
+     *
      * Everything will be stored under order in the session
-     * 
+     *
      * @var string
      */
     public $prefix = 'order';
 
     /**
      * An array of items for this order
-     * 
+     *
      * @var type array
      */
     public $items = array();
 
     /**
      * Order type
-     * 
+     *
      * @var type string
      */
     public $type = '';
 
     /**
      * Order address
-     * 
+     *
      * @var \App\Entity\Order\OrderAddressEntity
      */
     public $address = '';
 
     /**
      * First name
-     * 
+     *
      * @var string
      */
     public $first_name = '';
 
     /**
      * Surname
-     * 
+     *
      * @var string
      */
     public $surname = '';
 
     /**
      * Fhone
-     * 
+     *
      * @var string
      */
     public $telephone = '';
 
     /**
      * Email address
-     * 
+     *
      * @var string
      */
     public $email = '';
 
     /**
      * Delivery time
-     * 
+     *
      * @var string
      */
     public $delivery_time = '';
 
     /**
      * Collection time
-     * 
+     *
      * @var string
      */
     public $collection_time = '';
@@ -90,13 +91,60 @@ class OrderEntity extends AbstractEntity {
      */
     public $order_id = '';
 
+
+    /**
+     * Order type values mapped for the API
+     *
+     * @var array
+     */
+    public $mapped_order_type = [ORDER_TYPE_COLLECTION => 1, ORDER_TYPE_DELIVERY => 2];
+
+    /**
+     * Payment method values mapped for the API
+     *
+     * @var array
+     */
+    public $mapped_payment_methods = [PAYMENT_TYPE_CASH => 1, PAYMENT_TYPE_ONLINE => 2];
+
+    /**
+     * Payment method
+     *
+     * @var string
+     */
+    public $payment_method = '';
+
+    /**
+     * Payment status
+     *
+     * @var int
+     */
+    PUBLIC $payment_status = '';
+
+    /**
+     * Get the payment method
+     *
+     * @return string
+     */
+    public function getPaymentMethod() {
+        return $this->_get('payment_method');
+    }
+
+    /**
+     * Set the payment method
+     *
+     * @param string $payment_method
+     */
+    public function setPaymentMethod($payment_method) {
+        $this->_set('payment_method', $payment_method);
+        return $this;
+    }
+
     /**
      * Get order ID
      *
      * @return string
      */
-    public function getOrderId()
-    {
+    public function getOrderId() {
         return $this->_get('order_id');
     }
 
@@ -105,15 +153,14 @@ class OrderEntity extends AbstractEntity {
      *
      * @param string $order_id
      */
-    public function setOrderId($order_id)
-    {
+    public function setOrderId($order_id) {
         $this->order_id = $order_id;
         return $this;
     }
 
     /**
      * Returns the order items
-     * 
+     *
      * @return \App\Entity\Order\ItemEntity
      */
     public function getItems() {
@@ -132,7 +179,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the order type
-     * 
+     *
      * @return string
      */
     public function getType() {
@@ -141,7 +188,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Checks if a supplied type is the current order type
-     * 
+     *
      * @param string $type
      * @return boolean
      */
@@ -151,7 +198,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Checks if this is a delivery
-     * 
+     *
      * @return boolean
      */
     public function isDelivery() {
@@ -160,7 +207,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the order address
-     * 
+     *
      * @return \App\Entity\Order\OrderAddressEntity
      */
     public function getAddress() {
@@ -169,7 +216,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Adds an item to the order
-     * 
+     *
      * @param ItemEntity $item
      * @return \App\Entity\OrderEntity
      */
@@ -192,8 +239,8 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Removes an order item from a specific index
-     * 
-     * @param int $index 
+     *
+     * @param int $index
      * @return \App\Entity\OrderEntity
      */
     public function removeItem($index) {
@@ -212,8 +259,8 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Removes the condiments from an order item from a specific index
-     * 
-     * @param int $index 
+     *
+     * @param int $index
      * @return \App\Entity\OrderEntity
      */
     public function removeCondiments($index) {
@@ -232,7 +279,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the first name
-     * 
+     *
      * @return string
      */
     public function getFirstName() {
@@ -241,7 +288,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Surname
-     * 
+     *
      * @return string
      */
     public function getSurname() {
@@ -250,7 +297,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the telephone
-     * 
+     *
      * @return string
      */
     public function getTelephone() {
@@ -259,7 +306,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the email
-     * 
+     *
      * @return string
      */
     public function getEmail() {
@@ -267,8 +314,17 @@ class OrderEntity extends AbstractEntity {
     }
 
     /**
+     * Returns the payment status ID
+     *
+     * @return int
+     */
+    public function getPaymentStatus(){
+        return $this->_get('payment_status');
+    }
+
+    /**
      * Returns the delivery time
-     * 
+     *
      * @return int
      */
     public function getDeliveryTime() {
@@ -277,7 +333,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the delivery time options
-     * 
+     *
      * @return array
      */
     public function getDeliveryTimeOptions() {
@@ -310,7 +366,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the collection time options
-     * 
+     *
      * @return array
      */
     public function getCollectionTimeOptions() {
@@ -343,7 +399,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the collection time
-     * 
+     *
      * @return int
      */
     public function getCollectionTime() {
@@ -352,7 +408,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Sets the order type
-     * 
+     *
      * @param string $type
      * @return \App\Entity\OrderEntity
      */
@@ -363,7 +419,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the takeaway address
-     * 
+     *
      * @param \App\Entity\Order\OrderAddressEntity $address
      * @return \App\Entity\OrderEntity
      */
@@ -374,7 +430,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Sets the first name
-     * 
+     *
      * @param string $first_name
      * @return \App\Entity\OrderEntity
      */
@@ -385,7 +441,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Sets the surname
-     * 
+     *
      * @param string $surname
      * @return \App\Entity\OrderEntity
      */
@@ -406,7 +462,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Sets the email
-     * 
+     *
      * @param string $email
      * @return \App\Entity\OrderEntity
      */
@@ -416,8 +472,19 @@ class OrderEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the order total 
-     * 
+     * Sets the payment status
+     *
+     * @param int $payment_status
+     * @return \App\Entity\OrderEntity
+     */
+    public function setPaymentStatus($payment_status) {
+        $this->_set('payment_status', $payment_status);
+        return $this;
+    }
+
+    /**
+     * Returns the order total
+     *
      * @param boolean $includeExtras
      * @return float
      */
@@ -451,7 +518,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Checks if the supplied total or session total meets the minimum amount
-     * 
+     *
      * @param float $subTotal
      * @return boolean
      */
@@ -484,9 +551,9 @@ class OrderEntity extends AbstractEntity {
     }
 
     /**
-     * Returns the estimated delivery time, if format is false the date time 
+     * Returns the estimated delivery time, if format is false the date time
      * object is returned
-     * 
+     *
      * @param string|false $format
      * @return string|DateTime
      */
@@ -509,7 +576,7 @@ class OrderEntity extends AbstractEntity {
         if ($delay !== false) {
             $delay = $delay * 60; //convert from minutes to seconds
             $dateTime = new \DateTime();
-            $delay = $dateTime->setTimestamp(time() + (int) $delay);
+            $delay = $dateTime->setTimestamp(time() + (int)$delay);
         }
 
         return $format === false ? $delay : $delay->format($format);
@@ -517,7 +584,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the internal order ID of the latest item
-     * 
+     *
      * @return int
      */
     public function getLastOrderItemId() {
@@ -533,7 +600,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Adds a condiment to the order
-     * 
+     *
      * @param int $$orderItemId The order item index
      * @param \App\Entity\Order\OrderItemCondimentEntity $condiment
      * @return \App\Entity\OrderEntity
@@ -561,7 +628,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Checks if the item has condiments
-     * 
+     *
      * @param int $itemId
      * @return boolean
      */
@@ -571,7 +638,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Returns the contiments for a given item id
-     * 
+     *
      * @param int $itemId
      * @return array
      */
@@ -586,17 +653,17 @@ class OrderEntity extends AbstractEntity {
 
         return array_key_exists($itemId, $condiments) ? $condiments[$itemId] : array();
     }
-    
+
     /**
      * Returns the condiments for a given item id in the format expected for the API
-     * 
+     *
      * @param int $itemId
      * @return array
      */
     public function getOrderCondimentsForItemId($itemId) {
         $condiments = $this->getCondimentsForItemId($itemId);
-        
-        foreach($condiments as $index => $condiment){
+
+        foreach ($condiments as $index => $condiment) {
             $condiments[$index] = [
                 'Order_MenuItemID' => $condiment['item_id'],
                 'CondimentID' => $condiment['id'],
@@ -609,7 +676,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Sets the delivery time
-     * 
+     *
      * @param int $delivery_time
      * @return \App\Entity\OrderEntity
      */
@@ -620,7 +687,7 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Sets the collection time
-     * 
+     *
      * @param int $collection_time
      * @return \App\Entity\OrderEntity
      */
@@ -631,9 +698,9 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Checks is an order can be processed
-     * 
-     * this can be used to add a disabled class 
-     * 
+     *
+     * this can be used to add a disabled class
+     *
      * @return boolean
      */
     public function isValidOrder() {
@@ -677,37 +744,38 @@ class OrderEntity extends AbstractEntity {
 
     /**
      * Build the order as a JSON object so we can pass to the API
-     * 
+     *
      * @return string
      */
-    public function buildOrderObject() {           
+    public function buildOrderObject() {
+        pr($_SESSION);
         //return the json encoded order
         return json_encode([
             'Order' => $this->_getOrderDetails(),
-            'Items' => $this->_getOrderItems()
+            'OrderItems' => $this->_getOrderItems()
         ]);
     }
-    
+
     /**
      * Returns the order details from our session in a structure for the API
-     * 
+     *
      * @return array
      */
-    private function _getOrderDetails(){
-        
+    private function _getOrderDetails() {
+
         //get the address object
         $address = $this->getAddress();
-        
+
         //get the takeaway entity
         $takeawayEntity = new TakeawayEntity($this->request);
-        
+
         return [
             //'OrderID' => '',
             'TakeawayID' => $takeawayEntity->getId(),
-            'OrderTypeID' => '',
+            'OrderTypeID' => $this->getOrderTypeForAPI(),
             'OrderStatusID' => '',
-            'PaymentStatusID' => '',
-            'PaymentMethodID' => '',
+            'PaymentStatusID' => $this->getPaymentStatus(),
+            'PaymentMethodID' => $this->getPaymentMethodForAPI(),
             'OrderTime' => date('Y-m-d H:i:s'),
             'EstimatedCompletionTime' => $this->getEstimatedTime(),
             'TotalOrder' => $this->getTotal(),
@@ -726,33 +794,55 @@ class OrderEntity extends AbstractEntity {
             'DeliveryLong' => $address->getLongitude(),
         ];
     }
-    
+
     /**
      * Returns the order items in a structure ready for the API
-     * 
+     *
      * @return array
      */
-    private function _getOrderItems(){
-        
+    private function _getOrderItems() {
+
         $items = array();
 //die(var_dump($this->getItems()));
         //get all items
         foreach ($this->getItems() as $item) {
+            //  pr($item);
+            //die(pr($item->toOrderArray($this->request)));
             //add this item (as an array) to the order array
             array_push($items, $item->toOrderArray($this->request));
-                                    
+
             //get the key for this item
             end($items);
             $key = key($items);
-            
+
             //get the condiments for this order item
             $condiments = $this->getOrderCondimentsForItemId($item->getItemId());
-       
+
             //add the condiments to this order item in the order array
             $items[$key]['Condiments'] = $condiments;
         }
 
         return $items;
+    }
+
+    /**
+     * Return the order type mapped to the appropriate API value
+     *
+     * @return int
+     */
+    public function getOrderTypeForAPI() {
+        //return the mapped api value for the selected order type
+        return $this->mapped_order_type[$this->getType()];
+    }
+
+    /**
+     * Return the payment method mapped to the appropriate API value
+     *
+     * @return int
+     */
+    public function getPaymentMethodForAPI(){
+        //return the mapped api value for the selected order type
+        return $this->mapped_payment_methods[$this->getPaymentMethod()];
     }
 
 }

@@ -6,20 +6,21 @@ use App\Entity\AbstractEntity;
 use App\Entity\Menu\CondimentEntity;
 use App\Entity\MenuEntity;
 
-class ItemEntity extends AbstractEntity {
+class ItemEntity extends AbstractEntity
+{
 
     /**
      * The prefix for the entity
-     * 
+     *
      * Everything will be stored under order => item in the session
-     * 
+     *
      * @var string
      */
     public $prefix = 'order.item';
 
     /**
      * Unique Item ID
-     * 
+     *
      * @var integer
      */
     protected $id = null;
@@ -41,8 +42,8 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Any notes against the item
-     * 
-     * @var string 
+     *
+     * @var string
      */
     protected $notes = null;
 
@@ -52,7 +53,7 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Returns the item ID
-     * 
+     *
      * @return string
      */
     public function getId() {
@@ -61,7 +62,7 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Returns the unique item ID
-     * 
+     *
      * @return string
      */
     public function getItemId() {
@@ -70,7 +71,7 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Returns the section ID
-     * 
+     *
      * @return int
      */
     public function getSectionId() {
@@ -79,7 +80,7 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Returns the variation ID
-     * 
+     *
      * @return int
      */
     public function getVariationId() {
@@ -88,7 +89,7 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Returns the item notes
-     * 
+     *
      * @return string
      */
     public function getNotes() {
@@ -101,7 +102,7 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Sets the item ID
-     * 
+     *
      * @param integer $id
      * @return \App\Entity\Order\ItemEntity
      */
@@ -111,7 +112,7 @@ class ItemEntity extends AbstractEntity {
     }
 
     /**
-     * 
+     *
      * @param type $item_id
      * @return \App\Entity\Order\ItemEntity
      */
@@ -122,7 +123,7 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Sets the section ID
-     * 
+     *
      * @param int $section_id
      * @return \App\Entity\Order\ItemEntity
      */
@@ -133,7 +134,7 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Sets the variation ID
-     * 
+     *
      * @param int $variation_id
      * @return \App\Entity\Order\ItemEntity
      */
@@ -144,7 +145,7 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Sets the notes against the item
-     * 
+     *
      * @param string $notes
      * @return \App\Entity\Order\ItemEntity
      */
@@ -155,29 +156,31 @@ class ItemEntity extends AbstractEntity {
 
     /**
      * Whether the item has notes
-     * 
+     *
      * @return bool
      */
     public function hasNotes() {
         return (empty($this->notes) ? false : true);
     }
-    
+
     /**
      * Returns the object as an array ready to pass to the API
-     * 
+     *
      * @return array
      */
     public function toOrderArray($request) {
 
         $menuEntity = new MenuEntity($request);
-        
+
         return [
-            'MenuItemID' => $this->getItemId(),
-            'MenuItem_VariationID' => $this->getVariationId(),
-            'Quantity' => 1,
-            'TotalPrice' => $menuEntity->getItem($this->getItemId(), $this->getVariationId())->getPrice(),
-            'IsFreeItem' => null,
-            'Notes' => $this->getNotes()
+            'OrderItem' => [
+                'MenuItemID' => $this->getItemId(),
+                'MenuItem_VariationID' => $this->getVariationId(),
+                'Quantity' => 1,
+                'TotalPrice' => $menuEntity->getItem($this->getItemId(), $this->getVariationId())->getPrice(),
+                'IsFreeItem' => null,
+                'Notes' => $this->getNotes()
+            ]
         ];
     }
 }

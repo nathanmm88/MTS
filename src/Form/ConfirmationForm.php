@@ -96,7 +96,8 @@ class ConfirmationForm extends AbstractForm {
                     'address_line_two' => $dataDotNotation->get('address_line_two'),
                     'address_line_three' => $dataDotNotation->get('address_line_three'),
                     'address_line_four' => $dataDotNotation->get('address_line_four'),
-                    'postcode' => $dataDotNotation->get('postcode')
+                    'postcode' => $dataDotNotation->get('postcode'),
+
         ]);
 
         $orderEntity->setAddress($orderAddressEntity)
@@ -105,8 +106,15 @@ class ConfirmationForm extends AbstractForm {
                 ->setEmail($dataDotNotation->get('email'))
                 ->setTelephone($dataDotNotation->get('telephone'))
                 ->setDeliveryTime($dataDotNotation->get('delivery_time'))
-                ->setCollectionTime($dataDotNotation->get('collection_time'));
+                ->setCollectionTime($dataDotNotation->get('collection_time'))
+                ->setPaymentStatus(PAYMENT_STATUS_PENDING);
 
+        //set the payment method
+        if(array_key_exists(PAYMENT_TYPE_CASH, $data)){
+            $orderEntity->setPaymentMethod(PAYMENT_TYPE_CASH);
+        } else {
+            $orderEntity->setPaymentMethod(PAYMENT_TYPE_ONLINE);
+        }
         
         return true;
     }

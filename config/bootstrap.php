@@ -21,6 +21,12 @@ define('ORDER_TYPE_COLLECTION', 'collection');
 define('PAYMENT_TYPE_CASH', 'cash');
 define('PAYMENT_TYPE_ONLINE', 'online');
 
+define('PAYMENT_STATUS_PENDING', 1);
+define('PAYMENT_STATUS_CANCELLED', 2);
+define('PAYMENT_STATUS_REFUND', 3);
+define('PAYMENT_STATUS_ERROR', 4);
+define('PAYMENT_STATUS_COMPLETE', 5);
+
 // You can remove this if you are confident that your PHP version is sufficient.
 if (version_compare(PHP_VERSION, '5.5.9') < 0) {
     trigger_error('You PHP version must be equal or higher than 5.5.9 to use CakePHP.', E_USER_ERROR);
