@@ -20,6 +20,7 @@ class GetOrderDetailsCall extends AbstractCall {
 
         //TODO - we may want to map the description our end from the ID
         $this->order->setStatusDesc($responseDotNotation->get('Order.OrderStatusDesc'));
+        $this->order->setPaymentStatusDesc($responseDotNotation->get('Order.PaymentStatusDesc'));
     }
 
 }

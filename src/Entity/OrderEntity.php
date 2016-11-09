@@ -142,6 +142,13 @@ class OrderEntity extends AbstractEntity
     public $status_desc = '';
 
     /**
+     * Payment status description
+     *
+     * @var string
+     */
+    public $payment_status_desc = '';
+
+    /**
      * Get the payment method
      *
      * @return string
@@ -158,6 +165,26 @@ class OrderEntity extends AbstractEntity
      */
     public function setPaymentMethod($payment_method) {
         $this->_set('payment_method', $payment_method);
+        return $this;
+    }
+
+    /**
+     * Get the payment status description
+     *
+     * @return string
+     */
+    public function getPaymentStatusDesc() {
+        return $this->_get('payment_status_desc');
+    }
+
+    /**
+     * Set the payment status description
+     *
+     * @param string $payment_status_desc
+     * @return \App\Entity\OrderEntity
+     */
+    public function setPaymentStatusDesc($payment_status_desc) {
+        $this->_set('payment_status_desc', $payment_status_desc);
         return $this;
     }
 

@@ -61,14 +61,14 @@ class APIComponent extends AbstractComponent {
     /**
      * Update the payment status of a given order
      */
-    public function updatePaymentStatus(){
+    public function updatePaymentStatus($payment_status){
         //get a new instance of the call
         $updatePaymentSettingsCall = new UpdatePaymentStatusCall();
 
         //generate the body
         $body = ['orderID' => $this->order->getOrderId(),
-            'trackingID' => '',
-            'paymentStatusID' => '',
+            'trackingID' => $this->order->getTrackingId(),
+            'paymentStatusID' => $payment_status,
             'transactionRef' => '',
         ];
 

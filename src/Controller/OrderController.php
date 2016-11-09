@@ -192,6 +192,12 @@ class OrderController extends AppController {
      * 
      */
     public function thanks(){
+        //TODO - move this as it is just for testing
+        //$this->Api->updatePaymentStatus(PAYMENT_STATUS_PENDING);
+        //$this->Api->updatePaymentStatus(PAYMENT_STATUS_CANCELLED);
+        $this->Api->updatePaymentStatus(PAYMENT_STATUS_REFUND);
+        //$this->Api->updatePaymentStatus(PAYMENT_STATUS_ERROR);
+        //$this->Api->updatePaymentStatus(PAYMENT_STATUS_COMPLETE);
         //TODO - move this from here to the tracking page
         $this->Api->getOrderDetails();
         //make sure we dont render the basket on this page
