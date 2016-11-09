@@ -7,6 +7,7 @@ use Cake\Network\Http\Client;
 use App\Entity\SecurityEntity;
 use App\Entity\TakeawayEntity;
 use App\Entity\MenuEntity;
+use App\Entity\OrderEntity;
 use App\Entity\AbstractEntity;
 use App\Network\TakeawayRequest;
 use Cake\Log\Log;
@@ -32,6 +33,7 @@ abstract class AbstractCall extends AbstractEntity {
         $this->security = new SecurityEntity($this->request);
         $this->takeaway = new TakeawayEntity($this->request);
         $this->menu = new MenuEntity($this->request);
+        $this->order = new OrderEntity($this->request);
     }
 
     /**

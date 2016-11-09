@@ -168,18 +168,14 @@ class OrderController extends AppController {
         if ($this->request->is('post')) {
             if ($this->order->isValidOrder()) {
                 if ($confirmationForm->execute($this->request->data)) {
-                    //get the order
-
-
-
+                    //create the order
                     $this->Api->createOrder();
 
-                    die('Died at OrderController.php - line 175 - test commit with phpstorm');
-                    try {
+                    /*try {
                         $this->getMailer('Order')->send('confirmation', [$this->order, $this->menu]);
                     } catch (Exception $e) {
                         echo $e->getMessage();
-                    }         
+                    }   */
                     
                     //all good so redirect to the thank you page
                     $this->_redirectToStep('order_thanks');

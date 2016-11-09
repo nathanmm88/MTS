@@ -118,7 +118,21 @@ class OrderEntity extends AbstractEntity
      *
      * @var int
      */
-    PUBLIC $payment_status = '';
+    public $payment_status = '';
+
+    /**
+     * Tracking ID
+     *
+     * @var srting
+     */
+    public $tracking_id = '';
+
+    /**
+     * Status ID
+     *
+     * @var int
+     */
+    public $status_id = '';
 
     /**
      * Get the payment method
@@ -140,6 +154,44 @@ class OrderEntity extends AbstractEntity
     }
 
     /**
+     * Get the status ID
+     *
+     * @return string
+     */
+    public function getStatusId() {
+        return $this->_get('status_id');
+    }
+
+    /**
+     * Set the status ID
+     *
+     * @param string $status_id
+     */
+    public function setStatusId($status_id) {
+        $this->_set('status_id', $status_id);
+        return $this;
+    }
+
+    /**
+     * Get the tracking ID
+     *
+     * @return string
+     */
+    public function getTrackingId() {
+        return $this->_get('tracking_id');
+    }
+
+    /**
+     * Set the tracking ID
+     *
+     * @param string $tracking_id
+     */
+    public function setTrackingId($tracking_id) {
+        $this->_set('tracking_id', $tracking_id);
+        return $this;
+    }
+
+    /**
      * Get order ID
      *
      * @return string
@@ -154,7 +206,7 @@ class OrderEntity extends AbstractEntity
      * @param string $order_id
      */
     public function setOrderId($order_id) {
-        $this->order_id = $order_id;
+        $this->_set('order_id', $order_id);
         return $this;
     }
 
