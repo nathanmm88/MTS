@@ -170,8 +170,10 @@ class OrderController extends AppController {
                 if ($confirmationForm->execute($this->request->data)) {
                     //get the order
 
-                    $orderObject = $this->order->buildOrderObject();//TODO - MOVE THIS TO THE ACTUAL API CALL - this builds the order as a json object
-                    pr($orderObject);
+
+
+                    $this->Api->createOrder();
+
                     die('Died at OrderController.php - line 175 - test commit with phpstorm');
                     try {
                         $this->getMailer('Order')->send('confirmation', [$this->order, $this->menu]);

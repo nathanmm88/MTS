@@ -748,7 +748,6 @@ class OrderEntity extends AbstractEntity
      * @return string
      */
     public function buildOrderObject() {
-        pr($_SESSION);
         //return the json encoded order
         return json_encode([
             'Order' => $this->_getOrderDetails(),

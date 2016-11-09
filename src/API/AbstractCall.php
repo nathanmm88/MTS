@@ -14,6 +14,13 @@ use Cake\Log\Log;
 abstract class AbstractCall extends AbstractEntity {
 
     /**
+     * Content type of the request
+     *
+     * @var string
+     */
+    public $content_type = 'application/x-www-form-urlencoded';
+
+    /**
      * Constructor
      * 
      * Ensure the entities are accessible in all inherited calls
@@ -44,7 +51,7 @@ abstract class AbstractCall extends AbstractEntity {
      */
     public function makeRequest($action, $messageBody, $needsToken = true) {
         //default headers
-        $headers = ['Content-Type' => 'application/x-www-form-urlencoded'];
+        $headers = ['Content-Type' => $this->content_type];
 
         //add the token if needed
         if ($needsToken) {
@@ -57,7 +64,8 @@ abstract class AbstractCall extends AbstractEntity {
         $http = new Client();
         $response = $http->post(
                 Configure::read('api.url') . $action, $messageBody, ['headers' => $headers]
-        );   
+        );
+
         $this->_log(['URL' => Configure::read('api.url') . $action, 'Request' => $messageBody]);
       
         $responseArray = json_decode($response->body(), true);

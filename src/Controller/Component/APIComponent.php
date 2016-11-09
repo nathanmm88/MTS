@@ -6,6 +6,7 @@ use App\Controller\Component\AbstractComponent;
 use App\API\GetSettingsCall;
 use App\API\GetMenuCall;
 use App\API\UpdatePaymentStatusCall;
+use App\API\CreateOrderCall;
 
 class APIComponent extends AbstractComponent {
 
@@ -77,5 +78,24 @@ class APIComponent extends AbstractComponent {
 
         //handle the response
         $updatePaymentSettingsCall->handleResult($response);
+    }
+
+    /**
+     * Create an order
+     */
+    public function createOrder(){
+        //get a new instance of the call
+        $createOrderCall = new CreateOrderCall();
+
+        //generate the body
+        $body = $this->order->buildOrderObject();
+
+        //make the request
+        $response = $createOrderCall->makeRequest(
+            '/api/Orders/CreateOrder', $body
+        );
+
+        //handle the response
+        $createOrderCall->handleResult($response);
     }
 }
