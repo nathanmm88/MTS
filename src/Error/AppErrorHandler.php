@@ -5,6 +5,7 @@ namespace App\Error;
 use App\Exception\SessionTimeoutException;
 use Cake\Routing\Exception\MissingControllerException;
 use Cake\Error\ErrorHandler;
+use Cake\Log\Log;
 
 class AppErrorHandler extends ErrorHandler {
 
@@ -18,7 +19,8 @@ class AppErrorHandler extends ErrorHandler {
      * @param mixed Exceptions
      */
     public function _displayException($exception) {
-        //TODO:: add logging      
+        //log the exception message
+        Log::write('error', $exception->getMessage());
         //if the session has timed out
         if ($exception instanceof SessionTimeoutException) {
             $this->_redirect('/error/sessionTimeout');

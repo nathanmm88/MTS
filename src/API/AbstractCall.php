@@ -10,6 +10,7 @@ use App\Entity\MenuEntity;
 use App\Entity\OrderEntity;
 use App\Entity\AbstractEntity;
 use App\Network\TakeawayRequest;
+use App\Exception\APIException;
 use Cake\Log\Log;
 
 abstract class AbstractCall extends AbstractEntity {
@@ -74,8 +75,8 @@ abstract class AbstractCall extends AbstractEntity {
               
         $this->_log(['Response' => $responseArray]);
         
-        if (array_key_exists('error', $responseArray)) {
-            throw new Exception('Error returned in ' . $action . ' API call with the error ' . $responseArray['error']);
+        if ((array_key_exists('LastError', $responseArray)) && (!empty($responseArray['LastError']))) {
+            throw new APIException('Error returned in ' . $action . ' API call with the error "' . $responseArray['LastError'].'"');
         }
 
         return $responseArray;
