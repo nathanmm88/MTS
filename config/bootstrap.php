@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -79,7 +80,6 @@ use Cake\Utility\Inflector;
 use Cake\Utility\Security;
 use App\Error\AppErrorHandler;
 
-
 //// Register handler in config/bootstrap.php
 //$errorHandler = new AppError();
 //$errorHandler->register();
@@ -97,19 +97,18 @@ try {
     Configure::load('app', 'default', false);
     //tmp until we get the WS up and running
     Configure::load('Domains/' . explode('.', $_SERVER['HTTP_HOST'])[0], 'default');
-    
+
     /**
      * Load environment specific configs
      */
-    switch (getenv('ENVIRONMENT')){
-        case 'development':            
+    switch (getenv('ENVIRONMENT')) {
+        case 'development':
             Configure::load('config_dev', 'default');
             break;
-        default:            
+        default:
             Configure::load('config_prod.prod');
             break;
     }
-    
 } catch (\Exception $e) {
     exit($e->getMessage() . "\n");
 }
@@ -118,7 +117,6 @@ try {
 // You can use a file like app_local.php to provide local overrides to your
 // shared configuration.
 //Configure::load('app_local', 'default');
-
 // When debug = false the metadata cache should last
 // for a very very long time, as we don't want
 // to refresh the cache while users are doing requests.
@@ -214,7 +212,6 @@ Request::addDetector('tablet', function ($request) {
  * Inflector::rules('uninflected', ['dontinflectme']);
  * Inflector::rules('transliteration', ['/å/' => 'aa']);
  */
-
 /**
  * Plugins need to be loaded manually, you can either load them one by one or all of them in a single call
  * Uncomment one of the lines below, as you need. make sure you read the documentation on Plugin to use more
@@ -224,8 +221,20 @@ Request::addDetector('tablet', function ($request) {
  * Plugin::load('Migrations'); //Loads a single plugin named Migrations
  *
  */
-
 Plugin::load('Migrations');
+Plugin::load('CakePdf', ['bootstrap' => true]);
+
+Configure::write('CakePdf', [
+    'engine' => 'CakePdf.mpdf',
+    'margin' => [
+        'bottom' => 15,
+        'left' => 50,
+        'right' => 30,
+        'top' => 45
+    ],
+    'orientation' => 'landscape',
+    'download' => true
+]);
 
 // Only try to load DebugKit in development mode
 // Debug Kit should not be installed on a production system
@@ -235,7 +244,7 @@ if (Configure::read('debug')) {
 
 
 //load the text file into the main app config
-$textFileLocation = realpath( dirname( __FILE__ ) ).DIRECTORY_SEPARATOR.'text.php';
+$textFileLocation = realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'text.php';
 require $textFileLocation;
 
 //write to the config
@@ -257,8 +266,8 @@ DispatcherFactory::add('ControllerFactory');
  * @link http://book.cakephp.org/3.0/en/core-libraries/internationalization-and-localization.html#parsing-localized-datetime-data
  */
 Type::build('time')
-    ->useImmutable();
+        ->useImmutable();
 Type::build('date')
-    ->useImmutable();
+        ->useImmutable();
 Type::build('datetime')
-    ->useImmutable();
+        ->useImmutable();
