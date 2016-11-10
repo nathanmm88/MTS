@@ -76,7 +76,7 @@
         <?php
         $postcodeParams = ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getPostcode()];
         if ($this->Entity->get('Order')->isDelivery()) {
-            $postcodeParams['disabled'] = 'disabled';
+            $postcodeParams['readonly'] = 'readonly';
         }
         ?>
         <?php echo $this->Form->label('postcode', 'Postcode', ['class' => 'control-label']); ?>

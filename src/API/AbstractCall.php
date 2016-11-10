@@ -74,9 +74,11 @@ abstract class AbstractCall extends AbstractEntity {
         $responseArray = json_decode($response->body(), true);
               
         $this->_log(['Response' => $responseArray]);
-        
+
         if ((array_key_exists('LastError', $responseArray)) && (!empty($responseArray['LastError']))) {
             throw new APIException('Error returned in ' . $action . ' API call with the error "' . $responseArray['LastError'].'"');
+        } else if ((array_key_exists('Message', $responseArray)) && (!empty($responseArray['Message']))) {
+            throw new APIException('Error returned in ' . $action . ' API call with the error "' . $responseArray['Message'].'"');
         }
 
         return $responseArray;

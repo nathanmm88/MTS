@@ -16,15 +16,9 @@
 
 namespace App\Controller;
 
-use Cake\Core\Configure;
-use Cake\Network\Exception\NotFoundException;
-use Cake\View\Exception\MissingTemplateException;
 use App\Form\ConfirmationForm;
 use App\Form\OrderForm;
-use App\Entity\Order\ItemEntity;
-use App\Entity\Order;
 use App\Entity\Order\OrderAddressEntity;
-use App\Email\ConfirmationEmail;
 use Cake\Mailer\MailerAwareTrait;
 
 /**
@@ -195,9 +189,9 @@ class OrderController extends AppController {
         //TODO - move this as it is just for testing
         //$this->Api->updatePaymentStatus(PAYMENT_STATUS_PENDING);
         //$this->Api->updatePaymentStatus(PAYMENT_STATUS_CANCELLED);
-        $this->Api->updatePaymentStatus(PAYMENT_STATUS_REFUND);
+        //$this->Api->updatePaymentStatus(PAYMENT_STATUS_REFUND);
         //$this->Api->updatePaymentStatus(PAYMENT_STATUS_ERROR);
-        //$this->Api->updatePaymentStatus(PAYMENT_STATUS_COMPLETE);
+        $this->Api->updatePaymentStatus(PAYMENT_STATUS_COMPLETE);
         //TODO - move this from here to the tracking page
         $this->Api->getOrderDetails();
         //make sure we dont render the basket on this page
