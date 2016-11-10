@@ -103,13 +103,17 @@ class APIComponent extends AbstractComponent {
     /**
      * Get the order details
      */
-    public function getOrderDetails() {
+    public function getOrderDetails($tracking_id = null) {
         //get a new instance of the call
         $getOrderDetailsCall = new GetOrderDetailsCall();
 
+        if (is_null($tracking_id)){
+            $tracking_id = $this->order->getTrackingId();
+        }
+
         //generate the body
-        $body = ['OrderID' => $this->order->getOrderId(),
-            'TrackingID' => $this->order->getTrackingId(),
+        $body = [//'OrderID' => $this->order->getOrderId(),
+            'TrackingID' => $tracking_id
         ];
 
         //make the request

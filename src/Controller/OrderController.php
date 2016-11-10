@@ -19,6 +19,7 @@ namespace App\Controller;
 use App\Form\ConfirmationForm;
 use App\Form\OrderForm;
 use App\Entity\Order\OrderAddressEntity;
+use Aura\Intl\Exception;
 use Cake\Mailer\MailerAwareTrait;
 
 /**
@@ -195,6 +196,23 @@ class OrderController extends AppController {
         //TODO - move this from here to the tracking page
         $this->Api->getOrderDetails();
         //make sure we dont render the basket on this page
+        $this->set('noSidebar', true);
+    }
+
+    /**
+     * The order tracking page
+     *
+     * @param $tracking_id
+     * @throws Exception
+     */
+    public function track($tracking_id){
+
+        if (is_null($tracking_id)){
+            throw new Exception('Tracking ID missing');
+        } else {
+            //get the order details for a given tracking ID
+            $this->Api->getOrderDetails($tracking_id);
+        }
         $this->set('noSidebar', true);
     }
 
