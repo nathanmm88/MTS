@@ -11451,7 +11451,23 @@ $(document).ready(function() {
         e.preventDefault();
         $('#terms-and-conditions').modal('show');
     });
-    
+
+    /**
+     * Check if the session timeout on each ajax call
+     */
+    $( document ).ajaxStart(function() {
+        $.ajax({
+            url: "/ajax/checkSession",
+            dataType: 'json',
+        })
+        .done(function( data ) {
+          //if the session has timed out redirect to the timeout page
+          if (data.timeout){
+              window.location.replace("/error/sessionTimeout");
+          }
+        });
+    });
+
 });
 
 

@@ -6,7 +6,7 @@
             </a>
         </h4>
     </div>
-    <div id="collapse<?php echo $section->getId(); ?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php echo $section->getId(); ?>">
+    <div id="collapse<?php echo $section->getId(); ?>" class="<?php echo !isset($isPdf) || $isPdf == false ? 'panel-collapse collapse in' : 'panel-collapse'; ?>" role="tabpanel" aria-labelledby="heading<?php echo $section->getId(); ?>">
         <div class="panel-body">
             <p><?php echo $section->getDescription(); ?></p>
             <table class="table table-striped">

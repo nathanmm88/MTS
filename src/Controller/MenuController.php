@@ -28,6 +28,14 @@ use Cake\View\Exception\MissingTemplateException;
 class MenuController extends AppController
 {
 
+    public $pdfConfig = [];
+    
+    public function initialize() {
+        parent::initialize();
+        $this->loadComponent('RequestHandler');
+    }
+
+
     /**
      * Displays a view
      *
@@ -40,5 +48,24 @@ class MenuController extends AppController
         $this->viewBuilder()->layout('minimal');
         $this->Api->getMenu();
         $this->set('readOnly', true);
+    }
+    
+    /**
+     * Downloads the static menu as PDF
+     */
+    public function download()
+    {
+
+        $this->Api->getMenu();
+        $this->set('readOnly', true);
+
+        $this->viewBuilder()->options([
+            'pdfConfig' => [
+                'orientation' => 'portrait',
+                'filename' => 'menu_' . date('Y_m_d_H_s') . '.pdf'
+            ]
+        ]);
+        
+        
     }
 }
