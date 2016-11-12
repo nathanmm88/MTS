@@ -8,6 +8,7 @@ use App\Entity\Order\OrderAddressEntity;
 use App\Entity\MenuEntity;
 use App\Entity\TakeawayEntity;
 use App\Entity\Order\OrderItemCondimentEntity;
+use App\Lib\DotNotation;
 use App\Lib\Functions;
 
 class OrderEntity extends AbstractEntity
@@ -951,6 +952,39 @@ class OrderEntity extends AbstractEntity
     public function getPaymentMethodForAPI(){
         //return the mapped api value for the selected order type
         return $this->mapped_payment_methods[$this->getPaymentMethod()];
+    }
+
+    /**
+     * Takes the response from GetOrderDetails and saves it
+     * back to the session so we can output to the user
+     *
+     * @param DotNotation $order
+     */
+    public function saveOrderBackToSession(DotNotation $order){
+        //clear the order
+        $this->clear();
+
+        //set some of the order values we're interested in retaining
+        $this->setPaymentMethod($order->get('Order.PaymentMethodID'));
+        $this->setPaymentStatus($order->get('Order.PaymentStatusID'));
+        $this->setStatusId($order->get('Order.OrderStatusID'));
+        //TODO - we may want to map the description our end from the ID
+         $this->setStatusDesc($order->get('Order.OrderStatusDesc'));
+         $this->setPaymentStatusDesc($order->get('Order.PaymentStatusDesc'));
+
+        //write each order item back to the session
+        foreach ($order->get('OrderItems') as $orderItem) {
+            //set the values
+            $orderItem = ItemEntity::fromArray([
+                'item_id' => $orderItem['OrderItem']['MenuItemID'],
+                'section_id' => $orderItem['OrderItem']['MenuSectionID'],
+                'variation_id' => $orderItem['OrderItem']['MenuItem_VariationID'],
+                'notes' => $orderItem['OrderItem']['Notes']
+            ]);
+
+            //add the item to the order
+            $this->addItem($orderItem);
+        }
     }
 
 }

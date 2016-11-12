@@ -212,6 +212,9 @@ class OrderController extends AppController {
         } else {
             //get the order details for a given tracking ID
             $this->Api->getOrderDetails($tracking_id);
+
+            //Get the latest menu and save to the session so we can get the prices etc.
+            $this->Api->getMenu();
         }
         $this->set('noSidebar', true);
     }
