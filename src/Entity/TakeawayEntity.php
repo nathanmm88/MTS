@@ -66,6 +66,13 @@ class TakeawayEntity extends AbstractEntity
      * @var App\Entity\Takeaway\CurrencyEntity
      */
     protected $delivery_charges = [];
+
+    /**
+     * Takeaway active flag (licensing)
+     *
+     * @var bool
+     */
+    protected $active = false;
     
     /**
      * Constants
@@ -236,14 +243,23 @@ class TakeawayEntity extends AbstractEntity
         }
         return $return;
     }
-    
+
     /**
      * Returns the logo URL
-     * 
+     *
      * @return string
      */
     public function getLogo(){
         return $this->_get('logo');
+    }
+
+    /**
+     * Returns the active flag
+     *
+     * @return bool
+     */
+    public function isActive(){
+        return $this->_get('active');
     }
     
     /**
@@ -348,15 +364,26 @@ class TakeawayEntity extends AbstractEntity
         $this->_set('delivery_charges', $deliveryCharges);
         return $this;
     }
-    
+
     /**
      * Sets the logo URL
-     * 
+     *
      * @param array $logo
      * @return \App\Entity\TakeawayEntity
      */
     public function setLogo($logo){
         $this->_set('logo', $logo);
+        return $this;
+    }
+
+    /**
+     * Sets the active flag
+     *
+     * @param array $active
+     * @return \App\Entity\TakeawayEntity
+     */
+    public function setActive($active){
+        $this->_set('active', $active);
         return $this;
     }
 

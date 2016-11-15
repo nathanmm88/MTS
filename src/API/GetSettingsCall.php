@@ -21,7 +21,8 @@ class GetSettingsCall extends AbstractCall {
                 ->setEmail($responseDotNotation->get('Takeaway.EmailAddress'))
                 ->setOpeningHours($responseDotNotation->get('OpeningHours', []))
                 ->setDeliveryCharges($responseDotNotation->get('DeliveryCharges', []))
-                ->setLogo($responseDotNotation->get('Logo', '/tmp/logo.png'));
+                ->setLogo($responseDotNotation->get('Logo', '/tmp/logo.png'))
+                ->setActive($responseDotNotation->get('TakeawaySettings.TakeawayActive'));
 
         //set the currency
         $currency = CurrencyEntity::fromArray([

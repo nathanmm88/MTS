@@ -324,4 +324,21 @@ class AppController extends Controller {
         
     }
 
+    /**
+     * Before filter callback
+     *
+     * @param Event $event
+     * @return bool
+     */
+    public function beforeFilter(Event $event) {
+        parent::beforeFilter($event);
+
+        //if the takeaway is inactive and the user is not currently on the inactive step, redirect there
+        if ((!$this->takeaway->isActive()) && ($this->step->getCurrentStep() !== 'website_inactive')) {
+            $this->_redirectToStep('website_inactive');
+        }
+
+        return true;
+    }
+
 }
