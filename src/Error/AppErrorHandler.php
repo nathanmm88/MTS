@@ -28,7 +28,6 @@ class AppErrorHandler extends ErrorHandler {
         } else if ($exception instanceof MissingControllerException) {
             parent::_displayException($exception); //this loads /src/Template/Error/error500.ctp
         } else {
-            die(var_dump($exception->getMessage()));
             //else reidrect to the standard error page
             $this->_redirect('/error/service');
         }

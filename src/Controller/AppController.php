@@ -338,6 +338,11 @@ class AppController extends Controller {
             $this->_redirectToStep('website_inactive');
         }
 
+        //if the takeaway is offline and the user is not on the ofline step, redirect there
+        if  (!$this->takeaway->isOnline() && ($this->step->getCurrentStep() !== 'website_offline')) {
+            $this->_redirectToStep('website_offline');
+        }
+
         return true;
     }
 
