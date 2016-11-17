@@ -1,8 +1,7 @@
 <!-- This div contains the address dropdown -->
 <div id="postcode-results"></div>
-
-<!-- Hide the manual address fields on page load -->
-<div id="address-fields" style="display:none;">
+<!-- Hide the manual address fields on page load unless the form has been posted -->
+<div id="address-fields" style="display:<?php echo ($this->request->is("post")) ? 'block' : 'none'; ?>">
     <div class="row">
         <div class="col-md-12">
             <?php echo $this->Form->label('address_line_one', 'House name/number', ['class' => 'control-label']); ?>
