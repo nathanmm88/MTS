@@ -24,6 +24,11 @@ $text = [
             'postcode' => [
                 'do_not_deliver' => 'Sorry, we don\'t currently deliver to '
             ]
+        ],
+        'address' => [
+            'please_select' => 'Please select your address',
+            'no_address_found' => 'No address found - please enter manually'
+
         ]
     ]
 ];

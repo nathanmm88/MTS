@@ -6,6 +6,7 @@ use App\Controller\Component\AbstractComponent;
 use App\API\GetSettingsCall;
 use App\API\GetMenuCall;
 use App\API\GetOrderDetailsCall;
+use App\API\PostcodeLookupCall;
 use App\API\UpdatePaymentStatusCall;
 use App\API\CreateOrderCall;
 
@@ -123,5 +124,27 @@ class APIComponent extends AbstractComponent {
 
         //handle the response
         $getOrderDetailsCall->handleResult($response);
+    }
+
+    /**
+     * Postcode lookup call
+     */
+    public function postcodeLookup($postcode) {
+        //get a new instance of the call
+        $postcodeLookupCall = new PostcodeLookupCall();
+
+        //generate the body
+        $body = [
+            'Postcode' => $postcode,
+            'ForceCheck' => false
+        ];
+
+        //make the request
+        $response = $postcodeLookupCall->makeRequest(
+            'api/Tools/PostCodeLookup', json_encode($body), true
+        );
+
+        //handle the response
+        return $postcodeLookupCall->handleResult($response);
     }
 }

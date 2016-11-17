@@ -204,4 +204,23 @@ class AjaxController extends AppController
         $this->render('json');
     }
 
+    /**
+     * Postcode lookup
+     */
+    public function postcodeLookup(){
+        //get the postcode entered by the user
+        $postcode = $this->request->data('postcode');
+
+        //make the api call to get the postcode
+        $addressList = $this->Api->postcodeLookup($postcode);
+
+        //set the address list to the view
+        $this->set('addressList', $addressList);
+
+        //return success if at least one address has been entered
+        $this->set('data', [
+            'success' => (count($addressList) > 0) ? true : false
+        ]);
+    }
+
 }

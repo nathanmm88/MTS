@@ -24,37 +24,30 @@
         <?php echo $this->Form->isFieldError('telephone') ? $this->Form->error('telephone') : ''; ?>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-12">
-                <?php echo $this->Form->label('address_line_one', 'House name/number', ['class' => 'control-label']); ?>
-                <?php echo $this->Form->text('address_line_one', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineOne()]); ?>
-                <?php echo $this->Form->isFieldError('address_line_one') ? $this->Form->error('address_line_one') : ''; ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <?php echo $this->Form->label('address_line_two', 'Street', ['class' => 'control-label']); ?>
-                <?php echo $this->Form->text('address_line_two', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineTwo()]); ?>
-                <?php echo $this->Form->isFieldError('address_line_two') ? $this->Form->error('address_line_two') : ''; ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <?php echo $this->Form->label('address_line_three', 'Town', ['class' => 'control-label']); ?>
-                <?php echo $this->Form->text('address_line_three', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineThree()]); ?>
-                <?php echo $this->Form->isFieldError('address_line_three') ? $this->Form->error('address_line_three') : ''; ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <?php echo $this->Form->label('address_line_four', 'County', ['class' => 'control-label']); ?>
-                <?php echo $this->Form->text('address_line_four', ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getAddressLineFour()]); ?>
-                <?php echo $this->Form->isFieldError('address_line_four') ? $this->Form->error('address_line_four') : ''; ?>
-            </div>
+    <div class="row">
+        <div class="col-md-3">
+            <?php
+            $postcodeParams = ['id' => 'postcode', 'class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getPostcode()];
+            if ($this->Entity->get('Order')->isDelivery()) {
+                $postcodeParams['readonly'] = 'readonly';
+            }
+            ?>
+            <?php echo $this->Form->label('postcode', 'Postcode', ['class' => 'control-label']); ?>
+            <?php echo $this->Form->text('postcode', $postcodeParams); ?>
+            <?php if ($this->Entity->get('Order')->isDelivery()) { ?>
+                <a href="<?php echo $this->Step->getStepLink('order_index'); ?>"><i>Change postcode</i></a>
+            <?php } ?>
+            <?php echo $this->Form->isFieldError('postcode') ? $this->Form->error('postcode') : ''; ?>
+            <?php echo $this->Html->link('Find Address', '#',array('class' => 'btn btn-default', 'id' => 'find-address')); ?>
+
         </div>
     </div>
+<div class="row">
+    <div class="col-md-6">
+        <?php echo $this->element('Address'); ?>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-12">
@@ -71,22 +64,7 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-3">
-        <?php
-        $postcodeParams = ['class' => 'form-control', 'default' => $this->Entity->get('Order')->getAddress()->getPostcode()];
-        if ($this->Entity->get('Order')->isDelivery()) {
-            $postcodeParams['readonly'] = 'readonly';
-        }
-        ?>
-        <?php echo $this->Form->label('postcode', 'Postcode', ['class' => 'control-label']); ?>
-        <?php echo $this->Form->text('postcode', $postcodeParams); ?>
-        <?php if ($this->Entity->get('Order')->isDelivery()) { ?>
-            <a href="<?php echo $this->Step->getStepLink('order_index'); ?>"><i>Change postcode</i></a>
-        <?php } ?>
-        <?php echo $this->Form->isFieldError('postcode') ? $this->Form->error('postcode') : ''; ?>
-    </div>
-</div>
+
 <div class="row">
     <div class="col-md-12">
         <?php echo $this->Form->checkbox('allergy_disclaimer'); ?>
